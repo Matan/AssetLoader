@@ -54,11 +54,11 @@ package org.assetloader
 			super(eventDispatcher);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function start(numConnections : uint = 3) : void
 		{
-			if(numConnections <= 0)
-				throw new ArgumentError("numConnections must be greater that 0");
-				
 			_numLoaded = 0;
 			_totalUnits = _ids.length;
 			
@@ -71,12 +71,18 @@ package org.assetloader
 					_numLoaded++;
 			}
 			
+			if(numConnections == 0)
+				numConnections = _totalUnits;
+			
 			for(var k : int = 0;k < numConnections;k++) 
 			{
 				startUnit(_numLoaded + k);
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function stop() : void
 		{
 			for(var i : int = 0;i < _totalUnits;i++) 
@@ -89,6 +95,9 @@ package org.assetloader
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function destroy() : void
 		{
 			for(var i : int = 0;i < _totalUnits;i++) 
@@ -108,21 +117,33 @@ package org.assetloader
 			super.destroy();
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get progress() : Number
 		{
 			return _progress;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get bytesLoaded() : uint
 		{
 			return _bytesLoaded;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get bytesTotal() : uint
 		{
 			return _bytesTotal;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get numLoaded() : int
 		{
 			return _numLoaded;
