@@ -29,6 +29,7 @@ package runner.view
 		protected function loaderProgress_handler(event : AssetLoaderEvent) : void 
 		{
 			view.setOverallProgress(event.progress);
+			view.statsText = String(loader.stats);
 		}
 
 		protected function startClick_handler(event : MouseEvent) : void 

@@ -8,9 +8,10 @@ package org.assetloader.events
 	 */
 	public class AssetLoaderEvent extends Event 
 	{
+		public static const ERROR : String = "ERROR";
+		public static const CONNECTION_OPENED : String = "CONNECTION_OPENED";
+		public static const PROGRESS : String = "PROGRESS";		public static const COMPLETE : String = "COMPLETE";
 		public static const ASSET_LOADED : String = "ASSET_LOADED";
-		public static const COMPLETE : String = "COMPLETE";
-		public static const PROGRESS : String = "PROGRESS";		public static const ERROR : String = "ERROR";
 
 		public var id : String;
 		public var assetType : String;

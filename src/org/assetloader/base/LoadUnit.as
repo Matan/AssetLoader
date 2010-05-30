@@ -2,9 +2,9 @@ package org.assetloader.base
 {
 	import mu.utils.ToStr;
 
-	import org.assetloader.core.ILoader;
 	import org.assetloader.core.IAssetParam;
 	import org.assetloader.core.ILoadUnit;
+	import org.assetloader.core.ILoader;
 	import org.assetloader.events.BinaryAssetEvent;
 	import org.assetloader.events.CSSAssetEvent;
 	import org.assetloader.events.DisplayObjectAssetEvent;
@@ -251,12 +251,12 @@ package org.assetloader.base
 		{
 			return _eventClass;
 		}
-		
+
 		public function get retryTally() : uint
 		{
 			return _retryTally;
 		}
-		
+
 		public function set retryTally(retryTally : uint) : void
 		{
 			_retryTally = retryTally;
@@ -264,7 +264,7 @@ package org.assetloader.base
 
 		public function toString() : String 
 		{
-			return String(new ToStr(this, false));
+			return String(new ToStr(this));
 		}
 	}
 }

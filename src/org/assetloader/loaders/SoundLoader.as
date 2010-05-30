@@ -1,22 +1,17 @@
 package org.assetloader.loaders 
 {
 	import org.assetloader.base.AssetParam;
-	import org.assetloader.core.ILoadUnit;
 	import org.assetloader.core.ILoader;
 
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.events.IOErrorEvent;
-	import flash.events.ProgressEvent;
+	import flash.events.IEventDispatcher;
 	import flash.events.SampleDataEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.media.Sound;
-	import flash.net.URLRequest;
 
 	[Event(name="securityError", type="flash.events.SecurityErrorEvent")]
 	[Event(name="ioError", type="flash.events.IOErrorEvent")]
-
-	[Event(name="progress", type="flash.events.ProgressEvent")]
+		[Event(name="progress", type="flash.events.ProgressEvent")]
 
 	[Event(name="complete", type="flash.events.Event")]
 
@@ -29,57 +24,30 @@ package org.assetloader.loaders
 	/**
 	 * @author Matan Uberstein
 	 */
-	public class SoundLoader extends EventDispatcher implements ILoader
+	public class SoundLoader extends AbstractLoader implements ILoader
 	{
-
-		protected var _loadUnit : ILoadUnit;
-
-		protected var _request : URLRequest;
 		protected var _sound : Sound;
-
-		protected var _progress : Number;
-		protected var _invoked : Boolean;
-		protected var _loaded : Boolean;
-
-		protected var _data : *;
 
 		public function SoundLoader() 
 		{
+			super();
 		}
 
-		public function start() : void
+		override protected function invokeLoading() : IEventDispatcher 
 		{
-			if(!_invoked)
-			{
-				_invoked = true;
-				_request = _loadUnit.request;
-				
-				if(_loadUnit.hasParam(AssetParam.HEADERS))
-					_request.requestHeaders = _loadUnit.getParam(AssetParam.HEADERS);
+			_sound = new Sound();
 			
-				_sound = new Sound();
-			
-				_sound.addEventListener(Event.COMPLETE, loader_complete_handler);
-				_sound.addEventListener(IOErrorEvent.IO_ERROR, loader_ioError_handler);
-				_sound.addEventListener(ProgressEvent.PROGRESS, loader_progress_handler);
-				_sound.addEventListener(SampleDataEvent.SAMPLE_DATA, dispatchEvent);				_sound.addEventListener(Event.ID3, dispatchEvent);				_sound.addEventListener(Event.OPEN, dispatchEvent);
-				
-				try
-				{
-					_sound.load(_request, _loadUnit.getParam(AssetParam.SOUND_LOADER_CONTEXT));
-				}catch(error : SecurityError)
-				{
-					dispatchEvent(new SecurityErrorEvent(SecurityErrorEvent.SECURITY_ERROR, false, false, error.message));
-				}
-			}
-			else
+			try
 			{
-				destroy();
-				start();
+				_sound.load(_request, _loadUnit.getParam(AssetParam.SOUND_LOADER_CONTEXT));
+			}catch(error : SecurityError)
+			{
+				dispatchEvent(new SecurityErrorEvent(SecurityErrorEvent.SECURITY_ERROR, false, false, error.message));
 			}
+			return _sound;
 		}
 
-		public function stop() : void
+		override public function stop() : void
 		{
 			if(_invoked)
 			{
@@ -91,105 +59,38 @@ package org.assetloader.loaders
 				}
 			}
 		}
-
-		public function destroy() : void
+		override public function destroy() : void 
 		{
-			removeLoaderListener();
-			stop();
-			
-			_request = null;
+			super.destroy();
 			_sound = null;
-			_data = null;
-			_loaded = false;
-			_invoked = false;
+		}
+		
+		override protected function open_handler(event : Event) : void 
+		{
+			_stats.open(_sound.bytesTotal);
+			
+			super.open_handler(event);
 		}
 
-		protected function loader_ioError_handler(event : IOErrorEvent) : void 
+		override protected function complete_handler(event : Event) : void 
 		{
-			removeLoaderListener();
-			
-			dispatchEvent(event);
-		}
-
-		protected function loader_securityError_handler(event : SecurityErrorEvent) : void 
-		{
-			removeLoaderListener();
-			
-			dispatchEvent(event);
-		}
-
-		protected function loader_complete_handler(event : Event) : void 
-		{
-			removeLoaderListener();
-			
 			_data = _sound;
 			
-			_loaded = true;
-			dispatchEvent(event);
+			super.complete_handler(event);
 		}
 
-		protected function loader_progress_handler(event : ProgressEvent) : void
+		override protected function addLoaderListener(dispatcher : IEventDispatcher) : void 
 		{
-			_progress = (event.bytesLoaded / event.bytesTotal) * 100;
-			
-			dispatchEvent(event);
+			super.addLoaderListener(dispatcher);
+			if(dispatcher)
+				dispatcher.addEventListener(SampleDataEvent.SAMPLE_DATA, dispatchEvent);
 		}
 
-		protected function removeLoaderListener() : void
+		override protected function removeLoaderListener(dispatcher : IEventDispatcher) : void 
 		{
-			if(_sound)
-			{
-				_sound.removeEventListener(Event.COMPLETE, loader_complete_handler);
-				_sound.removeEventListener(IOErrorEvent.IO_ERROR, loader_ioError_handler);
-				_sound.removeEventListener(ProgressEvent.PROGRESS, loader_progress_handler);
-				_sound.removeEventListener(SampleDataEvent.SAMPLE_DATA, dispatchEvent);
-				_sound.removeEventListener(Event.ID3, dispatchEvent);
-				_sound.removeEventListener(Event.OPEN, dispatchEvent);
-			}
-		}
-
-		public function get loadUnit() : ILoadUnit
-		{
-			return _loadUnit;
-		}
-
-		public function set loadUnit(loadUnit : ILoadUnit) : void
-		{
-			_loadUnit = loadUnit;
-		}
-
-		public function get progress() : Number
-		{
-			return _progress;
-		}
-
-		public function get bytesLoaded() : uint
-		{
-			if(_sound)
-				return _sound.bytesLoaded;
-			return 0;
-		}
-
-		public function get bytesTotal() : uint
-		{
-			if(_sound)
-				return _sound.bytesTotal;
-			return 0;
-		}
-
-		public function get invoked() : Boolean
-		{
-			return _invoked;
-		}
-
-		public function get loaded() : Boolean
-		{
-			return _loaded;
-		}
-
-		public function get data() : *
-		{
-			return _data;
+			super.removeLoaderListener(dispatcher);
+			if(dispatcher)
+				dispatcher.removeEventListener(SampleDataEvent.SAMPLE_DATA, dispatchEvent);
 		}
 	}
 }

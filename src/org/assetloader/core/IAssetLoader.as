@@ -81,19 +81,10 @@ package org.assetloader.core
 		function getAsset(id : String) : *
 
 		/**
-		 * @return Percentage value of consolidated loading progress.
+		 * @return Current loading stats.
+		 * @see org.assetloader.core.ILoadStats
 		 */
-		function get progress() : Number 
-
-		/**
-		 * @return unit of bytes loaded
-		 */
-		function get bytesLoaded() : uint
-
-		/**
-		 * @return unit of total bytes to load. This value will increase as the connections are opened.
-		 */
-		function get bytesTotal() : uint
+		function get stats() : ILoadStats
 
 		/**
 		 * @return Total number of asset loaded.

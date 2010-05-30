@@ -62,7 +62,7 @@
 		</delete>
 
 		<!-- create docs -->
-		<exec executable="${asdoc.exe}">
+		<exec executable="${asdoc.app}">
 			<arg line="	-doc-sources '${project.src}'" />
 			<arg line=' -library-path ${project.libs}' />
 			<arg line=" -output '${project.doc}'" />

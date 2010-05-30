@@ -1,14 +1,15 @@
 package org.assetloader
 {
-	import flash.events.AsyncErrorEvent;
-
 	import org.assetloader.base.AssetLoaderBase;
+	import org.assetloader.base.AssetLoaderStats;
 	import org.assetloader.base.AssetParam;
 	import org.assetloader.core.IAssetLoader;
+	import org.assetloader.core.ILoadStats;
 	import org.assetloader.core.ILoadUnit;
 	import org.assetloader.core.ILoader;
 	import org.assetloader.events.AssetLoaderEvent;
 
+	import flash.events.AsyncErrorEvent;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
@@ -43,15 +44,14 @@ package org.assetloader
 		protected var _numLoaded : int;
 		protected var _totalUnits : int;
 
-		protected var _progress : Number;
-		protected var _bytesLoaded : uint;
-		protected var _bytesTotal : uint;
+		protected var _stats : ILoadStats;
 
 		[Inject]
 
 		public function AssetLoader(eventDispatcher : IEventDispatcher = null)
 		{
 			super(eventDispatcher);
+			_stats = new AssetLoaderStats();
 		}
 
 		/**
@@ -70,6 +70,8 @@ package org.assetloader
 				if(loader.loaded)
 					_numLoaded++;
 			}
+			
+			_stats.start();
 			
 			if(numConnections == 0)
 				numConnections = _totalUnits;
@@ -110,9 +112,10 @@ package org.assetloader
 				loader.destroy();
 			}
 			
+			_stats = new AssetLoaderStats();
+			
 			_totalUnits = 0;
 			_numLoaded = 0;
-			_progress = 0;
 			
 			super.destroy();
 		}
@@ -120,25 +123,9 @@ package org.assetloader
 		/**
 		 * @inheritDoc
 		 */
-		public function get progress() : Number
+		public function get stats() : ILoadStats
 		{
-			return _progress;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get bytesLoaded() : uint
-		{
-			return _bytesLoaded;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get bytesTotal() : uint
-		{
-			return _bytesTotal;
+			return _stats;
 		}
 
 		/**
@@ -159,8 +146,9 @@ package org.assetloader
 			{
 				var loader : ILoader = unit.loader;
 				
-				loader.addEventListener(ProgressEvent.PROGRESS, progress_handler);
-				loader.addEventListener(Event.COMPLETE, complete_handler);
+				loader.addEventListener(Event.OPEN, open_handler);
+				loader.addEventListener(ProgressEvent.PROGRESS, progress_handler);				loader.addEventListener(Event.COMPLETE, complete_handler);
+				
 				loader.addEventListener(IOErrorEvent.IO_ERROR, error_handler);				loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error_handler);				loader.addEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);				loader.addEventListener(ErrorEvent.ERROR, error_handler);
 				
 				loader.start();
@@ -201,8 +189,10 @@ package org.assetloader
 
 		protected function removeLoaderListeners(loader : ILoader) : void
 		{
+			loader.removeEventListener(Event.OPEN, open_handler);
 			loader.removeEventListener(ProgressEvent.PROGRESS, progress_handler);
 			loader.removeEventListener(Event.COMPLETE, complete_handler);
+			
 			loader.removeEventListener(IOErrorEvent.IO_ERROR, error_handler);
 			loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, error_handler);
 			loader.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
@@ -217,9 +207,9 @@ package org.assetloader
 			event.assetType = assetType;
 			event.data = data;
 			
-			event.progress = _progress;
-			event.bytesLoaded = _bytesLoaded;
-			event.bytesTotal = _bytesTotal;
+			event.progress = _stats.progress;
+			event.bytesLoaded = _stats.bytesLoaded;
+			event.bytesTotal = _stats.bytesTotal;
 			
 			event.errorType = errorType;
 			event.errorText = errorText;
@@ -235,21 +225,47 @@ package org.assetloader
 			retryUnit(ILoader(event.target), event.type, event.text);
 		}
 
-		protected function progress_handler(event : ProgressEvent) : void 
+		protected function open_handler(event : Event) : void 
 		{
-			_bytesLoaded = 0;
-			_bytesTotal = 0;
+			var bytesTotal : uint = 0;
+			var unit : ILoadUnit;
+			var loader : ILoader;
+			var stats : ILoadStats;
 			
 			for(var i : int = 0;i < _totalUnits;i++) 
 			{
-				var unit : ILoadUnit = _units[_ids[i]];
-				var loader : ILoader = unit.loader;
+				unit = _units[_ids[i]];
+				loader = unit.loader;
+				stats = loader.stats;
 				
-				_bytesLoaded += loader.bytesLoaded;
-				_bytesTotal += loader.bytesTotal;
+				bytesTotal += stats.bytesTotal;
 			}
 			
-			_progress = (_bytesLoaded / _bytesTotal) * 100;
+			_stats.open(bytesTotal);
+			
+			loader = ILoader(event.target);
+			unit = loader.loadUnit;
+			
+			dispatchAssetLoaderEvent(AssetLoaderEvent.CONNECTION_OPENED, unit.id, unit.type);
+		}
+
+		protected function progress_handler(event : ProgressEvent) : void 
+		{
+			var bytesLoaded : uint = 0;
+			var unit : ILoadUnit;
+			var loader : ILoader;
+			var stats : ILoadStats;
+			
+			for(var i : int = 0;i < _totalUnits;i++) 
+			{
+				unit = _units[_ids[i]];
+				loader = unit.loader;
+				stats = loader.stats;
+				
+				bytesLoaded += stats.bytesLoaded;
+			}
+			
+			_stats.update(bytesLoaded);
 			
 			dispatchAssetLoaderEvent(AssetLoaderEvent.PROGRESS);
 		}
@@ -271,7 +287,10 @@ package org.assetloader
 			dispatchEvent(new eventClass(eventClass.LOADED, unit.id, unit.type, loader.data));
 			
 			if(_numLoaded == _totalUnits)
+			{
+				_stats.done();
 				dispatchAssetLoaderEvent(AssetLoaderEvent.COMPLETE, null, null, loader.data);
+			}
 			else
 				startNextUnit();
 		}

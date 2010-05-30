@@ -1,5 +1,9 @@
 package runner.view 
 {
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
+	import flash.text.TextField;
+
 	import fl.controls.Button;
 	import fl.controls.ProgressBarMode;
 	import fl.controls.ProgressBar;
@@ -18,7 +22,8 @@ package runner.view
 		protected var _overallProgress : ProgressBar;
 		protected var _console : Console;
 
-		protected var _startBtn : Button;		protected var _stopBtn : Button;		protected var _destroyBtn : Button;
+		protected var _startBtn : Button;		protected var _stopBtn : Button;		protected var _destroyBtn : Button;
+		protected var _statsField : TextField;
 		public function Canvas()
 		{
 		}
@@ -55,8 +60,14 @@ package runner.view
 			_destroyBtn.buttonMode = true;
 			addChild(_destroyBtn);
 			
+			_statsField = new TextField();
+			_statsField.defaultTextFormat = new TextFormat("Courier new");
+			_statsField.autoSize = TextFieldAutoSize.LEFT;
+			addChild(_statsField);
+			
 			_stopBtn.x = _startBtn.x + _stopBtn.width + 10;
 			_destroyBtn.x = _stopBtn.x + _stopBtn.width + 10;
+			_statsField.x = _destroyBtn.x + _destroyBtn.width + 10;
 			
 			stage.addEventListener(Event.RESIZE, resize_handler);
 			drawNow();
@@ -80,7 +91,7 @@ package runner.view
 						_console.setSize(w, hH - 30);
 			_console.y = hH + 5;
 			
-			_startBtn.y = _stopBtn.y = _destroyBtn.y = h - _startBtn.height;
+			_startBtn.y = _stopBtn.y = _destroyBtn.y = _statsField.y = h - _startBtn.height;
 		}
 
 		protected function resize_handler(event : Event) : void 
@@ -97,15 +108,20 @@ package runner.view
 		{
 			return _startBtn;
 		}
-		
+
 		public function get stopBtn() : Button
 		{
 			return _stopBtn;
 		}
-		
+
 		public function get destroyBtn() : Button
 		{
 			return _destroyBtn;
+		}
+
+		public function set statsText(value : String) : void 
+		{
+			_statsField.text = value;
 		}
 	}
 }
