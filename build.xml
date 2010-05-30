@@ -51,9 +51,9 @@
 		<echo>[compile] Release SWC ${project.name.versioned}.swc created successfully</echo>
 	</target>
 
-	<target name="asdoc" >
+	<target name="asdoc">
 		<echo>[asdoc] Generating ASDOC documentation</echo>
-		
+
 		<mkdir dir="${project.doc}" />
 
 		<!-- delete all files in the doc dir -->
@@ -69,5 +69,17 @@
 			<arg line=" -main-title '${asdoc.mainTitle}'" />
 			<arg line=" -window-title '${asdoc.windowTitle}'" />
 		</exec>
+
+		<echo>[asdoc] Deleting old ASDoc zip</echo>
+		<delete>
+			<fileset dir="${project.bin}" includes="*.zip" />
+		</delete>
+
+		<echo>[asdoc] Zipping ${project.doc} folder to ${project.name.versioned}-ASDoc.zip</echo>
+		<zip destfile="${project.bin}/${project.name.versioned}-ASDoc.zip" basedir="${project.doc}" />
+
+		<echo>[asdoc] Deleting ${project.doc} folder</echo>
+		<delete dir="${project.doc}" />
+
 	</target>
 </project>
