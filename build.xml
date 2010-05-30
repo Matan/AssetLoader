@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<project name="AssetLoader" basedir="." default="compile">
+
+	<!-- set up a prefix for all environment variables -->
+	<property environment="env." />
+
+	<!-- System environment must contain FLEX_HOME variable that points to Flex SDK -->
+	<property name="FLEX_HOME" location="${env.FLEX_HOME}" />
+
+	<!-- import the settings -->
+	<property file="${basedir}/build.properties" />
+
+	<!-- Clean bin of old SWC's before compile -->
+	<target name="clean">
+		<echo>[clean] Removing previous SWC's from ${project.bin}</echo>
+		<delete>
+			<fileset dir="${project.bin}" includes="*.swc" />
+		</delete>
+	</target>
+
+	<!-- Compile Release SWC -->
+	<target name="compile" depends="clean">
+		<echo>[compile] Compiling release SWC</echo>
+		<echo>[compile] Using Flex SDK at: ${FLEX_HOME}</echo>
+		<java jar="${FLEX_HOME}/lib/compc.jar" dir="${FLEX_HOME}/frameworks" fork="true" failonerror="true">
+			<!-- Build our SWC with a versioned name. -->
+			<arg value="-output=${project.bin}/${project.name.versioned}.swc" />
+
+			<!-- We want all the org package classes in the SWC being built. -->
+			<arg value="-include-sources=${project.src}" />
+
+			<!-- Include classes from SWCs in this folder, but only the ones we use. -->
+			<arg value="-library-path+=${project.libs}" />
+
+			<!-- Keep the magic alive. -->
+			<arg value="-keep-as3-metadata+=Inject" />
+			<arg value="-keep-as3-metadata+=PostConstruct" />
+			<arg value="-keep-as3-metadata+=Event" />
+
+			<!-- Boolean mosh pit! -->
+			<arg value="-incremental=true" />
+			<arg value="-static-link-runtime-shared-libraries=true" />
+			<arg value="-verbose-stacktraces=true" />
+			<arg value="-headless-server=true" />
+
+		</java>
+
+		<echo>[compile] Removing cache file from ${project.bin}</echo>
+		<delete file="${project.bin}/${project.name.versioned}.swc.cache" />
+
+		<echo>[compile] Release SWC ${project.name.versioned}.swc created successfully</echo>
+	</target>
+
+	<target name="asdoc" >
+		<echo>[asdoc] Generating ASDOC documentation</echo>
+		
+		<mkdir dir="${project.doc}" />
+
+		<!-- delete all files in the doc dir -->
+		<delete includeemptydirs="true">
+			<fileset dir="${project.doc}" includes="**/*" />
+		</delete>
+
+		<!-- create docs -->
+		<exec executable="${asdoc.exe}">
+			<arg line="	-doc-sources '${project.src}'" />
+			<arg line=' -library-path ${project.libs}' />
+			<arg line=" -output '${project.doc}'" />
+			<arg line=" -main-title '${asdoc.mainTitle}'" />
+			<arg line=" -window-title '${asdoc.windowTitle}'" />
+		</exec>
+	</target>
+</project>
