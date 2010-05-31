@@ -53,14 +53,7 @@ package org.assetloader.base
 			_params = {};
 			_retryTally = 0;
 			
-			var pL : int = assetParams.length;
-			for(var i : int = 0;i < pL;i++) 
-			{
-				var ap : IAssetParam = assetParams[i];
-				if(!ap)
-					throw new Error("Parameter given does not implement org.assetloader.core.IAssetParam .");
-				setParam(ap.id, ap.value);
-			}
+			processParams(assetParams);
 			
 			if(!hasParam(AssetParam.RETRIES))
 				setParam(AssetParam.RETRIES, 3);
@@ -76,6 +69,21 @@ package org.assetloader.base
 			processType();
 			
 			_loader.loadUnit = this;
+		}
+
+		protected function processParams(assetParams : Array) : void
+		{
+			var pL : int = assetParams.length;
+			for(var i : int = 0;i < pL;i++) 
+			{
+				var param : IAssetParam = assetParams[i];
+				
+				if(!param)
+					setParam(param.id, param.value);
+				
+				else if(param is Array)
+					processParams(Array(param));
+			}
 		}
 
 		protected function getTypeFromExtension(extension : String) : String

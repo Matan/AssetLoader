@@ -29,11 +29,17 @@ package org.assetloader.base
 			_ids = [];
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function addLazy(id : String, url : String, type : String = "AUTO", ...assetParams) : ILoader
 		{
-			return add.apply(null, [id, new URLRequest(url), type].concat(assetParams));
+			return add(id, new URLRequest(url), type, assetParams);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function add(id : String, request : URLRequest, type : String = "AUTO", ...assetParams) : ILoader
 		{
 			var unit : ILoadUnit = new LoadUnit(id, request, type, assetParams);
@@ -44,6 +50,9 @@ package org.assetloader.base
 			return unit.loader;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function destroy() : void
 		{
 			_assets = new Dictionary(true);
@@ -51,16 +60,25 @@ package org.assetloader.base
 			_ids = [];
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function getLoadUnit(id : String) : ILoadUnit
 		{
 			return _units[id];
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function getLoader(id : String) : ILoader
 		{
 			return getLoadUnit(id).loader;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function getAsset(id : String) : *
 		{
 			return _assets[id];

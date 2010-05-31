@@ -78,8 +78,16 @@ package org.assetloader
 			
 			for(var k : int = 0;k < numConnections;k++) 
 			{
-				startUnit(_numLoaded + k);
+				startNextUnit();
 			}
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function startAsset(id : String) : void
+		{
+			startUnit(_ids.indexOf(id));
 		}
 
 		/**
@@ -112,7 +120,7 @@ package org.assetloader
 				loader.destroy();
 			}
 			
-			_stats = new AssetLoaderStats();
+			_stats.reset();
 			
 			_totalUnits = 0;
 			_numLoaded = 0;

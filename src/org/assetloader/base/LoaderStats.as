@@ -11,8 +11,8 @@ package org.assetloader.base
 	 */
 	public class LoaderStats implements ILoadStats
 	{
-		protected var _latency : Number = 0;		protected var _speed : Number = 0;		protected var _averageSpeed : Number = 0;
-		protected var _progress : Number = 0;
+		protected var _latency : Number;		protected var _speed : Number;		protected var _averageSpeed : Number;
+		protected var _progress : Number;
 
 		protected var _bytesLoaded : uint = 0;		protected var _bytesTotal : uint = 0;
 
@@ -85,6 +85,24 @@ package org.assetloader.base
 					_averageSpeed = (_bytesLoaded / 1024) / totalTimeDif;
 				}
 			}
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function reset() : void
+		{
+			_startTime = NaN;
+			_openTime = NaN;
+			_updateTime = NaN;
+			
+			_latency = NaN;
+			_speed = NaN;
+			_averageSpeed = NaN;
+			_progress = NaN;
+			
+			_bytesLoaded = 0;
+			_bytesTotal = 0;
 		}
 
 		/**

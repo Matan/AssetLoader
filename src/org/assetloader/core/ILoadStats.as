@@ -19,14 +19,18 @@ package org.assetloader.core
 		/**
 		 * Invoke when loading is complete.
 		 */
-		function done() : void
-
+		function done() : void
 		/**
 		 * Invoke when loading progress is made. This will updated the stats.
 		 * @param bytesLoaded The amount of bytes loaded.
 		 * @param bytesTotal The total amount of bytes for a loading operation.
 		 */
 		function update(bytesLoaded : uint, bytesTotal : uint) : void
+
+		/**
+		 * Resets all the values.
+		 */
+		function reset() : void
 
 		/**
 		 * Time between start and open.

@@ -9,8 +9,6 @@ package org.assetloader.core
 	 */
 	public interface ILoadUnit 
 	{
-		function init(id : String, request : URLRequest, type : String, assetParams : Array) : void
-
 		function hasParam(id : String) : Boolean
 
 		function setParam(id : String, value : *) : void

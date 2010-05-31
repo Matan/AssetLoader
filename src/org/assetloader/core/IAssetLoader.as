@@ -14,7 +14,7 @@ package org.assetloader.core
 		 * @param id Unique string that identifies asset.
 		 * @param url String URL to load.
 		 * @param type String that defines the type of asset.
-		 * @param assetParams Rest arguments for parameters that are passed to the <code>ILoadUnit</code>
+		 * @param assetParams Rest arguments for parameters that are passed to the <code>ILoadUnit</code>. Also accepts an Array of AssetParams.
 		 * 
 		 * @return ILoader created for this asset.
 		 * 
@@ -32,7 +32,7 @@ package org.assetloader.core
 		 * @param id Unique string that identifies asset.
 		 * @param request URLRequest to execute.
 		 * @param type String that defines the type of asset.
-		 * @param assetParams Rest arguments for parameters that are passed to the <code>ILoadUnit</code>
+		 * @param assetParams Rest arguments for parameters that are passed to the <code>ILoadUnit</code>. Also accepts an Array of AssetParams.
 		 * 
 		 * @return ILoader created for this asset.
 		 * 
@@ -48,6 +48,12 @@ package org.assetloader.core
 		 * @param numConnections The number of simultaneous connections to make. Giving value 0 (zero) will load all assets at the same time.
 		 */
 		function start(numConnections : uint = 3) : void
+
+		/**
+		 * Starts the asset with id passed.
+		 * @param id Asset id.
+		 */
+		function startAsset(id : String) : void
 
 		/**
 		 * Stops (pauses) the loading operation.

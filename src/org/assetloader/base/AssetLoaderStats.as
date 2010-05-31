@@ -30,6 +30,14 @@ package org.assetloader.base
 			update(0, 0);
 		}
 
+		override public function reset() : void 
+		{
+			super.reset();
+			
+			_numOpened = 0;
+			_totalLatency = 0;
+		}
+
 		/**
 		 * Average latency.
 		 * @return Millisecond value.

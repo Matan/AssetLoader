@@ -95,8 +95,9 @@ package org.assetloader.loaders
 			removeLoaderListener(_loaderDispatcher);
 			stop();
 			
+			_stats.reset();
+			
 			_invoked = false;
-			_stats = new LoaderStats();
 			_loaderDispatcher = null;
 			_request = null;
 			_data = null;
