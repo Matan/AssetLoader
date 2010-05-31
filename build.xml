@@ -87,6 +87,7 @@
 			<arg line=" -output '${project.doc}'" />
 			<arg line=" -main-title '${asdoc.mainTitle}'" />
 			<arg line=" -window-title '${asdoc.windowTitle}'" />
+			<arg line=" -examples-path '${project.asdoc_examples}'" />
 		</exec>
 
 		<echo>[asdoc] Deleting old ASDoc zip</echo>

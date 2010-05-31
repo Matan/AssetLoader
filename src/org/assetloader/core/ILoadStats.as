@@ -2,6 +2,8 @@ package org.assetloader.core
 {
 
 	/**
+	 * Calulates download stats.
+	 * 
 	 * @author Matan Uberstein
 	 */
 	public interface ILoadStats 

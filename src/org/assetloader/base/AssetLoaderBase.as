@@ -84,6 +84,32 @@ package org.assetloader.base
 			return _assets[id];
 		}
 
+		/**
+		 * @inheritDoc
+		 */
+		public function hasLoadUnit(id : String) : Boolean
+		{
+			return (_units[id] != undefined);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function hasLoader(id : String) : Boolean
+		{
+			if(hasLoadUnit(id))
+				return (getLoadUnit(id).loader != null);
+			return false;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function hasAsset(id : String) : Boolean
+		{
+			return (_assets[id] != undefined);
+		}
+
 		//--------------------------------------------------------------------------------------------------------------------------------//
 		// IEventDispatcher
 		//--------------------------------------------------------------------------------------------------------------------------------//

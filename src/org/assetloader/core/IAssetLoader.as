@@ -4,12 +4,18 @@ package org.assetloader.core
 	import flash.net.URLRequest;
 
 	/**
+	 * Implemetation of IAssetLoader should manage and maintain connections, ILoadUnits and consolidate stats via ILoadStats.
+	 * 
+	 * @includeExample ../../../sample/ContextSample.as
+	 * @includeExample ../../../sample/StandardSample.as	 * @includeExample ../../../sample/SingletonSample.as
+	 * 
 	 * @author Matan Uberstein
 	 */
 	public interface IAssetLoader extends IEventDispatcher 
 	{
 		/**
 		 * Lazy adds asset to loading queue.
+		 * <p>Recommendation: Create a class with static constants of the asset ids.</p>
 		 * 
 		 * @param id Unique string that identifies asset.
 		 * @param url String URL to load.
@@ -23,11 +29,15 @@ package org.assetloader.core
 		 * @see org.assetloader.base.AssetParam
 		 * @see org.assetloader.core.IAssetParam
 		 * @see org.assetloader.core.ILoader
+		 * @see #add()
+		 * 
+		 * @example addLazy(AssetId.SOME_FILE_ID, sample.xml);
 		 */
 		function addLazy(id : String, url : String, type : String = "AUTO", ...assetParams) : ILoader
 
 		/**
 		 * Adds asset to loading queue.
+		 * <p>Recommendation: Create a class with static constants of the asset ids.</p>
 		 * 
 		 * @param id Unique string that identifies asset.
 		 * @param request URLRequest to execute.
@@ -62,11 +72,22 @@ package org.assetloader.core
 
 		/**
 		 * Destroys all, but is still ready for use.
-		 * @example If you add a few files, load them and then call destroy, you can add files again and start the loading operation.
+		 * If you add a few files, load them and then call destroy, you can add files again and start the loading operation.
 		 */
 		function destroy() : void
 
 		/**
+		 * Checks if ILoadUnit with id exists.
+		 * 
+		 * @param id String id of the asset.
+		 * @return Boolean
+		 * @see org.assetloader.core.ILoadUnit
+		 */
+		function hasLoadUnit(id : String) : Boolean
+
+		/**
+		 * Gets the ILoadUnit created when adding an asset to the queue.
+		 * 
 		 * @param id String id for the asset.
 		 * @return ILoadUnit created on adding of asset.
 		 * @see org.assetloader.core.ILoadUnit
@@ -74,25 +95,50 @@ package org.assetloader.core
 		function getLoadUnit(id : String) : ILoadUnit
 
 		/**
-		 * @param id String id for the asset.
+		 * Checks if ILoader with id exists.
+		 * 
+		 * @param id String id of the asset.
+		 * @return Boolean
+		 * @see org.assetloader.core.ILoader
+		 */
+		function hasLoader(id : String) : Boolean
+
+		/**
+		 * Gets the ILoader created when adding an asset to the queue.
+		 * 
+		 * @param id String id of the asset.
 		 * @return ILoader created on adding of asset.
 		 * @see org.assetloader.core.ILoader
 		 */
 		function getLoader(id : String) : ILoader
 
 		/**
-		 * @param id String id for the asset.
+		 * Checks if the loader has return data.
+		 * 
+		 * @param id String id of the asset.
+		 * @return Boolean
+		 */
+		function hasAsset(id : String) : Boolean
+
+		/**
+		 * Gets the data that was loaded by the ILoader. Data will only be available after the ILoader instance has finished loading.
+		 * 
+		 * @param id String id of the asset.
 		 * @return The result after asset has been loaded.
 		 */
 		function getAsset(id : String) : *
 
 		/**
+		 * Gets the current loading stats.
+		 * 
 		 * @return Current loading stats.
 		 * @see org.assetloader.core.ILoadStats
 		 */
 		function get stats() : ILoadStats
 
 		/**
+		 * The amount of assets loaded.
+		 * 
 		 * @return Total number of asset loaded.
 		 */
 		function get numLoaded() : int

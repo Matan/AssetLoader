@@ -3,21 +3,66 @@ package org.assetloader.base
 	import mu.utils.ToStr;
 
 	/**
-	 * A simple data holder to normalize an URI components.
+	 * Simple data holder to normalize and extract URI components.
+	 * <p>Adapted from BulkLoader.</p>
 	 **/
 	public class SmartURL  
 	{
-
+		/**
+		 * Raw input url.
+		 */
 		public var rawUrl : String;
-		public var protocol : String;
-		public var port : int;
-		public var host : String;
-		public var path : String;
-		public var queryString : String;
-		public var queryObject : Object;
-		public var queryLength : int = 0;
-		public var fileName : String;		public var fileExtension : String;
 
+		/**
+		 * Protocol of connections. e.g. http://
+		 */
+		public var protocol : String;
+
+		/**
+		 * Port, usually 80 for web connections.
+		 */
+		public var port : int;
+
+		/**
+		 * Host/domain.
+		 */
+		public var host : String;
+
+		/**
+		 * The "business-end" of the url.
+		 */
+		public var path : String;
+
+		/**
+		 * Raw query string. e.g. var1=value1&#38;var2=value2
+		 */
+		public var queryString : String;
+
+		/**
+		 * Query variables parsed into an Object.
+		 */
+		public var queryObject : Object;
+
+		/**
+		 * Amount of query variables found.
+		 */
+		public var queryLength : int = 0;
+
+		/**
+		 * Name of the file found in url.
+		 */
+		public var fileName : String;
+
+		/**
+		 * Extension of file found in url.
+		 */		public var fileExtension : String;
+
+		/**
+		 * Parses rawUrl and breaks is down into properties.
+		 * @param rawUrl String
+		 * 
+		 * @throws ArgumentError Parameter rawUrl is not a valid url.
+		 */
 		public function SmartURL(rawUrl : String)
 		{
 			this.rawUrl = rawUrl;
@@ -49,7 +94,7 @@ package org.assetloader.base
 				}
 			}
 			else
-				throw new ArgumentError("Parameter rawUrl is not a valid url: " + rawUrl);
+				throw new ArgumentError("Parameter rawUrl is not a valid url.");
 		}
 
 		public function toString() : String 

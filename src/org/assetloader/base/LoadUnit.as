@@ -206,66 +206,105 @@ package org.assetloader.base
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function hasParam(id : String) : Boolean
 		{
 			return (_params[id] != undefined);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function setParam(id : String, value : *) : void
 		{
 			_params[id] = value;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function getParam(id : String) : *
 		{
 			return _params[id];
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get id() : String
 		{
 			return _id;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get loader() : ILoader
 		{
 			return _loader;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get request() : URLRequest
 		{
 			return _request;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get type() : String
 		{
 			return _type;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get url() : String
 		{
 			return _request.url;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get smartUrl() : SmartURL
 		{
 			return _smartUrl;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get params() : Object
 		{
 			return _params;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get eventClass() : Class
 		{
 			return _eventClass;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get retryTally() : uint
 		{
 			return _retryTally;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function set retryTally(retryTally : uint) : void
 		{
 			_retryTally = retryTally;

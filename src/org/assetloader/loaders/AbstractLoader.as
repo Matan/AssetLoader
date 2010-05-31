@@ -52,6 +52,9 @@ package org.assetloader.loaders
 			_stats = new LoaderStats();
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function start() : void
 		{
 			if(!_invoked)
@@ -86,10 +89,16 @@ package org.assetloader.loaders
 		{
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function stop() : void
 		{
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function destroy() : void
 		{
 			removeLoaderListener(_loaderDispatcher);
@@ -166,31 +175,49 @@ package org.assetloader.loaders
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get loadUnit() : ILoadUnit
 		{
 			return _loadUnit;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function set loadUnit(loadUnit : ILoadUnit) : void
 		{
 			_loadUnit = loadUnit;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get stats() : ILoadStats
 		{
 			return _stats;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get invoked() : Boolean
 		{
 			return _invoked;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get loaded() : Boolean
 		{
 			return _loaded;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get data() : *
 		{
 			return _data;
