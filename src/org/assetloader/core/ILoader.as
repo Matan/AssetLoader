@@ -12,7 +12,7 @@ package org.assetloader.core
 	 * Instances of ILoader will perform the actual loading of an asset. They only handle one file at a time.
 	 * <p>It must dispatch at least these events. <code>Event.OPEN | Event.COMPLETE | ProgressEvent.PROGRESS</code></p>	 * <p>Also maintain it's own instance of ILoadStats</p>
 	 * 
-	 * @see org.assetloader.loader.AbstractLoader
+	 * @see org.assetloader.loaders.AbstractLoader
 	 * 
 	 * @author Matan Uberstein
 	 */
