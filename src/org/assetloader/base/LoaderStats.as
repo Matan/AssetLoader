@@ -69,10 +69,11 @@ package org.assetloader.base
 				var currentTime : int = getTimer();
 				
 				var updateTimeDif : int = currentTime - _updateTime;
-				_updateTime = currentTime;
 				
 				if(updateTimeDif > 0)
 				{
+					_updateTime = currentTime;
+					
 					var bytesDif : uint = bytesLoaded - _bytesLoaded;
 					_bytesLoaded = bytesLoaded;
 					

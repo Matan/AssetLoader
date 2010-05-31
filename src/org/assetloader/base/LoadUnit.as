@@ -76,13 +76,14 @@ package org.assetloader.base
 			var pL : int = assetParams.length;
 			for(var i : int = 0;i < pL;i++) 
 			{
-				var param : IAssetParam = assetParams[i];
-				
-				if(!param)
+				if(assetParams[i] is IAssetParam)
+				{
+					var param : IAssetParam = assetParams[i];
 					setParam(param.id, param.value);
+				}
 				
-				else if(param is Array)
-					processParams(Array(param));
+				else if(assetParams[i] is Array)
+					processParams(assetParams[i]);
 			}
 		}
 
