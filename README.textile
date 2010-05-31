@@ -4,7 +4,7 @@ Multi file/asset loader for AS3. Tested with Robotlegs, but not dependent on. Al
 
 h3. Overview
 
-AssetLoader provides an easy way to load multiple files. It will automatically link with you Robotlegs shell dispatcher, providing it's events to your application, but it also functions as a "normal" IEventDispatcher so you can use it any project. AssetLoader handles all types of file you may need to load.
+AssetLoader provides an easy way to load multiple files. It will automatically link with your Robotlegs shell dispatcher, providing it's events to your application, but it also functions as a "normal" IEventDispatcher so you can use it any project. AssetLoader handles all types of file you may need to load.
 
 h3. Some Features
 
@@ -17,6 +17,7 @@ h3. Some Features
 * Lazy "add" method.
 * Dynamic parameter system.
 * Interfaces used for primary classes.
+* Realtime loading stats, overall and per asset. This provides latency, speed and progress of downloads.
 
 h2. License
 
