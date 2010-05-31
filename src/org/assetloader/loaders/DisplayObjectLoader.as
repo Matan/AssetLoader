@@ -35,12 +35,15 @@ package org.assetloader.loaders
 			super();
 		}
 
-		override protected function invokeLoading() : IEventDispatcher
+		override protected function constructLoader() : IEventDispatcher 
 		{
 			_loader = new Loader();
-			_loader.load(_request, _loadUnit.getParam(AssetParam.LOADER_CONTEXT));
-			
 			return _loader.contentLoaderInfo;
+		}
+
+		override protected function invokeLoading() : void
+		{
+			_loader.load(_request, _loadUnit.getParam(AssetParam.LOADER_CONTEXT));
 		}
 
 		override public function stop() : void
@@ -60,13 +63,6 @@ package org.assetloader.loaders
 		{
 			super.destroy();
 			_loader = null;
-		}
-
-		override protected function open_handler(event : Event) : void 
-		{
-			_stats.open(_loader.contentLoaderInfo.bytesTotal);
-			
-			super.open_handler(event);
 		}
 
 		override protected function complete_handler(event : Event) : void 

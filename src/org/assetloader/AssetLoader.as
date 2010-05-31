@@ -227,24 +227,10 @@ package org.assetloader
 
 		protected function open_handler(event : Event) : void 
 		{
-			var bytesTotal : uint = 0;
-			var unit : ILoadUnit;
-			var loader : ILoader;
-			var stats : ILoadStats;
+			_stats.open();
 			
-			for(var i : int = 0;i < _totalUnits;i++) 
-			{
-				unit = _units[_ids[i]];
-				loader = unit.loader;
-				stats = loader.stats;
-				
-				bytesTotal += stats.bytesTotal;
-			}
-			
-			_stats.open(bytesTotal);
-			
-			loader = ILoader(event.target);
-			unit = loader.loadUnit;
+			var loader : ILoader = ILoader(event.target);
+			var unit : ILoadUnit = loader.loadUnit;
 			
 			dispatchAssetLoaderEvent(AssetLoaderEvent.CONNECTION_OPENED, unit.id, unit.type);
 		}
@@ -252,6 +238,8 @@ package org.assetloader
 		protected function progress_handler(event : ProgressEvent) : void 
 		{
 			var bytesLoaded : uint = 0;
+			var bytesTotal : uint = 0;
+			
 			var unit : ILoadUnit;
 			var loader : ILoader;
 			var stats : ILoadStats;
@@ -263,9 +251,10 @@ package org.assetloader
 				stats = loader.stats;
 				
 				bytesLoaded += stats.bytesLoaded;
+				bytesTotal += stats.bytesTotal;
 			}
 			
-			_stats.update(bytesLoaded);
+			_stats.update(bytesLoaded, bytesTotal);
 			
 			dispatchAssetLoaderEvent(AssetLoaderEvent.PROGRESS);
 		}

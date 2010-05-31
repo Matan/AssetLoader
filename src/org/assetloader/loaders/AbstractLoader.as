@@ -64,9 +64,11 @@ package org.assetloader.loaders
 			
 				_stats.start();
 				
-				_loaderDispatcher = invokeLoading();
+				_loaderDispatcher = constructLoader();
 				
 				addLoaderListener(_loaderDispatcher);
+				
+				invokeLoading();
 			}
 			else
 			{
@@ -75,9 +77,13 @@ package org.assetloader.loaders
 			}
 		}
 
-		protected function invokeLoading() : IEventDispatcher
+		protected function constructLoader() : IEventDispatcher
 		{
 			return null;
+		}
+
+		protected function invokeLoading() : void
+		{
 		}
 
 		public function stop() : void
@@ -109,12 +115,13 @@ package org.assetloader.loaders
 
 		protected function open_handler(event : Event) : void 
 		{
+			_stats.open();
 			dispatchEvent(event);
 		}
 
 		protected function progress_handler(event : ProgressEvent) : void
 		{
-			_stats.update(event.bytesLoaded);
+			_stats.update(event.bytesLoaded, event.bytesTotal);
 			dispatchEvent(event);
 		}
 

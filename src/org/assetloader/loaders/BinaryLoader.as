@@ -25,7 +25,7 @@ package org.assetloader.loaders
 	 */
 	public class BinaryLoader extends AbstractLoader implements ILoader
 	{
-		
+
 		protected var _loader : URLLoader;
 
 		public function BinaryLoader() 
@@ -33,13 +33,16 @@ package org.assetloader.loaders
 			super();
 		}
 
-		override protected function invokeLoading() : IEventDispatcher
+		override protected function constructLoader() : IEventDispatcher 
 		{
 			_loader = new URLLoader();
 			_loader.dataFormat = URLLoaderDataFormat.BINARY;
-			_loader.load(_request);
-			
 			return _loader;
+		}
+
+		override protected function invokeLoading() : void
+		{
+			_loader.load(_request);
 		}
 
 		override public function stop() : void
@@ -59,13 +62,6 @@ package org.assetloader.loaders
 		{
 			super.destroy();
 			_loader = null;
-		}
-		
-		override protected function open_handler(event : Event) : void 
-		{
-			_stats.open(_loader.bytesTotal);
-			
-			super.open_handler(event);
 		}
 
 		override protected function complete_handler(event : Event) : void 

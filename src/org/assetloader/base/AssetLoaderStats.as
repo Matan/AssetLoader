@@ -19,7 +19,7 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		override public function open(bytesTotal : uint) : void 
+		override public function open() : void 
 		{
 			_numOpened++;
 			_openTime = getTimer();
@@ -27,7 +27,7 @@ package org.assetloader.base
 			_totalLatency += _openTime - _startTime;
 			_latency = _totalLatency / _numOpened;
 			
-			_bytesTotal += bytesTotal;
+			update(0, 0);
 		}
 
 		/**

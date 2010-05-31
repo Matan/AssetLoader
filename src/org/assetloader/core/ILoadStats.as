@@ -13,9 +13,8 @@ package org.assetloader.core
 
 		/**
 		 * Records time difference between start and now to calculated latency.
-		 * @param bytesTotal The total amount of bytes for a loading operation.
 		 */
-		function open(bytesTotal : uint) : void
+		function open() : void
 
 		/**
 		 * Invoke when loading is complete.
@@ -25,8 +24,9 @@ package org.assetloader.core
 		/**
 		 * Invoke when loading progress is made. This will updated the stats.
 		 * @param bytesLoaded The amount of bytes loaded.
+		 * @param bytesTotal The total amount of bytes for a loading operation.
 		 */
-		function update(bytesLoaded : uint) : void
+		function update(bytesLoaded : uint, bytesTotal : uint) : void
 
 		/**
 		 * Time between start and open.

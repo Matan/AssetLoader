@@ -66,7 +66,7 @@ package org.assetloader.loaders
 			super();
 		}
 
-		override protected function invokeLoading() : IEventDispatcher 
+		override protected function constructLoader() : IEventDispatcher 
 		{
 			_netConnection = new NetConnection();
 			_netConnection.connect(null);
@@ -87,7 +87,12 @@ package org.assetloader.loaders
 			client.onXMPData = onXMPData;
 				
 			_netStream.client = client;
+			
+			return _netStream;
+		}
 
+		override protected function invokeLoading() : void 
+		{
 			try
 			{
 				_netStream.play(_request.url, _loadUnit.getParam(AssetParam.CHECK_POLICY_FILE));
@@ -97,8 +102,6 @@ package org.assetloader.loaders
 			}
 				
 			_progressTimer.start();
-				
-			return _netStream;
 		}
 
 		override public function stop() : void
@@ -139,9 +142,8 @@ package org.assetloader.loaders
 				_netStream.pause();
 				_netStream.seek(0);
 				
-				_stats.open(_netStream.bytesTotal);
+				open_handler(new Event(Event.OPEN));
 				
-				dispatchEvent(new Event(Event.OPEN));
 				dispatchVideoAssetEvent(VideoAssetEvent.READY);
 				
 				_hasDispatchedReady = true;
@@ -150,13 +152,10 @@ package org.assetloader.loaders
 			{
 				_progressTimer.stop();
 				
-				removeLoaderListener(_loaderDispatcher);
-			
-				_loaded = true;
-				dispatchEvent(new Event(Event.COMPLETE));
+				complete_handler(new Event(Event.COMPLETE));
 			}
 			else if(_netStream.bytesLoaded != _stats.bytesLoaded)
-				super.progress_handler(new ProgressEvent(ProgressEvent.PROGRESS, false, false, _netStream.bytesLoaded, _netStream.bytesTotal));
+				progress_handler(new ProgressEvent(ProgressEvent.PROGRESS, false, false, _netStream.bytesLoaded, _netStream.bytesTotal));
 		}
 
 		protected function onPlayStatus(data : Object) : void

@@ -11,8 +11,8 @@ package org.assetloader.base
 	 */
 	public class LoaderStats implements ILoadStats
 	{
-		protected var _latency : Number;		protected var _speed : Number;		protected var _averageSpeed : Number;
-		protected var _progress : Number;
+		protected var _latency : Number = 0;		protected var _speed : Number = 0;		protected var _averageSpeed : Number = 0;
+		protected var _progress : Number = 0;
 
 		protected var _bytesLoaded : uint = 0;		protected var _bytesTotal : uint = 0;
 
@@ -31,20 +31,20 @@ package org.assetloader.base
 		{
 			_startTime = getTimer();
 			
-			_bytesLoaded = 0;			_progress = 0;
+			_latency = 0;			_speed = 0;			_averageSpeed = 0;
+			_progress = 0;
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function open(bytesTotal : uint) : void
+		public function open() : void
 		{
 			_openTime = getTimer();
 			
 			_latency = _openTime - _startTime;
-			_bytesTotal = bytesTotal;
 			
-			update(0);
+			update(0, 0);
 		}
 
 		/**
@@ -52,14 +52,16 @@ package org.assetloader.base
 		 */
 		public function done() : void
 		{
-			update(_bytesTotal);
+			update(_bytesTotal, _bytesTotal);
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function update(bytesLoaded : uint) : void
+		public function update(bytesLoaded : uint, bytesTotal : uint) : void
 		{
+			_bytesTotal = bytesTotal;
+			
 			if(bytesLoaded > 0)
 			{
 				_progress = (_bytesLoaded / _bytesTotal) * 100;
@@ -77,6 +79,9 @@ package org.assetloader.base
 					_speed = (bytesDif / 1024) / (updateTimeDif / 1000);
 					
 					var totalTimeDif : int = (_updateTime - _openTime) / 1000;
+					if(totalTimeDif <= 0)
+						totalTimeDif = 1;
+						
 					_averageSpeed = (_bytesLoaded / 1024) / totalTimeDif;
 				}
 			}

@@ -11,7 +11,8 @@ package org.assetloader.loaders
 
 	[Event(name="securityError", type="flash.events.SecurityErrorEvent")]
 	[Event(name="ioError", type="flash.events.IOErrorEvent")]
-		[Event(name="progress", type="flash.events.ProgressEvent")]
+
+	[Event(name="progress", type="flash.events.ProgressEvent")]
 
 	[Event(name="complete", type="flash.events.Event")]
 
@@ -33,10 +34,14 @@ package org.assetloader.loaders
 			super();
 		}
 
-		override protected function invokeLoading() : IEventDispatcher 
+		override protected function constructLoader() : IEventDispatcher 
 		{
 			_sound = new Sound();
-			
+			return _sound;
+		}
+
+		override protected function invokeLoading() : void
+		{
 			try
 			{
 				_sound.load(_request, _loadUnit.getParam(AssetParam.SOUND_LOADER_CONTEXT));
@@ -44,7 +49,6 @@ package org.assetloader.loaders
 			{
 				dispatchEvent(new SecurityErrorEvent(SecurityErrorEvent.SECURITY_ERROR, false, false, error.message));
 			}
-			return _sound;
 		}
 
 		override public function stop() : void
@@ -59,17 +63,11 @@ package org.assetloader.loaders
 				}
 			}
 		}
+
 		override public function destroy() : void 
 		{
 			super.destroy();
 			_sound = null;
-		}
-		
-		override protected function open_handler(event : Event) : void 
-		{
-			_stats.open(_sound.bytesTotal);
-			
-			super.open_handler(event);
 		}
 
 		override protected function complete_handler(event : Event) : void 
