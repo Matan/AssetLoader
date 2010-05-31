@@ -10,6 +10,25 @@
 	<!-- import the settings -->
 	<property file="${basedir}/build.properties" />
 
+	<!-- Check OS type -->
+	<condition property="isWindows">
+		<os family="windows" />
+	</condition>
+
+	<condition property="isLinux">
+		<os family="unix" />
+	</condition>
+
+	<target name="initWindows" if="isWindows">
+		<property name="asdoc.app" value="${asdoc.win}" />
+	</target>
+
+	<target name="initUnix" if="isLinux">
+		<property name="asdoc.app" value="${asdoc.unix}" />
+	</target>
+
+	<target name="initOS" depends="initWindows, initUnix" />
+
 	<!-- Clean bin of old SWC's before compile -->
 	<target name="clean">
 		<echo>[clean] Removing previous SWC's from ${project.bin}</echo>
@@ -51,7 +70,7 @@
 		<echo>[compile] Release SWC ${project.name.versioned}.swc created successfully</echo>
 	</target>
 
-	<target name="asdoc">
+	<target name="asdoc" depends="initOS">
 		<echo>[asdoc] Generating ASDOC documentation</echo>
 
 		<mkdir dir="${project.doc}" />
