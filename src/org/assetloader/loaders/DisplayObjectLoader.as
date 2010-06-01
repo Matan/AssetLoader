@@ -57,6 +57,7 @@ package org.assetloader.loaders
 				{
 				}
 			}
+			super.stop();
 		}
 
 		override public function destroy() : void 

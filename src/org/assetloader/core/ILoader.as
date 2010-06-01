@@ -54,11 +54,39 @@ package org.assetloader.core
 		function destroy() : void
 
 		/**
-		 * @return Boolean, true if the load operation was started.
+		 * True if the load operation was started at least once.
+		 * e.g. start is called then stop is called, invoked flag stays true.
+		 * 
+		 * <p>False before start is called and after destroy is called.</p>
+		 * 
+		 * @return Boolean
+		 * 
+		 * @see #inProgress
 		 */
-		function get invoked() : Boolean
+		function get invoked() : Boolean
+		
 		/**
-		 * @return Boolean, true if the loading is complete.
+		 * True if the load operation has been started.
+		 * e.g. when <code>Event.OPEN</code> fires.
+		 * 
+		 * <p>False before start is called and after load operation is complete.</p>
+		 * 
+		 * @return Boolean
+		 */
+		function get inProgress() : Boolean
+		
+		/**
+		 * True if the load operation has been stopped via stop method.
+		 * 
+		 * <p>False every other state.</p>
+		 * 
+		 * @return Boolean
+		 */
+		function get stopped() : Boolean
+		/**
+		 * True if the loading has completed. False otherwise.
+		 * 
+		 * @return Boolean
 		 */
 		function get loaded() : Boolean
 		/**

@@ -33,7 +33,7 @@ package runner.controller
 			loader.addLazy(AssetId.SAMPLE_IMAGE, host + "sampleIMAGE.jpg", AssetType.AUTO, preventCache);
 			loader.addLazy(AssetId.SAMPLE_VIDEO, host + "sampleVIDEO.mp4", AssetType.AUTO, preventCache);
 			loader.addLazy(AssetId.SAMPLE_SWF, host + "sampleSWF.swf", AssetType.AUTO, preventCache);
-						loader.addLazy(AssetId.SAMPLE_ERROR, host + "fileThatDoesNotExist.file");
+						loader.addLazy(AssetId.SAMPLE_ERROR, host + "fileThatDoesNotExist.php");
 			
 			contextView.addChild(new Canvas());
 		}

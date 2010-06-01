@@ -41,9 +41,8 @@ package org.assetloader
 	 */
 	public class AssetLoader extends AssetLoaderBase implements IAssetLoader
 	{
-		protected var _numLoaded : int;
-		protected var _totalUnits : int;
-
+		protected var _loadedIds : Array;
+		protected var _numLoaded : int;
 		protected var _stats : ILoadStats;
 
 		[Inject]
@@ -51,7 +50,27 @@ package org.assetloader
 		public function AssetLoader(eventDispatcher : IEventDispatcher = null)
 		{
 			super(eventDispatcher);
+			_loadedIds = [];
 			_stats = new AssetLoaderStats();
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		override public function remove(id : String) : void 
+		{
+			var loader : ILoader = getLoader(id);
+			if(loader)
+			{
+				removeLoaderListeners(loader);
+				
+				if(loader.loaded)
+					_loadedIds.splice(_loadedIds.indexOf(id), 1);
+					
+				_numLoaded = _loadedIds.length;
+				
+				super.remove(id);
+			}
 		}
 
 		/**
@@ -59,22 +78,12 @@ package org.assetloader
 		 */
 		public function start(numConnections : uint = 3) : void
 		{
-			_numLoaded = 0;
-			_totalUnits = _ids.length;
-			
-			for(var i : int = 0;i < _totalUnits;i++) 
-			{
-				var unit : ILoadUnit = _units[_ids[i]];
-				var loader : ILoader = unit.loader;
-				
-				if(loader.loaded)
-					_numLoaded++;
-			}
+			sortIdsByPriority();
 			
 			_stats.start();
 			
 			if(numConnections == 0)
-				numConnections = _totalUnits;
+				numConnections = _numUnits;
 			
 			for(var k : int = 0;k < numConnections;k++) 
 			{
@@ -95,10 +104,11 @@ package org.assetloader
 		 */
 		public function stop() : void
 		{
-			for(var i : int = 0;i < _totalUnits;i++) 
+			var loader : ILoader;
+			
+			for(var i : int = 0;i < _numUnits;i++) 
 			{
-				var unit : ILoadUnit = _units[_ids[i]];
-				var loader : ILoader = unit.loader;
+				loader = getLoader(_ids[i]);
 				
 				if(!loader.loaded)
 					loader.stop();
@@ -110,10 +120,11 @@ package org.assetloader
 		 */
 		override public function destroy() : void
 		{
-			for(var i : int = 0;i < _totalUnits;i++) 
+			var loader : ILoader;
+			
+			for(var i : int = 0;i < _numUnits;i++) 
 			{
-				var unit : ILoadUnit = _units[_ids[i]];
-				var loader : ILoader = unit.loader;
+				loader = getLoader(_ids[i]);
 				
 				removeLoaderListeners(loader);
 				
@@ -122,10 +133,15 @@ package org.assetloader
 			
 			_stats.reset();
 			
-			_totalUnits = 0;
+			_loadedIds.splice(0, _loadedIds.length);
 			_numLoaded = 0;
 			
 			super.destroy();
+		}
+
+		public function get loadedIds() : Array
+		{
+			return _loadedIds;
 		}
 
 		/**
@@ -147,17 +163,33 @@ package org.assetloader
 		//--------------------------------------------------------------------------------------------------------------------------------//
 		// PROTECTED FUNCTIONS
 		//--------------------------------------------------------------------------------------------------------------------------------//
+
+		protected function sortIdsByPriority() : void
+		{
+			var priorities : Array = [];
+			for(var i : int = 0;i < _numUnits;i++) 
+			{
+				var unit : ILoadUnit = getLoadUnit(_ids[i]);
+				priorities.push(unit.getParam(AssetParam.PRIORITY));
+			}
+			
+			var sortedIndexs : Array = priorities.sort(Array.NUMERIC | Array.DESCENDING | Array.RETURNINDEXEDARRAY);
+			var idsCopy : Array = _ids.concat();
+			
+			for(var j : int = 0;j < _numUnits;j++) 
+			{
+				_ids[j] = idsCopy[sortedIndexs[j]];
+			}
+		}
+
 		protected function startUnit(index : int) : void
 		{
-			var unit : ILoadUnit = _units[_ids[index]];
+			var unit : ILoadUnit = getLoadUnit(_ids[index]);
 			if(unit)
 			{
 				var loader : ILoader = unit.loader;
 				
-				loader.addEventListener(Event.OPEN, open_handler);
-				loader.addEventListener(ProgressEvent.PROGRESS, progress_handler);				loader.addEventListener(Event.COMPLETE, complete_handler);
-				
-				loader.addEventListener(IOErrorEvent.IO_ERROR, error_handler);				loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error_handler);				loader.addEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);				loader.addEventListener(ErrorEvent.ERROR, error_handler);
+				addLoaderListeners(loader);
 				
 				loader.start();
 			}
@@ -165,15 +197,18 @@ package org.assetloader
 
 		protected function startNextUnit() : void
 		{
-			for(var i : int = 0;i < _totalUnits;i++) 
+			for(var i : int = 0;i < _numUnits;i++) 
 			{
-				var unit : ILoadUnit = _units[_ids[i]];
+				var unit : ILoadUnit = getLoadUnit(_ids[i]);
 				var loader : ILoader = unit.loader;
 				
-				if(!loader.invoked && !loader.loaded && (unit.retryTally <= unit.getParam(AssetParam.RETRIES)))
+				if(!loader.loaded && unit.retryTally <= unit.getParam(AssetParam.RETRIES))
 				{
-					startUnit(i);
-					return;
+					if(!loader.invoked || (loader.invoked && loader.stopped))
+					{
+						startUnit(i);
+						return;
+					}
 				}
 			}
 		}
@@ -193,6 +228,18 @@ package org.assetloader
 				
 				startNextUnit();
 			}
+		}
+
+		protected function addLoaderListeners(loader : ILoader) : void
+		{
+			loader.addEventListener(Event.OPEN, open_handler);
+			loader.addEventListener(ProgressEvent.PROGRESS, progress_handler);
+			loader.addEventListener(Event.COMPLETE, complete_handler);
+			
+			loader.addEventListener(IOErrorEvent.IO_ERROR, error_handler);
+			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error_handler);
+			loader.addEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
+			loader.addEventListener(ErrorEvent.ERROR, error_handler);
 		}
 
 		protected function removeLoaderListeners(loader : ILoader) : void
@@ -252,9 +299,9 @@ package org.assetloader
 			var loader : ILoader;
 			var stats : ILoadStats;
 			
-			for(var i : int = 0;i < _totalUnits;i++) 
+			for(var i : int = 0;i < _numUnits;i++) 
 			{
-				unit = _units[_ids[i]];
+				unit = getLoadUnit(_ids[i]);
 				loader = unit.loader;
 				stats = loader.stats;
 				
@@ -269,8 +316,6 @@ package org.assetloader
 
 		protected function complete_handler(event : Event) : void 
 		{
-			_numLoaded++;
-			
 			var loader : ILoader = ILoader(event.target);
 			var unit : ILoadUnit = loader.loadUnit;
 			var eventClass : Class = unit.eventClass;
@@ -278,12 +323,14 @@ package org.assetloader
 			removeLoaderListeners(loader);
 			
 			_assets[unit.id] = loader.data;
+			_loadedIds.push(unit.id);
+			_numLoaded = _loadedIds.length;
 			
 			dispatchAssetLoaderEvent(AssetLoaderEvent.ASSET_LOADED, unit.id, unit.type, loader.data);
 			
 			dispatchEvent(new eventClass(eventClass.LOADED, unit.id, unit.type, loader.data));
 			
-			if(_numLoaded == _totalUnits)
+			if(_numLoaded == _numUnits)
 			{
 				_stats.done();
 				dispatchAssetLoaderEvent(AssetLoaderEvent.COMPLETE, null, null, loader.data);

@@ -37,7 +37,7 @@ package sample
 			assetLoader.addLazy("sampleIMAGE4", host + "sampleIMAGE.jpg");
 			var image4LoadUnit : ILoadUnit = assetLoader.getLoadUnit("sampleIMAGE4");
 			image4LoadUnit.setParam(AssetParam.FILL_COLOR, 0x0);			image4LoadUnit.setParam(AssetParam.SMOOTHING, true);			image4LoadUnit.setParam(AssetParam.BLEND_MODE, BlendMode.DARKEN);
-			//This way excules two params; AssetParam.PREVENT_CACHE and AssetParam.RETRIES as they need to process on creation.
+			//This way excules AssetParam.PREVENT_CACHE it needs to process on creation.
 			
 			assetLoader.start();
 		}

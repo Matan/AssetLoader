@@ -17,7 +17,7 @@ package org.assetloader.core
 		 * Lazy adds asset to loading queue.
 		 * <p>Recommendation: Create a class with static constants of the asset ids.</p>
 		 * 
-		 * @param id Unique string that identifies asset.
+		 * @param id Unique String that identifies asset.
 		 * @param url String URL to load.
 		 * @param type String that defines the type of asset.
 		 * @param assetParams Rest arguments for parameters that are passed to the <code>ILoadUnit</code>. Also accepts an Array of AssetParams.
@@ -39,7 +39,7 @@ package org.assetloader.core
 		 * Adds asset to loading queue.
 		 * <p>Recommendation: Create a class with static constants of the asset ids.</p>
 		 * 
-		 * @param id Unique string that identifies asset.
+		 * @param id Unique String that identifies asset.
 		 * @param request URLRequest to execute.
 		 * @param type String that defines the type of asset.
 		 * @param assetParams Rest arguments for parameters that are passed to the <code>ILoadUnit</code>. Also accepts an Array of AssetParams.
@@ -51,6 +51,13 @@ package org.assetloader.core
 		 * @see org.assetloader.base.AssetParam		 * @see org.assetloader.core.IAssetParam		 * @see org.assetloader.core.ILoader
 		 */
 		function add(id : String, request : URLRequest, type : String = "AUTO", ...assetParams) : ILoader
+
+		/**
+		 * Removes asset from queue and destroys it's ILoader instance.
+		 * 
+		 * @param id Unique String that identifies asset.
+		 */
+		function remove(id : String) : void
 
 		/**
 		 * Starts (or resumes) the loading operation.
@@ -129,6 +136,20 @@ package org.assetloader.core
 		function getAsset(id : String) : *
 
 		/**
+		 * All the ids of the assets added.
+		 * 
+		 * @return Array of Strings
+		 */
+		function get ids() : Array
+		
+		/**
+		 * All the ids of the assets that have been loaded.
+		 * 
+		 * @return Array of Strings
+		 */
+		function get loadedIds() : Array
+
+		/**
 		 * Gets the current loading stats.
 		 * 
 		 * @return Current loading stats.
@@ -137,9 +158,16 @@ package org.assetloader.core
 		function get stats() : ILoadStats
 
 		/**
+		 * The amount of assets/load units added.
+		 * 
+		 * @return int
+		 */
+		function get numUnits() : int
+
+		/**
 		 * The amount of assets loaded.
 		 * 
-		 * @return Total number of asset loaded.
+		 * @return int
 		 */
 		function get numLoaded() : int
 	}

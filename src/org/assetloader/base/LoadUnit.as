@@ -45,6 +45,9 @@ package org.assetloader.base
 				init(id, request, type, assetParams);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function init(id : String, request : URLRequest, type : String, assetParams : Array) : void
 		{
 			_id = id;
@@ -59,9 +62,15 @@ package org.assetloader.base
 				setParam(AssetParam.RETRIES, 3);
 			
 			if(getParam(AssetParam.PREVENT_CACHE))
-					_request.url += ((_request.url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;
+				_request.url += ((_request.url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;
 			
-			_smartUrl = new SmartURL(_request.url);
+			try
+			{
+				_smartUrl = new SmartURL(_request.url);
+			}catch(error : ArgumentError)
+			{
+				throw new AssetLoaderError(AssetLoaderError.INVALID_URL);
+			}
 			
 			if(_type == AssetType.AUTO)
 				_type = getTypeFromExtension(_smartUrl.fileExtension);
@@ -105,6 +114,9 @@ package org.assetloader.base
 			if(extension == "css")
 				return AssetType.CSS;
 				
+			if(extension == "zip")
+				return AssetType.BINARY;
+				
 			if(extension == "swf")
 				return AssetType.SWF;
 				
@@ -117,7 +129,9 @@ package org.assetloader.base
 			if(testExtenstion(videoExt, extension))
 				return AssetType.VIDEO;
 			
-			return AssetType.BINARY;
+			throw new AssetLoaderError(AssetLoaderError.ASSET_AUTO_TYPE_NOT_FOUND);
+			
+			return "";
 		}
 
 		protected function testExtenstion(extensions : Array, extension : String) : Boolean
@@ -202,7 +216,7 @@ package org.assetloader.base
 					break;
 					
 				default:
-					throw new Error("Asset Type not recognized.");
+					throw new AssetLoaderError(AssetLoaderError.ASSET_TYPE_NOT_RECOGNIZED);
 			}
 		}
 

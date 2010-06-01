@@ -122,13 +122,15 @@ package org.assetloader.loaders
 				}
 				_progressTimer.stop();
 			}
+			super.stop();
 		}
 
 		override public function destroy() : void
 		{
 			super.destroy();
 			
-			_progressTimer.removeEventListener(TimerEvent.TIMER, progressTimer_handler);
+			if(_progressTimer)
+				_progressTimer.removeEventListener(TimerEvent.TIMER, progressTimer_handler);
 			
 			_hasDispatchedReady = false;
 			_netConnection = null;
@@ -202,16 +204,22 @@ package org.assetloader.loaders
 		
 		override protected function addLoaderListener(dispatcher : IEventDispatcher) : void 
 		{
-			dispatcher.addEventListener(IOErrorEvent.IO_ERROR, error_handler);
-			dispatcher.addEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
-			dispatcher.addEventListener(NetStatusEvent.NET_STATUS, dispatchEvent);
+			if(dispatcher)
+			{
+				dispatcher.addEventListener(IOErrorEvent.IO_ERROR, error_handler);
+				dispatcher.addEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
+				dispatcher.addEventListener(NetStatusEvent.NET_STATUS, dispatchEvent);
+			}
 		}
 
 		override protected function removeLoaderListener(dispatcher : IEventDispatcher) : void 
 		{
-			dispatcher.removeEventListener(IOErrorEvent.IO_ERROR, error_handler);
-			dispatcher.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
-			dispatcher.removeEventListener(NetStatusEvent.NET_STATUS, dispatchEvent);
+			if(dispatcher)
+			{
+				dispatcher.removeEventListener(IOErrorEvent.IO_ERROR, error_handler);
+				dispatcher.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
+				dispatcher.removeEventListener(NetStatusEvent.NET_STATUS, dispatchEvent);
+			}
 		}
 	}
 }

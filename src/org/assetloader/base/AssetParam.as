@@ -3,12 +3,14 @@ package org.assetloader.base
 	import org.assetloader.core.IAssetParam;
 
 	/**
-	 * @author Matan Uberstein
+	 * Provides assets with parameters.
 	 */
 	public class AssetParam implements IAssetParam
 	{
 		/**
 		 * Adds time stamp to url, which makes each call unique.
+		 * <p>PLEASE NOTE: This parameter must occure on adding process via IAssetLoader.
+		 * Adding it afterwards will have no effect.</p>
 		 * 
 		 * <p>Use: All asset types.</p>
 		 * <p>Type: <code>Boolean</code></p>
@@ -20,9 +22,20 @@ package org.assetloader.base
 		 * Amount of times the loading is retried.
 		 * 
 		 * <p>Use: All asset types.</p>
-		 * <p>Type: <code>unit</code></p>
+		 * <p>Type: <code>uint</code></p>
 		 * <p>Default: 3</p>
 		 */		public static const RETRIES : String = "RETRIES";
+
+		/**
+		 * Amount of times the loading is retried.
+		 * 
+		 * <p>Use: All asset types.</p>
+		 * <p>Type: <code>int</code></p>
+		 * <p>Default: Automatically determined according to when asset is added. Starts at 0 (zero) and decreases with each add.
+		 * e.g. Adding three assets one after the other will produce priority values of 0, -1, -2.
+		 * This list is then sorted decendingly, thus thus asset's with higher priority are loaded first.</p>
+		 */
+		public static const PRIORITY : String = "PRIORITY";
 
 		/**
 		 * Sets the <code>URLRequest</code>'s headers.
@@ -54,7 +67,7 @@ package org.assetloader.base
 		 * Sets <code>BitmapData</code>'s fill color.
 		 * 
 		 * <p>Use: Image asset type.</p>
-		 * <p>Type: <code>unit</code></p>
+		 * <p>Type: <code>uint</code></p>
 		 * 
 		 * @see flash.display.BitmapData
 		 */

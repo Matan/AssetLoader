@@ -43,6 +43,8 @@ package org.assetloader.loaders
 		protected var _loaderDispatcher : IEventDispatcher;
 
 		protected var _invoked : Boolean;
+		protected var _inProgress : Boolean;
+		protected var _stopped : Boolean;
 		protected var _loaded : Boolean;
 
 		protected var _data : *;
@@ -60,6 +62,8 @@ package org.assetloader.loaders
 			if(!_invoked)
 			{
 				_invoked = true;
+				_stopped = false;
+				
 				_request = _loadUnit.request;
 				
 				if(_loadUnit.hasParam(AssetParam.HEADERS))
@@ -94,6 +98,7 @@ package org.assetloader.loaders
 		 */
 		public function stop() : void
 		{
+			_stopped = true;
 		}
 
 		/**
@@ -111,6 +116,7 @@ package org.assetloader.loaders
 			_request = null;
 			_data = null;
 			_loaded = false;
+			_stopped = false;
 		}
 
 		//--------------------------------------------------------------------------------------------------------------------------------//
@@ -126,6 +132,9 @@ package org.assetloader.loaders
 		protected function open_handler(event : Event) : void 
 		{
 			_stats.open();
+			
+			_inProgress = true;
+			
 			dispatchEvent(event);
 		}
 
@@ -141,6 +150,7 @@ package org.assetloader.loaders
 			
 			removeLoaderListener(_loaderDispatcher);
 			
+			_inProgress = false;
 			_loaded = true;
 			dispatchEvent(event);
 		}
@@ -205,6 +215,22 @@ package org.assetloader.loaders
 		public function get invoked() : Boolean
 		{
 			return _invoked;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get inProgress() : Boolean
+		{
+			return _inProgress;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get stopped() : Boolean
+		{
+			return _stopped;
 		}
 
 		/**

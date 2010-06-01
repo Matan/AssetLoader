@@ -1,7 +1,7 @@
 package org.assetloader.base
 {
-	import org.assetloader.core.ILoader;
 	import org.assetloader.core.ILoadUnit;
+	import org.assetloader.core.ILoader;
 
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -19,6 +19,8 @@ package org.assetloader.base
 		protected var _assets : Dictionary;
 		protected var _units : Dictionary;
 		protected var _ids : Array;
+
+		protected var _numUnits : int;
 
 		public function AssetLoaderBase(eventDispatcher : IEventDispatcher = null)
 		{
@@ -47,7 +49,29 @@ package org.assetloader.base
 			_units[id] = unit;
 			_ids.push(id);
 			
+			_numUnits = _ids.length;
+			
+			if(!unit.hasParam(AssetParam.PRIORITY))
+				unit.setParam(AssetParam.PRIORITY, -(_numUnits - 1));
+			
 			return unit.loader;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function remove(id : String) : void
+		{
+			var loader : ILoader = getLoader(id);
+			if(loader)
+			{
+				_ids.splice(_ids.indexOf(id), 1);
+				delete _units[id];				delete _assets[id];
+				
+				loader.destroy();
+				
+				_numUnits = _ids.length;
+			}
 		}
 
 		/**
@@ -55,9 +79,16 @@ package org.assetloader.base
 		 */
 		public function destroy() : void
 		{
-			_assets = new Dictionary(true);
-			_units = new Dictionary(true);
-			_ids = [];
+			var id:String;
+			while(id = _ids.pop()){
+				
+				var loader : ILoader = getLoader(id);
+				delete _units[id];
+				delete _assets[id];
+				
+				loader.destroy();
+			}
+			_numUnits = 0;
 		}
 
 		/**
@@ -108,6 +139,22 @@ package org.assetloader.base
 		public function hasAsset(id : String) : Boolean
 		{
 			return (_assets[id] != undefined);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get ids() : Array 
+		{
+			return _ids;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get numUnits() : int
+		{
+			return _numUnits;
 		}
 
 		//--------------------------------------------------------------------------------------------------------------------------------//

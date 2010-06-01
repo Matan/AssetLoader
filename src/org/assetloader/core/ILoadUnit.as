@@ -5,7 +5,7 @@ package org.assetloader.core
 	import flash.net.URLRequest;
 
 	/**
-	 * The ILoadUnit is the glue that between the ILoader and IAssetLoader.
+	 * The ILoadUnit is the glue between the ILoader and IAssetLoader.
 	 * 
 	 * @see org.assetloader.core.IAssetLoader	 * @see org.assetloader.core.ILoader
 	 * 
@@ -13,6 +13,17 @@ package org.assetloader.core
 	 */
 	public interface ILoadUnit 
 	{
+		/**
+		 * Initialized unit.
+		 * 
+		 * @param id String id.
+		 * @param request URLRequest
+		 * @param assetParams Array of parameters.
+		 * 
+		 * @throws org.assetloader.base.AssetLoaderError AssetLoaderError.INVALID_URL
+		 */
+		function init(id : String, request : URLRequest, type : String, assetParams : Array) : void
+
 		/**
 		 * Checks if ILoadUnit has a param with the passed id.
 		 * 
