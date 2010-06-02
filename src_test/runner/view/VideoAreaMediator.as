@@ -1,9 +1,11 @@
 package runner.view 
 {
+	import flash.events.MouseEvent;
+
 	import runner.model.AssetId;
 
 	import org.assetloader.core.IAssetLoader;
-	import org.assetloader.core.ILoadUnit;
+	import org.assetloader.core.ILoader;
 	import org.assetloader.events.VideoAssetEvent;
 	import org.robotlegs.mvcs.Mediator;
 
@@ -21,16 +23,23 @@ package runner.view
 
 		override public function onRegister() : void 
 		{
-			var unit : ILoadUnit = loader.getLoadUnit(AssetId.SAMPLE_VIDEO);
+			var vidLoader : ILoader = loader.getLoader(AssetId.SAMPLE_VIDEO);
 			
-			view.bar.source = unit.loader;
+			view.bar.source = vidLoader;
 			
-			eventMap.mapListener(unit.loader, VideoAssetEvent.READY, loaderOpen_handler, VideoAssetEvent);
+			eventMap.mapListener(vidLoader, VideoAssetEvent.READY, videoReady_handler, VideoAssetEvent);
+			eventMap.mapListener(view.startBtn, MouseEvent.CLICK, startClick_handler, MouseEvent);
 		}
 
-		protected function loaderOpen_handler(event : VideoAssetEvent) : void 
+		protected function videoReady_handler(event : VideoAssetEvent) : void 
 		{
 			view.netStream = event.netStream;
+		}
+
+		protected function startClick_handler(event : MouseEvent) : void 
+		{
+			loader.startAsset(AssetId.SAMPLE_VIDEO);
+			view.removeChild(view.startBtn);
 		}
 	}
 }

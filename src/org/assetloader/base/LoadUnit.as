@@ -58,8 +58,7 @@ package org.assetloader.base
 			
 			processParams(assetParams);
 			
-			if(!hasParam(AssetParam.RETRIES))
-				setParam(AssetParam.RETRIES, 3);
+			setParamDefault(AssetParam.RETRIES, 3);			setParamDefault(AssetParam.ON_DEMAND, false);			setParamDefault(AssetParam.PREVENT_CACHE, false);
 			
 			if(getParam(AssetParam.PREVENT_CACHE))
 				_request.url += ((_request.url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;
@@ -94,6 +93,12 @@ package org.assetloader.base
 				else if(assetParams[i] is Array)
 					processParams(assetParams[i]);
 			}
+		}
+
+		protected function setParamDefault(id : String, value : *) : void
+		{
+			if(!hasParam(id))
+				setParam(id, value);
 		}
 
 		protected function getTypeFromExtension(extension : String) : String

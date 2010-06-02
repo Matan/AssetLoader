@@ -202,7 +202,7 @@ package org.assetloader
 				var unit : ILoadUnit = getLoadUnit(_ids[i]);
 				var loader : ILoader = unit.loader;
 				
-				if(!loader.loaded && unit.retryTally <= unit.getParam(AssetParam.RETRIES))
+				if(!loader.loaded && unit.retryTally <= unit.getParam(AssetParam.RETRIES) && !unit.getParam(AssetParam.ON_DEMAND))
 				{
 					if(!loader.invoked || (loader.invoked && loader.stopped))
 					{

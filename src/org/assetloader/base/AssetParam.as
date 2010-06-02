@@ -36,7 +36,16 @@ package org.assetloader.base
 		 * This list is then sorted decendingly, thus thus asset's with higher priority are loaded first.</p>
 		 */
 		public static const PRIORITY : String = "PRIORITY";
-
+		
+		/**
+		 * Set true if you DON'T want the asset to from part of the loading queue.
+		 * This way you must start the asset's loading manually via IAssetLoader startAsset method.
+		 * 
+		 * <p>Use: All asset types.</p>
+		 * <p>Type: <code>Boolean</code></p>
+		 * <p>Default: false</p>
+		 */
+		public static const ON_DEMAND : String = "ON_DEMAND";
 		/**
 		 * Sets the <code>URLRequest</code>'s headers.
 		 * 

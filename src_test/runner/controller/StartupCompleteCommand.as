@@ -19,8 +19,7 @@ package runner.controller
 
 		override public function execute() : void 
 		{
-			var host : String = "http://www.matan.co.za/AssetLoader/testAssets/";
-			var preventCache : AssetParam = new AssetParam(AssetParam.PREVENT_CACHE, true);
+			var host : String = "http://www.matan.co.za/AssetLoader/testAssets/";			var preventCache : AssetParam = new AssetParam(AssetParam.PREVENT_CACHE, true);
 			
 			loader.addLazy(AssetId.SAMPLE_TXT, host + "sampleTXT.txt", AssetType.AUTO, preventCache);
 			loader.addLazy(AssetId.SAMPLE_JSON, host + "sampleJSON.json", AssetType.AUTO, preventCache);
@@ -31,7 +30,7 @@ package runner.controller
 			loader.addLazy(AssetId.SAMPLE_SOUND, host + "sampleSOUND.mp3", AssetType.AUTO, preventCache);
 
 			loader.addLazy(AssetId.SAMPLE_IMAGE, host + "sampleIMAGE.jpg", AssetType.AUTO, preventCache);
-			loader.addLazy(AssetId.SAMPLE_VIDEO, host + "sampleVIDEO.mp4", AssetType.AUTO, preventCache);
+			loader.addLazy(AssetId.SAMPLE_VIDEO, host + "sampleVIDEO.mp4", AssetType.AUTO, preventCache, new AssetParam(AssetParam.ON_DEMAND, true));
 			loader.addLazy(AssetId.SAMPLE_SWF, host + "sampleSWF.swf", AssetType.AUTO, preventCache);
 						loader.addLazy(AssetId.SAMPLE_ERROR, host + "fileThatDoesNotExist.php");
 			

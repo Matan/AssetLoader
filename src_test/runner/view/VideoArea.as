@@ -1,5 +1,7 @@
 package runner.view 
 {
+	import fl.controls.Button;
+
 	import flash.net.NetStream;
 
 	import fl.controls.ProgressBar;
@@ -14,6 +16,7 @@ package runner.view
 	{
 		protected var _video : Video;
 		protected var _bar : ProgressBar;
+		protected var _startBtn : Button;
 		protected var _netStream : NetStream;
 
 		public function VideoArea()
@@ -24,6 +27,10 @@ package runner.view
 			_bar = new ProgressBar();
 			_bar.height = 10;
 			addChild(_bar);
+			
+			_startBtn = new Button();
+			_startBtn.label = "START ME!";
+			addChild(_startBtn);
 		}
 
 		public function setSize(width : Number, height : Number) : void 
@@ -32,6 +39,8 @@ package runner.view
 			
 			_video.width = width;
 			_video.height = height;
+			
+			_startBtn.x = width / 2 - _startBtn.width / 2;			_startBtn.y = height / 2 - _startBtn.height / 2;
 		}
 
 		public function get bar() : ProgressBar
@@ -44,6 +53,11 @@ package runner.view
 			_netStream = netStream;
 			_netStream.resume();
 			_video.attachNetStream(_netStream);
+		}
+		
+		public function get startBtn() : Button
+		{
+			return _startBtn;
 		}
 	}
 }
