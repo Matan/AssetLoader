@@ -8,7 +8,7 @@ package org.assetloader.base
 	 */
 	public class AssetType 
 	{
-		public static const AUTO : String = "AUTO";
+		public static const AUTO : String = "AUTO";		public static const GROUP : String = "GROUP";
 
 		public static const TEXT : String = "TEXT";
 		public static const JSON : String = "JSON";		public static const XML : String = "XML";		public static const CSS : String = "CSS";

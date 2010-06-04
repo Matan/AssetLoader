@@ -11,9 +11,9 @@ package org.assetloader.events
 
 		protected var _xml : XML;
 
-		public function XMLAssetEvent(type : String, id : String, assetType : String, xml : XML)
+		public function XMLAssetEvent(type : String, id : String, groupId : String, assetType : String, xml : XML)
 		{
-			super(type, id, assetType);
+			super(type, id, groupId, assetType);
 			_xml = xml;
 		}
 
@@ -24,7 +24,7 @@ package org.assetloader.events
 
 		override public function clone() : Event 
 		{
-			return new XMLAssetEvent(type, id, assetType, xml);
+			return new XMLAssetEvent(type, id, groupId, assetType, xml);
 		}
 	}
 }

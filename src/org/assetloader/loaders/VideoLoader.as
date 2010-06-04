@@ -1,6 +1,7 @@
 package org.assetloader.loaders 
 {
-	import org.assetloader.base.AssetParam;
+	import org.assetloader.base.AbstractLoader;
+	import org.assetloader.base.Param;
 	import org.assetloader.base.AssetType;
 	import org.assetloader.core.ILoader;
 	import org.assetloader.events.VideoAssetEvent;
@@ -95,7 +96,7 @@ package org.assetloader.loaders
 		{
 			try
 			{
-				_netStream.play(_request.url, _loadUnit.getParam(AssetParam.CHECK_POLICY_FILE));
+				_netStream.play(_request.url, _unit.getParam(Param.CHECK_POLICY_FILE));
 			}catch(error : SecurityError)
 			{
 				dispatchEvent(new SecurityErrorEvent(SecurityErrorEvent.SECURITY_ERROR, false, false, error.message));
@@ -194,7 +195,7 @@ package org.assetloader.loaders
 		{
 			if(hasEventListener(type))
 			{
-				var event : VideoAssetEvent = new VideoAssetEvent(type, _loadUnit.id, AssetType.VIDEO, _netStream);
+				var event : VideoAssetEvent = new VideoAssetEvent(type, _unit.id, null, AssetType.VIDEO, _netStream);
 				event.data = data;
 				return dispatchEvent(event);
 			}
@@ -202,7 +203,7 @@ package org.assetloader.loaders
 		}
 
 		
-		override protected function addLoaderListener(dispatcher : IEventDispatcher) : void 
+		override protected function addListeners(dispatcher : IEventDispatcher) : void 
 		{
 			if(dispatcher)
 			{
@@ -212,7 +213,7 @@ package org.assetloader.loaders
 			}
 		}
 
-		override protected function removeLoaderListener(dispatcher : IEventDispatcher) : void 
+		override protected function removeListeners(dispatcher : IEventDispatcher) : void 
 		{
 			if(dispatcher)
 			{

@@ -1,10 +1,8 @@
-package org.assetloader.loaders 
+package org.assetloader.base 
 {
-	import org.assetloader.base.AssetParam;
-	import org.assetloader.base.LoaderStats;
+	import org.assetloader.core.ILoadStats;
 	import org.assetloader.core.ILoadUnit;
 	import org.assetloader.core.ILoader;
-	import org.assetloader.core.ILoadStats;
 
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
@@ -36,11 +34,11 @@ package org.assetloader.loaders
 	public class AbstractLoader extends EventDispatcher implements ILoader
 	{
 
-		protected var _loadUnit : ILoadUnit;
+		protected var _unit : ILoadUnit;
 		protected var _stats : ILoadStats;
 
 		protected var _request : URLRequest;
-		protected var _loaderDispatcher : IEventDispatcher;
+		protected var _eventDispatcher : IEventDispatcher;
 
 		protected var _invoked : Boolean;
 		protected var _inProgress : Boolean;
@@ -64,16 +62,16 @@ package org.assetloader.loaders
 				_invoked = true;
 				_stopped = false;
 				
-				_request = _loadUnit.request;
+				_request = _unit.request;
 				
-				if(_loadUnit.hasParam(AssetParam.HEADERS))
-					_request.requestHeaders = _loadUnit.getParam(AssetParam.HEADERS);
+				if(_unit.hasParam(Param.HEADERS))
+					_request.requestHeaders = _unit.getParam(Param.HEADERS);
 			
 				_stats.start();
 				
-				_loaderDispatcher = constructLoader();
+				_eventDispatcher = constructLoader();
 				
-				addLoaderListener(_loaderDispatcher);
+				addListeners(_eventDispatcher);
 				
 				invokeLoading();
 			}
@@ -106,13 +104,13 @@ package org.assetloader.loaders
 		 */
 		public function destroy() : void
 		{
-			removeLoaderListener(_loaderDispatcher);
+			removeListeners(_eventDispatcher);
 			stop();
 			
 			_stats.reset();
 			
 			_invoked = false;
-			_loaderDispatcher = null;
+			_eventDispatcher = null;
 			_request = null;
 			_data = null;
 			_loaded = false;
@@ -124,7 +122,7 @@ package org.assetloader.loaders
 		//--------------------------------------------------------------------------------------------------------------------------------//
 		protected function error_handler(event : ErrorEvent) : void 
 		{
-			removeLoaderListener(_loaderDispatcher);
+			removeListeners(_eventDispatcher);
 			
 			dispatchEvent(event);
 		}
@@ -148,14 +146,14 @@ package org.assetloader.loaders
 		{
 			_stats.done();
 			
-			removeLoaderListener(_loaderDispatcher);
+			removeListeners(_eventDispatcher);
 			
 			_inProgress = false;
 			_loaded = true;
 			dispatchEvent(event);
 		}
 
-		protected function addLoaderListener(dispatcher : IEventDispatcher) : void
+		protected function addListeners(dispatcher : IEventDispatcher) : void
 		{
 			if(dispatcher)
 			{
@@ -170,7 +168,7 @@ package org.assetloader.loaders
 			}
 		}
 
-		protected function removeLoaderListener(dispatcher : IEventDispatcher) : void
+		protected function removeListeners(dispatcher : IEventDispatcher) : void
 		{
 			if(dispatcher)
 			{
@@ -188,17 +186,17 @@ package org.assetloader.loaders
 		/**
 		 * @inheritDoc
 		 */
-		public function get loadUnit() : ILoadUnit
+		public function get unit() : ILoadUnit
 		{
-			return _loadUnit;
+			return _unit;
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function set loadUnit(loadUnit : ILoadUnit) : void
+		public function set unit(loadUnit : ILoadUnit) : void
 		{
-			_loadUnit = loadUnit;
+			_unit = loadUnit;
 		}
 
 		/**

@@ -1,14 +1,12 @@
 package runner 
 {
-	import org.assetloader.core.IAssetLoader;
-	import runner.controller.LoaderErrorCommand;
-
-	import org.assetloader.events.AssetLoaderEvent;
+	import runner.controller.AddGroupSampleCommand;
 	import runner.controller.BinaryLoadedCommand;
 	import runner.controller.CSSLoadedCommand;
+	import runner.controller.GroupLoadedCommand;
 	import runner.controller.JSONLoadedCommand;
+	import runner.controller.LoaderErrorCommand;
 	import runner.controller.SoundLoadedCommand;
-	import runner.controller.StartupCompleteCommand;
 	import runner.controller.TextLoadedCommand;
 	import runner.controller.XMLLoadedCommand;
 	import runner.model.ConsoleModel;
@@ -24,8 +22,11 @@ package runner
 	import runner.view.VideoAreaMediator;
 
 	import org.assetloader.AssetLoader;
+	import org.assetloader.core.IAssetLoader;
+	import org.assetloader.events.AssetLoaderEvent;
 	import org.assetloader.events.BinaryAssetEvent;
 	import org.assetloader.events.CSSAssetEvent;
+	import org.assetloader.events.GroupLoaderEvent;
 	import org.assetloader.events.JSONAssetEvent;
 	import org.assetloader.events.SoundAssetEvent;
 	import org.assetloader.events.TextAssetEvent;
@@ -47,11 +48,11 @@ package runner
 
 		override public function startup() : void 
 		{
-			commandMap.mapEvent(ContextEvent.STARTUP_COMPLETE, StartupCompleteCommand, ContextEvent);
+			//commandMap.mapEvent(ContextEvent.STARTUP_COMPLETE, AddLazySampleCommand, ContextEvent);			commandMap.mapEvent(ContextEvent.STARTUP_COMPLETE, AddGroupSampleCommand, ContextEvent);
 			
 			commandMap.mapEvent(AssetLoaderEvent.ERROR, LoaderErrorCommand, AssetLoaderEvent);
 			
-			commandMap.mapEvent(TextAssetEvent.LOADED, TextLoadedCommand, TextAssetEvent);			commandMap.mapEvent(JSONAssetEvent.LOADED, JSONLoadedCommand, JSONAssetEvent);			commandMap.mapEvent(XMLAssetEvent.LOADED, XMLLoadedCommand, XMLAssetEvent);			commandMap.mapEvent(CSSAssetEvent.LOADED, CSSLoadedCommand, CSSAssetEvent);			commandMap.mapEvent(BinaryAssetEvent.LOADED, BinaryLoadedCommand, BinaryAssetEvent);			commandMap.mapEvent(SoundAssetEvent.LOADED, SoundLoadedCommand, SoundAssetEvent);
+			commandMap.mapEvent(GroupLoaderEvent.LOADED, GroupLoadedCommand, GroupLoaderEvent);			commandMap.mapEvent(TextAssetEvent.LOADED, TextLoadedCommand, TextAssetEvent);			commandMap.mapEvent(JSONAssetEvent.LOADED, JSONLoadedCommand, JSONAssetEvent);			commandMap.mapEvent(XMLAssetEvent.LOADED, XMLLoadedCommand, XMLAssetEvent);			commandMap.mapEvent(CSSAssetEvent.LOADED, CSSLoadedCommand, CSSAssetEvent);			commandMap.mapEvent(BinaryAssetEvent.LOADED, BinaryLoadedCommand, BinaryAssetEvent);			commandMap.mapEvent(SoundAssetEvent.LOADED, SoundLoadedCommand, SoundAssetEvent);
 			
 			injector.mapSingletonOf(IAssetLoader, AssetLoader);
 						injector.mapSingleton(ConsoleModel);

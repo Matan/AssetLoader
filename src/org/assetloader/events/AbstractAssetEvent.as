@@ -9,24 +9,17 @@ package org.assetloader.events
 	 */
 	public class AbstractAssetEvent extends Event 
 	{
-		protected var _id : String;
-		protected var _assetType : String;
+		public var id : String;		public var groupId : String;		public var assetType : String;
 
-		public function AbstractAssetEvent(type : String, id : String, assetType : String)
+		public function AbstractAssetEvent(type : String, id : String = null, groupId : String = null, assetType : String = null)
 		{
 			super(type);
-			_id = id;
-			_assetType = assetType;
+			this.id = id;			this.groupId = groupId;			this.assetType = assetType;
 		}
 
-		public function get id() : String
+		override public function clone() : Event 
 		{
-			return _id;
-		}
-
-		public function get assetType() : String
-		{
-			return _assetType;
+			return new AbstractAssetEvent(type, id, assetType);
 		}
 
 		override public function toString() : String 

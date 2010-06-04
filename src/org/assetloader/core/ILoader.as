@@ -19,28 +19,6 @@ package org.assetloader.core
 	public interface ILoader extends IEventDispatcher
 	{
 		/**
-		 * Sets the loadUnit.
-		 * @param unit ILoadUnit
-		 * 
-		 * @see org.assetloader.core.ILoadUnit
-		 */
-		function set loadUnit(unit : ILoadUnit) : void
-		/**
-		 * Gets the loadUnit.
-		 * @return ILoadUnit
-		 * 
-		 * @see org.assetloader.core.ILoadUnit
-		 */
-		function get loadUnit() : ILoadUnit
-
-		/**
-		 * Gets the current loading stats of loader.
-		 * @return ILoadStats
-		 * @see org.assetloader.core.ILoadStats
-		 */
-		function get stats() : ILoadStats
-
-		/**
 		 * Starts/resumes the loading operation.
 		 */
 		function start() : void
@@ -54,6 +32,29 @@ package org.assetloader.core
 		function destroy() : void
 
 		/**
+		 * Gets the loadUnit.
+		 * @return ILoadUnit
+		 * 
+		 * @see org.assetloader.core.ILoadUnit
+		 */
+		function get unit() : ILoadUnit
+
+		/**
+		 * Sets the loadUnit.
+		 * @param unit ILoadUnit
+		 * 
+		 * @see org.assetloader.core.ILoadUnit
+		 */
+		function set unit(unit : ILoadUnit) : void
+
+		/**
+		 * Gets the current loading stats of loader.
+		 * @return ILoadStats
+		 * @see org.assetloader.core.ILoadStats
+		 */
+		function get stats() : ILoadStats
+
+		/**
 		 * True if the load operation was started at least once.
 		 * e.g. start is called then stop is called, invoked flag stays true.
 		 * 
@@ -64,7 +65,7 @@ package org.assetloader.core
 		 * @see #inProgress
 		 */
 		function get invoked() : Boolean
-		
+
 		/**
 		 * True if the load operation has been started.
 		 * e.g. when <code>Event.OPEN</code> fires.
@@ -74,7 +75,7 @@ package org.assetloader.core
 		 * @return Boolean
 		 */
 		function get inProgress() : Boolean
-		
+
 		/**
 		 * True if the load operation has been stopped via stop method.
 		 * 

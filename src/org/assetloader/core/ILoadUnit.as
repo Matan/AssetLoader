@@ -13,16 +13,6 @@ package org.assetloader.core
 	 */
 	public interface ILoadUnit 
 	{
-		/**
-		 * Initialized unit.
-		 * 
-		 * @param id String id.
-		 * @param request URLRequest
-		 * @param assetParams Array of parameters.
-		 * 
-		 * @throws org.assetloader.base.AssetLoaderError AssetLoaderError.INVALID_URL
-		 */
-		function init(id : String, request : URLRequest, type : String, assetParams : Array) : void
 
 		/**
 		 * Checks if ILoadUnit has a param with the passed id.
@@ -55,6 +45,16 @@ package org.assetloader.core
 		 * @see org.assetload.base.AssetParam
 		 */
 		function getParam(id : String) : *
+
+		/**
+		 * Adds parameter to unit. Same effect as calling setParam.
+		 * 
+		 * @param param IAssetParam
+		 * 
+		 * @see org.assetload.core.IAssetParam
+		 * @see org.assetload.base.AssetParam
+		 */
+		function addParam(param:IParam) : void
 
 		/**
 		 * @return String of asset id.

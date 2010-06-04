@@ -12,9 +12,9 @@ package org.assetloader.events
 
 		protected var _sprite : Sprite;
 
-		public function SWFAssetEvent(type : String, id : String, assetType : String, data : Sprite)
+		public function SWFAssetEvent(type : String, id : String, groupId : String, assetType : String, data : Sprite)
 		{
-			super(type, id, assetType);
+			super(type, id, groupId, assetType);
 			_sprite = data;
 		}
 
@@ -25,7 +25,7 @@ package org.assetloader.events
 
 		override public function clone() : Event 
 		{
-			return new SWFAssetEvent(type, id, assetType, sprite);
+			return new SWFAssetEvent(type, id, groupId, assetType, sprite);
 		}
 	}
 }

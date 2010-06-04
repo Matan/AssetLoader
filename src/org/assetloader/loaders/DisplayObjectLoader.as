@@ -1,6 +1,7 @@
 package org.assetloader.loaders 
 {
-	import org.assetloader.base.AssetParam;
+	import org.assetloader.base.AbstractLoader;
+	import org.assetloader.base.Param;
 	import org.assetloader.core.ILoader;
 
 	import flash.display.DisplayObject;
@@ -43,7 +44,7 @@ package org.assetloader.loaders
 
 		override protected function invokeLoading() : void
 		{
-			_loader.load(_request, _loadUnit.getParam(AssetParam.LOADER_CONTEXT));
+			_loader.load(_request, _unit.getParam(Param.LOADER_CONTEXT));
 		}
 
 		override public function stop() : void

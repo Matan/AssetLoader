@@ -2,7 +2,7 @@ package org.assetloader.base
 {
 	import mu.utils.ToStr;
 
-	import org.assetloader.core.IAssetParam;
+	import org.assetloader.core.IParam;
 	import org.assetloader.core.ILoadUnit;
 	import org.assetloader.core.ILoader;
 	import org.assetloader.events.BinaryAssetEvent;
@@ -39,16 +39,12 @@ package org.assetloader.base
 		protected var _eventClass : Class;
 		protected var _retryTally : uint;
 
-		public function LoadUnit(id : String = null, request : URLRequest = null, type : String = null,  assetParams : Array = null) 
+		public function LoadUnit(id : String, request : URLRequest, type : String, params : Array = null) 
 		{
-			if(id && request && type && assetParams)
-				init(id, request, type, assetParams);
+			init(id, request, type, params);
 		}
 
-		/**
-		 * @inheritDoc
-		 */
-		public function init(id : String, request : URLRequest, type : String, assetParams : Array) : void
+		protected function init(id : String, request : URLRequest, type : String, params : Array = null) : void
 		{
 			_id = id;
 			_request = request;
@@ -56,11 +52,14 @@ package org.assetloader.base
 			_params = {};
 			_retryTally = 0;
 			
-			processParams(assetParams);
+			if(params)
+				processParams(params);
 			
-			setParamDefault(AssetParam.RETRIES, 3);			setParamDefault(AssetParam.ON_DEMAND, false);			setParamDefault(AssetParam.PREVENT_CACHE, false);
+			setParamDefault(Param.RETRIES, 3);
+			setParamDefault(Param.ON_DEMAND, false);
+			setParamDefault(Param.PREVENT_CACHE, false);
 			
-			if(getParam(AssetParam.PREVENT_CACHE))
+			if(getParam(Param.PREVENT_CACHE))
 				_request.url += ((_request.url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;
 			
 			try
@@ -76,7 +75,7 @@ package org.assetloader.base
 			
 			processType();
 			
-			_loader.loadUnit = this;
+			_loader.unit = this;
 		}
 
 		protected function processParams(assetParams : Array) : void
@@ -84,9 +83,9 @@ package org.assetloader.base
 			var pL : int = assetParams.length;
 			for(var i : int = 0;i < pL;i++) 
 			{
-				if(assetParams[i] is IAssetParam)
+				if(assetParams[i] is IParam)
 				{
-					var param : IAssetParam = assetParams[i];
+					var param : IParam = assetParams[i];
 					setParam(param.id, param.value);
 				}
 				
@@ -176,14 +175,14 @@ package org.assetloader.base
 					break;
 					
 				case AssetType.DISPLAY_OBJECT:
-					setParam(AssetParam.LOADER_CONTEXT, null);
+					setParam(Param.LOADER_CONTEXT, null);
 				
 					_loader = new DisplayObjectLoader();
 					_eventClass = DisplayObjectAssetEvent;
 					break;
 					
 				case AssetType.SWF:
-					setParam(AssetParam.LOADER_CONTEXT, null);
+					setParam(Param.LOADER_CONTEXT, null);
 				
 					_loader = new SWFLoader();
 					_eventClass = SWFAssetEvent;
@@ -191,30 +190,30 @@ package org.assetloader.base
 					
 				case AssetType.IMAGE:
 				
-					setParam(AssetParam.LOADER_CONTEXT, null);
+					setParam(Param.LOADER_CONTEXT, null);
 					
-					setParam(AssetParam.TRANSPARENT, true);
-					setParam(AssetParam.FILL_COLOR, 4.294967295E9);
-					setParam(AssetParam.MATRIX, null);
-					setParam(AssetParam.COLOR_TRANSFROM, null);
-					setParam(AssetParam.BLEND_MODE, null);
-					setParam(AssetParam.CLIP_RECTANGLE, null);
-					setParam(AssetParam.SMOOTHING, false);
-					setParam(AssetParam.PIXEL_SNAPPING, "auto");
+					setParam(Param.TRANSPARENT, true);
+					setParam(Param.FILL_COLOR, 4.294967295E9);
+					setParam(Param.MATRIX, null);
+					setParam(Param.COLOR_TRANSFROM, null);
+					setParam(Param.BLEND_MODE, null);
+					setParam(Param.CLIP_RECTANGLE, null);
+					setParam(Param.SMOOTHING, false);
+					setParam(Param.PIXEL_SNAPPING, "auto");
 					
 					_loader = new ImageLoader();
 					_eventClass = ImageAssetEvent;
 					break;
 					
 				case AssetType.SOUND:
-					setParam(AssetParam.SOUND_LOADER_CONTEXT, null);
+					setParam(Param.SOUND_LOADER_CONTEXT, null);
 				
 					_loader = new SoundLoader();
 					_eventClass = SoundAssetEvent;
 					break;
 					
 				case AssetType.VIDEO:
-					setParam(AssetParam.CHECK_POLICY_FILE, true);
+					setParam(Param.CHECK_POLICY_FILE, true);
 				
 					_loader = new VideoLoader();
 					_eventClass = VideoAssetEvent;
@@ -247,6 +246,14 @@ package org.assetloader.base
 		public function getParam(id : String) : *
 		{
 			return _params[id];
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function addParam(param : IParam) : void
+		{
+			setParam(param.id, param.value);
 		}
 
 		/**

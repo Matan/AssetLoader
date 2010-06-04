@@ -7,12 +7,12 @@ package org.assetloader.base
 	/**
 	 * @author Matan Uberstein
 	 */
-	public class AssetLoaderStats extends LoaderStats implements ILoadStats
+	public class MultiLoaderStats extends LoaderStats implements ILoadStats
 	{
 		protected var _numOpened : int = 0;
 		protected var _totalLatency : Number = 0;
 
-		public function AssetLoaderStats()
+		public function MultiLoaderStats()
 		{
 		}
 
@@ -30,6 +30,9 @@ package org.assetloader.base
 			update(0, 0);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function reset() : void 
 		{
 			super.reset();
