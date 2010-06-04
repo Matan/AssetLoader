@@ -2,7 +2,7 @@ package org.assetloader.loaders
 {
 	import flash.display.Bitmap;
 
-	import org.assetloader.base.AssetParam;
+	import org.assetloader.base.Param;
 
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
@@ -21,10 +21,10 @@ package org.assetloader.loaders
 			var errMsg : String = "";
 			try
 			{
-				var bitmapData : BitmapData = new BitmapData(_loader.contentLoaderInfo.width, _loader.contentLoaderInfo.height, _loadUnit.getParam(AssetParam.TRANSPARENT), loadUnit.getParam(AssetParam.FILL_COLOR));
-				bitmapData.draw(data, _loadUnit.getParam(AssetParam.MATRIX), _loadUnit.getParam(AssetParam.COLOR_TRANSFROM), _loadUnit.getParam(AssetParam.BLEND_MODE), _loadUnit.getParam(AssetParam.CLIP_RECTANGLE), _loadUnit.getParam(AssetParam.SMOOTHING));
+				var bitmapData : BitmapData = new BitmapData(_loader.contentLoaderInfo.width, _loader.contentLoaderInfo.height, _unit.getParam(Param.TRANSPARENT), _unit.getParam(Param.FILL_COLOR));
+				bitmapData.draw(data, _unit.getParam(Param.MATRIX), _unit.getParam(Param.COLOR_TRANSFROM), _unit.getParam(Param.BLEND_MODE), _unit.getParam(Param.CLIP_RECTANGLE), _unit.getParam(Param.SMOOTHING));
 				
-				_data = new Bitmap(bitmapData, _loadUnit.getParam(AssetParam.PIXEL_SNAPPING), _loadUnit.getParam(AssetParam.SMOOTHING));
+				_data = new Bitmap(bitmapData, _unit.getParam(Param.PIXEL_SNAPPING), _unit.getParam(Param.SMOOTHING));
 			}
 			catch(err : Error)
 			{

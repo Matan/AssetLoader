@@ -11,9 +11,9 @@ package org.assetloader.events
 
 		protected var _data : String;
 
-		public function TextAssetEvent(type : String, id : String, assetType : String, data : String)
+		public function TextAssetEvent(type : String, id : String, groupId : String, assetType : String, data : String)
 		{
-			super(type, id, assetType);
+			super(type, id, groupId, assetType);
 			_data = data;
 		}
 
@@ -24,7 +24,7 @@ package org.assetloader.events
 
 		override public function clone() : Event 
 		{
-			return new TextAssetEvent(type, id, assetType, data);
+			return new TextAssetEvent(type, id, groupId, assetType, data);
 		}
 	}
 }

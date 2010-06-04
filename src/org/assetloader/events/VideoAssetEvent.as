@@ -10,7 +10,7 @@ package org.assetloader.events
 	{
 		public static const READY : String = "READY";
 		public static const LOADED : String = "VIDEO_LOADED";
-		
+
 		public static const ON_PLAY_STATUS : String = "ON_PLAY_STATUS";
 		public static const ON_CUE_POINT : String = "ON_CUE_POINT";
 		public static const ON_TEXT_DATA : String = "ON_TEXT_DATA";
@@ -22,9 +22,9 @@ package org.assetloader.events
 
 		public var data : Object;
 
-		public function VideoAssetEvent(type : String, id : String, assetType : String, netStream : NetStream)
+		public function VideoAssetEvent(type : String, id : String, groupId : String, assetType : String, netStream : NetStream)
 		{
-			super(type, id, assetType);
+			super(type, id, groupId, assetType);
 			_netStream = netStream;
 		}
 
@@ -35,7 +35,7 @@ package org.assetloader.events
 
 		override public function clone() : Event 
 		{
-			return new VideoAssetEvent(type, id, assetType, netStream);
+			return new VideoAssetEvent(type, id, groupId, assetType, netStream);
 		}
 	}
 }

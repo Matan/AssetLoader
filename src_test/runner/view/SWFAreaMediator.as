@@ -23,7 +23,7 @@ package runner.view
 		{
 			eventMap.mapListener(eventDispatcher, SWFAssetEvent.LOADED, swfLoaded_handler, SWFAssetEvent);
 			
-			var unit : ILoadUnit = loader.getLoadUnit(AssetId.SAMPLE_SWF);
+			var unit : ILoadUnit = loader.getUnit(AssetId.SAMPLE_SWF);
 			view.bar.source = unit.loader;
 		}
 

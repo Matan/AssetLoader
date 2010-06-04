@@ -3,14 +3,15 @@
  */
 package sample 
 {
-	import flash.display.Sprite;
-	import org.assetloader.core.ILoadUnit;
-	import flash.display.BlendMode;
-
-	import org.assetloader.base.AssetType;
 	import org.assetloader.AssetLoader;
-	import org.assetloader.base.AssetParam;
+	import org.assetloader.base.AssetType;
+	import org.assetloader.base.Param;
 	import org.assetloader.core.IAssetLoader;
+	import org.assetloader.core.ILoadUnit;
+	import org.assetloader.core.IParam;
+
+	import flash.display.BlendMode;
+	import flash.display.Sprite;
 
 	public class AddingAssetParamsSample extends Sprite
 	{
@@ -18,10 +19,10 @@ package sample
 
 		public function AddingAssetParamsSample() 
 		{
-			var preventCaching : AssetParam = new AssetParam(AssetParam.PREVENT_CACHE, true);
+			var preventCaching : IParam = new Param(Param.PREVENT_CACHE, true);
 			
 			//Image params
-			var fillColor : AssetParam = new AssetParam(AssetParam.FILL_COLOR, 0x0);			var smoothing : AssetParam = new AssetParam(AssetParam.SMOOTHING, true);			var blendMode : AssetParam = new AssetParam(AssetParam.BLEND_MODE, BlendMode.DARKEN);
+			var fillColor : IParam = new Param(Param.FILL_COLOR, 0x0);			var smoothing : IParam = new Param(Param.SMOOTHING, true);			var blendMode : IParam = new Param(Param.BLEND_MODE, BlendMode.DARKEN);
 			
 			var host : String = "http://www.matan.co.za/AssetLoader/testAssets/";
 			
@@ -35,8 +36,8 @@ package sample
 			assetLoader.addLazy("sampleIMAGE3", host + "sampleIMAGE.jpg", AssetType.AUTO, imageParams, preventCaching);			
 			//OR after you've added it. NOTE: Must be before assetLoader.start is called.
 			assetLoader.addLazy("sampleIMAGE4", host + "sampleIMAGE.jpg");
-			var image4LoadUnit : ILoadUnit = assetLoader.getLoadUnit("sampleIMAGE4");
-			image4LoadUnit.setParam(AssetParam.FILL_COLOR, 0x0);			image4LoadUnit.setParam(AssetParam.SMOOTHING, true);			image4LoadUnit.setParam(AssetParam.BLEND_MODE, BlendMode.DARKEN);
+			var image4LoadUnit : ILoadUnit = assetLoader.getUnit("sampleIMAGE4");
+			image4LoadUnit.setParam(Param.FILL_COLOR, 0x0);			image4LoadUnit.setParam(Param.SMOOTHING, true);			image4LoadUnit.setParam(Param.BLEND_MODE, BlendMode.DARKEN);
 			//This way excules AssetParam.PREVENT_CACHE it needs to process on creation.
 			
 			assetLoader.start();

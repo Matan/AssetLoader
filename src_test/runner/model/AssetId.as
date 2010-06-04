@@ -17,5 +17,7 @@ package runner.model
 		public static const SAMPLE_SOUND : String = "SAMPLE_SOUND";
 		
 		public static const SAMPLE_ERROR : String = "SAMPLE_ERROR";
+		
+		public static const SAMPLE_GROUP : String = "SAMPLE_GROUP";
 	}
 }

@@ -12,9 +12,9 @@ package org.assetloader.events
 
 		protected var _bitmap : Bitmap;
 
-		public function ImageAssetEvent(type : String, id : String, assetType : String, bitmap : Bitmap)
+		public function ImageAssetEvent(type : String, id : String, groupId : String, assetType : String, bitmap : Bitmap)
 		{
-			super(type, id, assetType);
+			super(type, id, groupId, assetType);
 			_bitmap = bitmap;
 		}
 
@@ -25,7 +25,7 @@ package org.assetloader.events
 
 		override public function clone() : Event 
 		{
-			return new ImageAssetEvent(type, id, assetType, bitmap);
+			return new ImageAssetEvent(type, id, groupId, assetType, bitmap);
 		}
 	}
 }

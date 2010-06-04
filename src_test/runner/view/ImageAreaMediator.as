@@ -23,7 +23,7 @@ package runner.view
 		{
 			eventMap.mapListener(eventDispatcher, ImageAssetEvent.LOADED, imageLoaded_handler, ImageAssetEvent);
 			
-			var unit:ILoadUnit = loader.getLoadUnit(AssetId.SAMPLE_IMAGE);
+			var unit:ILoadUnit = loader.getUnit(AssetId.SAMPLE_IMAGE);
 			view.bar.source = unit.loader;
 		}
 

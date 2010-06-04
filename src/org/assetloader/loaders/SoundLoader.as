@@ -1,6 +1,7 @@
 package org.assetloader.loaders 
 {
-	import org.assetloader.base.AssetParam;
+	import org.assetloader.base.AbstractLoader;
+	import org.assetloader.base.Param;
 	import org.assetloader.core.ILoader;
 
 	import flash.events.Event;
@@ -44,7 +45,7 @@ package org.assetloader.loaders
 		{
 			try
 			{
-				_sound.load(_request, _loadUnit.getParam(AssetParam.SOUND_LOADER_CONTEXT));
+				_sound.load(_request, _unit.getParam(Param.SOUND_LOADER_CONTEXT));
 			}catch(error : SecurityError)
 			{
 				dispatchEvent(new SecurityErrorEvent(SecurityErrorEvent.SECURITY_ERROR, false, false, error.message));
@@ -78,16 +79,16 @@ package org.assetloader.loaders
 			super.complete_handler(event);
 		}
 
-		override protected function addLoaderListener(dispatcher : IEventDispatcher) : void 
+		override protected function addListeners(dispatcher : IEventDispatcher) : void 
 		{
-			super.addLoaderListener(dispatcher);
+			super.addListeners(dispatcher);
 			if(dispatcher)
 				dispatcher.addEventListener(SampleDataEvent.SAMPLE_DATA, dispatchEvent);
 		}
 
-		override protected function removeLoaderListener(dispatcher : IEventDispatcher) : void 
+		override protected function removeListeners(dispatcher : IEventDispatcher) : void 
 		{
-			super.removeLoaderListener(dispatcher);
+			super.removeListeners(dispatcher);
 			if(dispatcher)
 				dispatcher.removeEventListener(SampleDataEvent.SAMPLE_DATA, dispatchEvent);
 		}

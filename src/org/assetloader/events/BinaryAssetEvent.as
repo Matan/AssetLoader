@@ -12,9 +12,9 @@ package org.assetloader.events
 
 		protected var _byteArray : ByteArray;
 
-		public function BinaryAssetEvent(type : String, id : String, assetType : String, byteArray : ByteArray)
+		public function BinaryAssetEvent(type : String, id : String, groupId : String, assetType : String, byteArray : ByteArray)
 		{
-			super(type, id, assetType);
+			super(type, id, groupId, assetType);
 			_byteArray = byteArray;
 		}
 
@@ -25,7 +25,7 @@ package org.assetloader.events
 
 		override public function clone() : Event 
 		{
-			return new BinaryAssetEvent(type, id, assetType, byteArray);
+			return new BinaryAssetEvent(type, id, groupId, assetType, byteArray);
 		}
 	}
 }

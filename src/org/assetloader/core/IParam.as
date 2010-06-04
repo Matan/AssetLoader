@@ -8,17 +8,17 @@ package org.assetloader.core
 	 * @includeExample ../../../sample/AddingAssetParamsSample.as
 	 * 
 	 * @see org.assetloader.core.ILoadUnit
-	 * @see org.assetloader.base.AssetParam
+	 * @see org.assetloader.base.Param
 	 * 
 	 * @author Matan Uberstein
 	 */
-	public interface IAssetParam 
+	public interface IParam 
 	{
 		/**
 		 * Gets parameter id.
 		 * 
 		 * @return id of parameter.
-		 * @see org.assetloader.base.AssetParam
+		 * @see org.assetloader.base.Param
 		 */
 		function get id() : String
 		/**

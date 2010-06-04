@@ -1,5 +1,6 @@
 package org.assetloader.loaders 
 {
+	import org.assetloader.base.AbstractLoader;
 	import org.assetloader.core.ILoader;
 
 	import flash.events.ErrorEvent;

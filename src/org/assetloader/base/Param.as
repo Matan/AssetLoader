@@ -1,11 +1,11 @@
 package org.assetloader.base 
 {
-	import org.assetloader.core.IAssetParam;
+	import org.assetloader.core.IParam;
 
 	/**
 	 * Provides assets with parameters.
 	 */
-	public class AssetParam implements IAssetParam
+	public class Param implements IParam
 	{
 		/**
 		 * Adds time stamp to url, which makes each call unique.
@@ -36,7 +36,7 @@ package org.assetloader.base
 		 * This list is then sorted decendingly, thus thus asset's with higher priority are loaded first.</p>
 		 */
 		public static const PRIORITY : String = "PRIORITY";
-		
+
 		/**
 		 * Set true if you DON'T want the asset to from part of the loading queue.
 		 * This way you must start the asset's loading manually via IAssetLoader startAsset method.
@@ -46,6 +46,7 @@ package org.assetloader.base
 		 * <p>Default: false</p>
 		 */
 		public static const ON_DEMAND : String = "ON_DEMAND";
+		
 		/**
 		 * Sets the <code>URLRequest</code>'s headers.
 		 * 
@@ -181,7 +182,7 @@ package org.assetloader.base
 		 * @param id Param id.
 		 * @param value Param value.
 		 */
-		public function AssetParam(id : String, value : *) 
+		public function Param(id : String, value : *) 
 		{
 			_id = id;
 			_value = value;

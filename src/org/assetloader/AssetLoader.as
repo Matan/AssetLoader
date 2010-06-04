@@ -1,21 +1,18 @@
 package org.assetloader
 {
-	import org.assetloader.base.AssetLoaderBase;
-	import org.assetloader.base.AssetLoaderStats;
-	import org.assetloader.base.AssetParam;
+	import org.assetloader.base.GroupLoader;
+	import org.assetloader.base.LoadGroup;
 	import org.assetloader.core.IAssetLoader;
-	import org.assetloader.core.ILoadStats;
+	import org.assetloader.core.IGroupLoader;
+	import org.assetloader.core.ILoadGroup;
 	import org.assetloader.core.ILoadUnit;
 	import org.assetloader.core.ILoader;
 	import org.assetloader.events.AssetLoaderEvent;
+	import org.assetloader.events.GroupLoaderEvent;
 
-	import flash.events.AsyncErrorEvent;
-	import flash.events.ErrorEvent;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
-	import flash.events.IOErrorEvent;
-	import flash.events.ProgressEvent;
-	import flash.events.SecurityErrorEvent;
 
 	[Event(name="ASSET_LOADED", type="org.assetloader.events.AssetLoaderEvent")]
 
@@ -36,59 +33,52 @@ package org.assetloader
 	[Event(name="VIDEO_LOADED", type="org.assetloader.events.VideoAssetEvent")]
 	[Event(name="XML_LOADED", type="org.assetloader.events.XMLAssetEvent")]
 
+	[Event(name="GROUP_LOADED", type="org.assetloader.events.GroupLoaderEvent")]
+
 	/**
 	 * @author Matan Uberstein
 	 */
-	public class AssetLoader extends AssetLoaderBase implements IAssetLoader
+	public class AssetLoader extends GroupLoader implements IAssetLoader
 	{
-		protected var _loadedIds : Array;
-		protected var _numLoaded : int;
-		protected var _stats : ILoadStats;
 
 		[Inject]
 
 		public function AssetLoader(eventDispatcher : IEventDispatcher = null)
 		{
-			super(eventDispatcher);
-			_loadedIds = [];
-			_stats = new AssetLoaderStats();
+			super();
+			_eventDispatcher = eventDispatcher || new EventDispatcher();
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		override public function remove(id : String) : void 
+		public function addGroup(id : String, units : Array = null, ...params) : IGroupLoader
 		{
-			var loader : ILoader = getLoader(id);
-			if(loader)
-			{
-				removeLoaderListeners(loader);
-				
-				if(loader.loaded)
-					_loadedIds.splice(_loadedIds.indexOf(id), 1);
-					
-				_numLoaded = _loadedIds.length;
-				
-				super.remove(id);
-			}
-		}
+			var group : ILoadGroup = new LoadGroup(id, units, params);
+			
+			addUnit(group);
+			
+			return group.groupLoader;
+		}	
 
 		/**
 		 * @inheritDoc
 		 */
-		public function start(numConnections : uint = 3) : void
+		override public function addUnit(unit : ILoadUnit) : ILoader 
 		{
-			sortIdsByPriority();
+			var loader : ILoader = super.addUnit(unit);
 			
-			_stats.start();
-			
-			if(numConnections == 0)
-				numConnections = _numUnits;
-			
-			for(var k : int = 0;k < numConnections;k++) 
+			if(loader is IGroupLoader)
 			{
-				startNextUnit();
+				var groupLoader : IGroupLoader = IGroupLoader(loader);
+				
+				for each (var id : String in unit.params) 
+				{
+					unit.setParam(id, unit.params[id]);
+				}
 			}
+			
+			return loader;
 		}
 
 		/**
@@ -96,171 +86,82 @@ package org.assetloader
 		 */
 		public function startAsset(id : String) : void
 		{
-			startUnit(_ids.indexOf(id));
+			startUnit(id);
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function stop() : void
+		public function hasGroup(id : String) : Boolean
 		{
-			var loader : ILoader;
-			
-			for(var i : int = 0;i < _numUnits;i++) 
-			{
-				loader = getLoader(_ids[i]);
-				
-				if(!loader.loaded)
-					loader.stop();
-			}
+			return (_units[id] is ILoadGroup);
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		override public function destroy() : void
+		public function getGroup(id : String) : ILoadGroup
 		{
-			var loader : ILoader;
-			
-			for(var i : int = 0;i < _numUnits;i++) 
-			{
-				loader = getLoader(_ids[i]);
-				
-				removeLoaderListeners(loader);
-				
-				loader.destroy();
-			}
-			
-			_stats.reset();
-			
-			_loadedIds.splice(0, _loadedIds.length);
-			_numLoaded = 0;
-			
-			super.destroy();
-		}
-
-		public function get loadedIds() : Array
-		{
-			return _loadedIds;
+			if(hasGroup(id))
+				return _units[id];
+			return null;
 		}
 
 		/**
 		 * @inheritDoc
 		 */
-		public function get stats() : ILoadStats
+		public function getGroupLoader(id : String) : IGroupLoader
 		{
-			return _stats;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get numLoaded() : int
-		{
-			return _numLoaded;
+			if(hasUnit(id))
+				return getGroup(id).groupLoader;
+			return null;
 		}
 
 		//--------------------------------------------------------------------------------------------------------------------------------//
 		// PROTECTED FUNCTIONS
 		//--------------------------------------------------------------------------------------------------------------------------------//
-
-		protected function sortIdsByPriority() : void
+		override protected function dispatchError(unit : ILoadUnit, errorType : String, errorText : String) : void 
 		{
-			var priorities : Array = [];
-			for(var i : int = 0;i < _numUnits;i++) 
-			{
-				var unit : ILoadUnit = getLoadUnit(_ids[i]);
-				priorities.push(unit.getParam(AssetParam.PRIORITY));
-			}
-			
-			var sortedIndexs : Array = priorities.sort(Array.NUMERIC | Array.DESCENDING | Array.RETURNINDEXEDARRAY);
-			var idsCopy : Array = _ids.concat();
-			
-			for(var j : int = 0;j < _numUnits;j++) 
-			{
-				_ids[j] = idsCopy[sortedIndexs[j]];
-			}
+			dispatchAssetLoaderEvent(AssetLoaderEvent.ERROR, unit, errorType, errorText);
 		}
 
-		protected function startUnit(index : int) : void
+		override protected function dispatchOpen(unit : ILoadUnit) : void 
 		{
-			var unit : ILoadUnit = getLoadUnit(_ids[index]);
+			dispatchAssetLoaderEvent(AssetLoaderEvent.CONNECTION_OPENED, unit);
+		}
+
+		override protected function dispatchProgress() : void 
+		{
+			dispatchAssetLoaderEvent(AssetLoaderEvent.PROGRESS);
+		}
+
+		override protected function dispatchComplete() : void 
+		{
+			dispatchAssetLoaderEvent(AssetLoaderEvent.COMPLETE);
+		}
+
+		override protected function dispatchAssetLoaded(unit : ILoadUnit) : void 
+		{
+			var loader : ILoader = unit.loader;
+			
+			dispatchAssetLoaderEvent(AssetLoaderEvent.ASSET_LOADED, unit);
+		}
+
+		protected function dispatchAssetLoaderEvent(type : String, unit : ILoadUnit = null, errorType : String = null, errorText : String = null) : Boolean
+		{
+			var event : AssetLoaderEvent = new AssetLoaderEvent(type);
+			
 			if(unit)
 			{
 				var loader : ILoader = unit.loader;
 				
-				addLoaderListeners(loader);
-				
-				loader.start();
-			}
-		}
-
-		protected function startNextUnit() : void
-		{
-			for(var i : int = 0;i < _numUnits;i++) 
-			{
-				var unit : ILoadUnit = getLoadUnit(_ids[i]);
-				var loader : ILoader = unit.loader;
-				
-				if(!loader.loaded && unit.retryTally <= unit.getParam(AssetParam.RETRIES) && !unit.getParam(AssetParam.ON_DEMAND))
-				{
-					if(!loader.invoked || (loader.invoked && loader.stopped))
-					{
-						startUnit(i);
-						return;
-					}
-				}
-			}
-		}
-
-		protected function retryUnit(loader : ILoader, errorType : String, errorText : String) : void
-		{
-			var unit : ILoadUnit = loader.loadUnit;
-			
-			if(unit.retryTally < unit.getParam(AssetParam.RETRIES))
-			{
-				unit.retryTally++;
-				startUnit(_ids.indexOf(unit.id));
+				event.id = unit.id;
+				event.assetType = unit.type;			
+				if(loader.loaded)
+					event.data = loader.data;
 			}
 			else
-			{
-				dispatchAssetLoaderEvent(AssetLoaderEvent.ERROR, unit.id, unit.type, null, errorType, errorText);
-				
-				startNextUnit();
-			}
-		}
-
-		protected function addLoaderListeners(loader : ILoader) : void
-		{
-			loader.addEventListener(Event.OPEN, open_handler);
-			loader.addEventListener(ProgressEvent.PROGRESS, progress_handler);
-			loader.addEventListener(Event.COMPLETE, complete_handler);
-			
-			loader.addEventListener(IOErrorEvent.IO_ERROR, error_handler);
-			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error_handler);
-			loader.addEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
-			loader.addEventListener(ErrorEvent.ERROR, error_handler);
-		}
-
-		protected function removeLoaderListeners(loader : ILoader) : void
-		{
-			loader.removeEventListener(Event.OPEN, open_handler);
-			loader.removeEventListener(ProgressEvent.PROGRESS, progress_handler);
-			loader.removeEventListener(Event.COMPLETE, complete_handler);
-			
-			loader.removeEventListener(IOErrorEvent.IO_ERROR, error_handler);
-			loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, error_handler);
-			loader.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
-			loader.removeEventListener(ErrorEvent.ERROR, error_handler);
-		}
-
-		protected function dispatchAssetLoaderEvent(type : String, id : String = null, assetType : String = null, data : * = null, errorType : String = null, errorText : String = null) : Boolean
-		{
-			var event : AssetLoaderEvent = new AssetLoaderEvent(type);
-			
-			event.id = id;
-			event.assetType = assetType;
-			event.data = data;
+				event.data = data;
 			
 			event.progress = _stats.progress;
 			event.bytesLoaded = _stats.bytesLoaded;
@@ -272,71 +173,60 @@ package org.assetloader
 			return dispatchEvent(event);
 		}
 
+		
+		override protected function addListeners(dispatcher : IEventDispatcher) : void 
+		{
+			super.addListeners(dispatcher);
+			dispatcher.addEventListener(GroupLoaderEvent.ASSET_LOADED, assetLoaded_handler);
+		}
+
+		override protected function removeListeners(dispatcher : IEventDispatcher) : void 
+		{
+			super.removeListeners(dispatcher);
+			dispatcher.removeEventListener(GroupLoaderEvent.ASSET_LOADED, assetLoaded_handler);
+		}
+
 		//--------------------------------------------------------------------------------------------------------------------------------//
 		// PROTECTED HANDLERS
 		//--------------------------------------------------------------------------------------------------------------------------------//
-		protected function error_handler(event : ErrorEvent) : void 
+		protected function assetLoaded_handler(event : GroupLoaderEvent) : void 
 		{
-			retryUnit(ILoader(event.target), event.type, event.text);
-		}
-
-		protected function open_handler(event : Event) : void 
-		{
-			_stats.open();
-			
-			var loader : ILoader = ILoader(event.target);
-			var unit : ILoadUnit = loader.loadUnit;
-			
-			dispatchAssetLoaderEvent(AssetLoaderEvent.CONNECTION_OPENED, unit.id, unit.type);
-		}
-
-		protected function progress_handler(event : ProgressEvent) : void 
-		{
-			var bytesLoaded : uint = 0;
-			var bytesTotal : uint = 0;
-			
-			var unit : ILoadUnit;
-			var loader : ILoader;
-			var stats : ILoadStats;
-			
-			for(var i : int = 0;i < _numUnits;i++) 
-			{
-				unit = getLoadUnit(_ids[i]);
-				loader = unit.loader;
-				stats = loader.stats;
-				
-				bytesLoaded += stats.bytesLoaded;
-				bytesTotal += stats.bytesTotal;
-			}
-			
-			_stats.update(bytesLoaded, bytesTotal);
-			
-			dispatchAssetLoaderEvent(AssetLoaderEvent.PROGRESS);
-		}
-
-		protected function complete_handler(event : Event) : void 
-		{
-			var loader : ILoader = ILoader(event.target);
-			var unit : ILoadUnit = loader.loadUnit;
+			var groupLoader : IGroupLoader = IGroupLoader(event.currentTarget);
+			var unit : ILoadUnit = groupLoader.getUnit(event.id);
+			var group : ILoadGroup = groupLoader.group;
 			var eventClass : Class = unit.eventClass;
 			
-			removeLoaderListeners(loader);
-			
-			_assets[unit.id] = loader.data;
-			_loadedIds.push(unit.id);
-			_numLoaded = _loadedIds.length;
-			
-			dispatchAssetLoaderEvent(AssetLoaderEvent.ASSET_LOADED, unit.id, unit.type, loader.data);
-			
-			dispatchEvent(new eventClass(eventClass.LOADED, unit.id, unit.type, loader.data));
-			
-			if(_numLoaded == _numUnits)
-			{
-				_stats.done();
-				dispatchAssetLoaderEvent(AssetLoaderEvent.COMPLETE, null, null, loader.data);
-			}
-			else
-				startNextUnit();
+			dispatchEvent(new eventClass(eventClass.LOADED, unit.id, group.id, unit.type, event.data));
+		}
+
+		//--------------------------------------------------------------------------------------------------------------------------------//
+		// IEventDispatcher
+		//--------------------------------------------------------------------------------------------------------------------------------//
+		override public function dispatchEvent(event : Event) : Boolean
+		{
+			if(_eventDispatcher.hasEventListener(event.type))
+				return _eventDispatcher.dispatchEvent(event);
+			return false;
+		}
+
+		override public function hasEventListener(type : String) : Boolean
+		{
+			return _eventDispatcher.hasEventListener(type);
+		}
+
+		override public function willTrigger(type : String) : Boolean
+		{
+			return _eventDispatcher.willTrigger(type);
+		}
+
+		override public function removeEventListener(type : String, listener : Function, useCapture : Boolean = false) : void
+		{
+			_eventDispatcher.removeEventListener(type, listener, useCapture);
+		}
+
+		override public function addEventListener(type : String, listener : Function, useCapture : Boolean = false, priority : int = 0, useWeakReference : Boolean = false) : void
+		{
+			_eventDispatcher.addEventListener(type, listener, useCapture, priority, useWeakReference);
 		}
 	}
 }
