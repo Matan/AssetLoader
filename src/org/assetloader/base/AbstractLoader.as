@@ -129,7 +129,7 @@ package org.assetloader.base
 
 		protected function open_handler(event : Event) : void 
 		{
-			_stats.open();
+			_stats.open(_unit.getParam(Param.WEIGHT));
 			
 			_inProgress = true;
 			

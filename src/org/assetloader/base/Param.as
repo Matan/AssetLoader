@@ -48,6 +48,18 @@ package org.assetloader.base
 		public static const ON_DEMAND : String = "ON_DEMAND";
 		
 		/**
+		 * Sets the bytesTotal amount of the file, this will improve accuracy of the
+		 * progress bar. This is optional, because the bytesTotal is retreived from the server
+		 * when the progress events start coming through. You can set this with a vague value as
+		 * it will be overritten by the value retreived from the server.
+		 * 
+		 * <p>Use: All asset types.</p>
+		 * <p>Type: <code>unit</code></p>
+		 * <p>Default: 0</p>
+		 */
+		public static const WEIGHT : String = "WEIGHT";
+		
+		/**
 		 * Sets the <code>URLRequest</code>'s headers.
 		 * 
 		 * <p>Use: All asset types except Video.</p>

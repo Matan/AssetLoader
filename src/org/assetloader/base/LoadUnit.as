@@ -57,7 +57,7 @@ package org.assetloader.base
 			
 			setParamDefault(Param.RETRIES, 3);
 			setParamDefault(Param.ON_DEMAND, false);
-			setParamDefault(Param.PREVENT_CACHE, false);
+			setParamDefault(Param.PREVENT_CACHE, false);			setParamDefault(Param.WEIGHT, 0);
 			
 			if(getParam(Param.PREVENT_CACHE))
 				_request.url += ((_request.url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;

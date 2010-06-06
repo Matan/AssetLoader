@@ -15,8 +15,9 @@ package org.assetloader.core
 
 		/**
 		 * Records time difference between start and now to calculated latency.
+		 * @param bytesTotal The total amount of bytes for a loading operation.
 		 */
-		function open() : void
+		function open(bytesTotal : uint = 0) : void
 
 		/**
 		 * Invoke when loading is complete.

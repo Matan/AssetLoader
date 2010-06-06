@@ -38,8 +38,10 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		public function open() : void
+		public function open(bytesTotal : uint = 0) : void
 		{
+			_bytesTotal = bytesTotal;
+			
 			_openTime = getTimer();
 			
 			_latency = _openTime - _startTime;

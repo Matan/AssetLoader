@@ -293,7 +293,18 @@ package org.assetloader.base
 
 		override protected function open_handler(event : Event) : void 
 		{
-			_stats.open();
+			var bytesTotal : uint = 0;
+			var stats : ILoadStats;
+			
+			for(var i : int = 0;i < _numUnits;i++) 
+			{
+				stats = getUnit(_ids[i]).loader.stats;
+				
+				bytesTotal += stats.bytesTotal;
+			}
+			
+			_stats.open(bytesTotal);
+			
 			dispatchOpen(ILoader(event.target).unit);
 		}
 

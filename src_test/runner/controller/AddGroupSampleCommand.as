@@ -3,8 +3,8 @@ package runner.controller
 	import runner.model.AssetId;
 	import runner.view.Canvas;
 
-	import org.assetloader.base.Param;
 	import org.assetloader.base.AssetType;
+	import org.assetloader.base.Param;
 	import org.assetloader.core.IAssetLoader;
 	import org.assetloader.core.IGroupLoader;
 	import org.assetloader.core.ILoadGroup;
@@ -28,7 +28,7 @@ package runner.controller
 			var host : String = "http://www.matan.co.za/AssetLoader/testAssets/";			
 			var groupLoader : IGroupLoader = loader.addGroup(AssetId.SAMPLE_GROUP);
 			//The group will open 2 connections
-			groupLoader.numConnections = 1;
+			groupLoader.numConnections = 0;
 			
 			var group : ILoadGroup = groupLoader.group;
 			group.setGlobalParam(Param.PREVENT_CACHE, true);
@@ -37,8 +37,8 @@ package runner.controller
 			groupLoader.addLazy(AssetId.SAMPLE_JSON, host + "sampleJSON.json");
 			groupLoader.addLazy(AssetId.SAMPLE_XML, host + "sampleXML.xml");
 			groupLoader.addLazy(AssetId.SAMPLE_CSS, host + "sampleCSS.css");
-			groupLoader.addLazy(AssetId.SAMPLE_BINARY, host + "sampleZIP.zip");
-			groupLoader.addLazy(AssetId.SAMPLE_SOUND, host + "sampleSOUND.mp3");
+			groupLoader.addLazy(AssetId.SAMPLE_BINARY, host + "sampleZIP.zip", AssetType.AUTO, new Param(Param.WEIGHT, 3493));
+			groupLoader.addLazy(AssetId.SAMPLE_SOUND, host + "sampleSOUND.mp3", AssetType.AUTO, new Param(Param.WEIGHT, 213007));
 			
 			var preventCache : Param = new Param(Param.PREVENT_CACHE, true);			var onDemand : Param = new Param(Param.ON_DEMAND, true);
 			
