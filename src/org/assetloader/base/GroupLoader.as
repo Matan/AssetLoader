@@ -109,9 +109,6 @@ package org.assetloader.base
 			if(unit)
 			{
 				var loader : ILoader = unit.loader;
-				
-				addListeners(loader);
-				
 				loader.start();
 			}
 		}

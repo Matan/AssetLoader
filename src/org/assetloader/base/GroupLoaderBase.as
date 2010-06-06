@@ -59,7 +59,11 @@ package org.assetloader.base
 			if(!unit.hasParam(Param.PRIORITY))
 				unit.setParam(Param.PRIORITY, -(_numUnits - 1));
 			
-			return unit.loader;
+			var loader : ILoader = unit.loader;
+			
+			addListeners(loader);
+			
+			return loader;
 		}
 
 		/**
