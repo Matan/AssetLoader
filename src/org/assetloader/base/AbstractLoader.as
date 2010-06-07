@@ -67,7 +67,7 @@ package org.assetloader.base
 				if(_unit.hasParam(Param.HEADERS))
 					_request.requestHeaders = _unit.getParam(Param.HEADERS);
 			
-				_stats.start();
+				_stats.start(_unit.getParam(Param.WEIGHT));
 				
 				_eventDispatcher = constructLoader();
 				
@@ -129,7 +129,7 @@ package org.assetloader.base
 
 		protected function open_handler(event : Event) : void 
 		{
-			_stats.open(_unit.getParam(Param.WEIGHT));
+			_stats.open();
 			
 			_inProgress = true;
 			

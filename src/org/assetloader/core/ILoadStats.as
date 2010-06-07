@@ -11,13 +11,13 @@ package org.assetloader.core
 		/**
 		 * Records time when invoked. This should be called when you init a loading operation.
 		 */
-		function start() : void
+		function start(bytesTotal : uint = 0) : void
 
 		/**
 		 * Records time difference between start and now to calculated latency.
 		 * @param bytesTotal The total amount of bytes for a loading operation.
 		 */
-		function open(bytesTotal : uint = 0) : void
+		function open() : void
 
 		/**
 		 * Invoke when loading is complete.

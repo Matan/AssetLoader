@@ -12,8 +12,8 @@ package org.assetloader.core
 		 * @param id String param id.
 		 * @return Boolean
 		 * 
-		 * @see org.assetload.core.IAssetParam
-		 * @see org.assetload.base.AssetParam
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
 		 */
 		function hasGlobalParam(id : String) : Boolean
 
@@ -23,8 +23,8 @@ package org.assetloader.core
 		 * @param id String, param id.
 		 * @param value Parameter value.
 		 * 
-		 * @see org.assetload.core.IAssetParam
-		 * @see org.assetload.base.AssetParam
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
 		 */
 		function setGlobalParam(id : String, value : *) : void
 
@@ -34,8 +34,8 @@ package org.assetloader.core
 		 * @param id String, param id.
 		 * @return Parameter value.
 		 * 
-		 * @see org.assetload.core.IAssetParam
-		 * @see org.assetload.base.AssetParam
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
 		 */
 		function getGlobalParam(id : String) : *
 
@@ -44,8 +44,8 @@ package org.assetloader.core
 		 * 
 		 * @param param IAssetParam
 		 * 
-		 * @see org.assetload.core.IAssetParam
-		 * @see org.assetload.base.AssetParam
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
 		 */
 		function addGlobalParam(param : IParam) : void
 
@@ -53,5 +53,15 @@ package org.assetloader.core
 		 * @return IGroupLoader - ILoader instance casted only once to IGroupLoader.
 		 */
 		function get groupLoader() : IGroupLoader 
+
+		/**
+		 * Gets the global parameters added to this group.
+		 * 
+		 * @return Object containing param values.
+		 * 
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
+		 */
+		function get globalParams() : Object
 	}
 }

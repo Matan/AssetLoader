@@ -27,9 +27,11 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		public function start() : void
+		public function start(bytesTotal : uint = 0) : void
 		{
 			_startTime = getTimer();
+			
+			_bytesTotal = bytesTotal;
 			
 			_latency = 0;			_speed = 0;			_averageSpeed = 0;
 			_progress = 0;
@@ -38,10 +40,8 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		public function open(bytesTotal : uint = 0) : void
+		public function open() : void
 		{
-			_bytesTotal = bytesTotal;
-			
 			_openTime = getTimer();
 			
 			_latency = _openTime - _startTime;

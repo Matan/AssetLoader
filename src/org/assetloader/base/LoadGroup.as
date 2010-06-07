@@ -103,5 +103,13 @@ package org.assetloader.base
 		{
 			return _groupLoader;
 		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get globalParams() : Object
+		{
+			return _globalParams;
+		}
 	}
 }

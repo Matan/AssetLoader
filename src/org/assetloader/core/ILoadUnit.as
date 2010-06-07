@@ -20,7 +20,8 @@ package org.assetloader.core
 		 * @param id String param id.
 		 * @return Boolean
 		 * 
-		 * @see org.assetload.core.IAssetParam		 * @see org.assetload.base.AssetParam
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
 		 */
 		function hasParam(id : String) : Boolean
 
@@ -30,8 +31,8 @@ package org.assetloader.core
 		 * @param id String, param id.
 		 * @param value Parameter value.
 		 * 
-		 * @see org.assetload.core.IAssetParam
-		 * @see org.assetload.base.AssetParam
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
 		 */
 		function setParam(id : String, value : *) : void
 
@@ -41,8 +42,8 @@ package org.assetloader.core
 		 * @param id String, param id.
 		 * @return Parameter value.
 		 * 
-		 * @see org.assetload.core.IAssetParam
-		 * @see org.assetload.base.AssetParam
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
 		 */
 		function getParam(id : String) : *
 
@@ -51,8 +52,8 @@ package org.assetloader.core
 		 * 
 		 * @param param IAssetParam
 		 * 
-		 * @see org.assetload.core.IAssetParam
-		 * @see org.assetload.base.AssetParam
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
 		 */
 		function addParam(param:IParam) : void
 
@@ -63,7 +64,7 @@ package org.assetloader.core
 		/**
 		 * @return ILoader instance created according to type.
 		 * 
-		 * @see org.assetload.core.ILoader
+		 * @see org.assetloader.core.ILoader
 		 */
 		function get loader() : ILoader
 
@@ -75,7 +76,7 @@ package org.assetloader.core
 		/**
 		 * @return String of asset type.
 		 * 
-		 * @see org.assetload.base.AssetType
+		 * @see org.assetloader.base.AssetType
 		 */
 		function get type() : String
 
@@ -87,15 +88,15 @@ package org.assetloader.core
 		/**
 		 * @return SmartURL instance created from url.
 		 * 
-		 * @see org.assetload.base.SmartURL
+		 * @see org.assetloader.base.SmartURL
 		 */
 		function get smartUrl() : SmartURL
 
 		/**
 		 * @return Object containing all parameters added to loadUnit.
 		 * 
-		 * @see org.assetload.core.IAssetParam
-		 * @see org.assetload.base.AssetParam
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
 		 */
 		function get params() : Object
 		/**
@@ -108,6 +109,8 @@ package org.assetloader.core
 		 * @return uint
 		 * 
 		 * @see AssetParam.RETRIES
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
 		 */
 		function get retryTally() : uint
 
@@ -116,6 +119,8 @@ package org.assetloader.core
 		 * @param value uint
 		 * 
 		 * @see AssetParam.RETRIES
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
 		 */
 		function set retryTally(value : uint) : void
 	}

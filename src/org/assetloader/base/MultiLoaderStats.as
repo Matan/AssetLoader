@@ -19,10 +19,8 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		override public function open(bytesTotal : uint = 0) : void 
+		override public function open() : void 
 		{
-			_bytesTotal = bytesTotal;
-			
 			_numOpened++;
 			_openTime = getTimer();
 			
