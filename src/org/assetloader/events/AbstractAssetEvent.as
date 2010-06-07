@@ -19,7 +19,7 @@ package org.assetloader.events
 
 		override public function clone() : Event 
 		{
-			return new AbstractAssetEvent(type, id, assetType);
+			return new AbstractAssetEvent(type, id, groupId, assetType);
 		}
 
 		override public function toString() : String 
