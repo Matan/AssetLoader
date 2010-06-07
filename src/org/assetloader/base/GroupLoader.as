@@ -60,6 +60,24 @@ package org.assetloader.base
 			_stats = new MultiLoaderStats();
 		}
 
+		override public function addUnit(unit : ILoadUnit) : ILoader 
+		{
+			var loader : ILoader = super.addUnit(unit);
+			
+			if(group)
+			{
+				var params : Object = group.params;
+			
+				//Apply params when unit is added. Incase unit is added after param was set.
+				for(var id : String in params) 
+				{
+					group.setParam(id, params[id]);
+				}
+			}
+			
+			return loader;
+		}
+
 		/**
 		 * @inheritDoc
 		 */
@@ -89,14 +107,7 @@ package org.assetloader.base
 			
 			sortIdsByPriority();
 			
-			var bytesTotal : uint = 0;
-			var stats : ILoadStats;
-			for(var i : int = 0;i < _numUnits;i++) 
-			{
-				stats = getUnit(_ids[i]).loader.stats;
-				bytesTotal += stats.bytesTotal;
-			}
-			_stats.start(bytesTotal);
+			_stats.start();
 			
 			if(numConnections == 0)
 				numConnections = _numUnits;
@@ -118,6 +129,8 @@ package org.assetloader.base
 				var loader : ILoader = unit.loader;
 				loader.start();
 			}
+			
+			updateTotalBytes();
 		}
 
 		/**

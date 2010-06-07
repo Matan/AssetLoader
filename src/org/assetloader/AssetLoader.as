@@ -1,6 +1,5 @@
 package org.assetloader
 {
-	import org.assetloader.base.AssetType;
 	import org.assetloader.base.GroupLoader;
 	import org.assetloader.base.LoadGroup;
 	import org.assetloader.core.IAssetLoader;
@@ -61,26 +60,6 @@ package org.assetloader
 			
 			return group.groupLoader;
 		}	
-
-		/**
-		 * @inheritDoc
-		 */
-		override public function addUnit(unit : ILoadUnit) : ILoader 
-		{
-			if(unit.type != AssetType.GROUP)
-				return super.addUnit(unit);
-			
-			var groupLoader : IGroupLoader = IGroupLoader(super.addUnit(unit));
-			var group : ILoadGroup = groupLoader.group;
-			var globalParams : Object = group.globalParams;
-			
-			for each(var id : String in globalParams) 
-			{
-				unit.setParam(id, globalParams[id]);
-			}
-			
-			return groupLoader;
-		}
 
 		/**
 		 * @inheritDoc

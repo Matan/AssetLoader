@@ -27,11 +27,9 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		public function start(bytesTotal : uint = 0) : void
+		public function start() : void
 		{
 			_startTime = getTimer();
-			
-			_bytesTotal = bytesTotal;
 			
 			_latency = 0;			_speed = 0;			_averageSpeed = 0;
 			_progress = 0;
@@ -154,6 +152,14 @@ package org.assetloader.base
 		public function get bytesTotal() : uint
 		{
 			return _bytesTotal;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function set bytesTotal(bytesTotal : uint) : void
+		{
+			_bytesTotal = bytesTotal;
 		}
 
 		public function toString() : String 

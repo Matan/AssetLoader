@@ -67,7 +67,7 @@ package org.assetloader.base
 				if(_unit.hasParam(Param.HEADERS))
 					_request.requestHeaders = _unit.getParam(Param.HEADERS);
 			
-				_stats.start(_unit.getParam(Param.WEIGHT));
+				_stats.start();
 				
 				_eventDispatcher = constructLoader();
 				
@@ -153,6 +153,9 @@ package org.assetloader.base
 			dispatchEvent(event);
 		}
 
+		//--------------------------------------------------------------------------------------------------------------------------------//
+		// PROTECTED
+		//--------------------------------------------------------------------------------------------------------------------------------//
 		protected function addListeners(dispatcher : IEventDispatcher) : void
 		{
 			if(dispatcher)
@@ -183,6 +186,9 @@ package org.assetloader.base
 			}
 		}
 
+		//--------------------------------------------------------------------------------------------------------------------------------//
+		// PUBLIC GETTERS/SETTERS
+		//--------------------------------------------------------------------------------------------------------------------------------//
 		/**
 		 * @inheritDoc
 		 */
@@ -194,9 +200,12 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		public function set unit(loadUnit : ILoadUnit) : void
+		public function set unit(unit : ILoadUnit) : void
 		{
-			_unit = loadUnit;
+			_unit = unit;
+			
+			if(_unit.hasParam(Param.WEIGHT))
+				_stats.bytesTotal = _unit.getParam(Param.WEIGHT);
 		}
 
 		/**

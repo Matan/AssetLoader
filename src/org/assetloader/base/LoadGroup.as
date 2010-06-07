@@ -1,6 +1,5 @@
 package org.assetloader.base 
 {
-	import org.assetloader.core.IParam;
 	import org.assetloader.core.IGroupLoader;
 	import org.assetloader.core.ILoadGroup;
 	import org.assetloader.core.ILoadUnit;
@@ -14,7 +13,6 @@ package org.assetloader.base
 	public class LoadGroup extends LoadUnit implements ILoadGroup
 	{
 		protected var _groupLoader : IGroupLoader;
-		protected var _globalParams : Object;
 
 		public function LoadGroup(id : String, units : Array = null, params : Array = null)
 		{
@@ -29,16 +27,15 @@ package org.assetloader.base
 			_type = type;
 			_request = request;
 			_params = {};
-			_globalParams = {};
 			_retryTally = 0;
 			
 			if(params)
 				processParams(params);
 			
+			processType();
+			
 			setParamDefault(Param.RETRIES, 0);
 			setParamDefault(Param.ON_DEMAND, false);
-			
-			processType();
 			
 			_loader.unit = this;
 		}
@@ -61,39 +58,19 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		public function hasGlobalParam(id : String) : Boolean
+		override public function setParam(id : String, value : *) : void
 		{
-			return (_params[id] != undefined);
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function setGlobalParam(id : String, value : *) : void
-		{
-			_globalParams[id] = value;
+			super.setParam(id, value);
 			
-			for each(var unitId : String in _groupLoader.ids) 
+			//Child units must inherit certain params
+			if(id != Param.WEIGHT && id != Param.PRIORITY)
 			{
-				var unit : ILoadUnit = _groupLoader.getUnit(unitId);
-				unit.setParam(id, value);
+				for each(var unitId : String in _groupLoader.ids) 
+				{
+					var unit : ILoadUnit = _groupLoader.getUnit(unitId);
+					unit.setParam(id, value);
+				}
 			}
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function getGlobalParam(id : String) : *
-		{
-			return _globalParams[id];
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function addGlobalParam(param : IParam) : void
-		{
-			setGlobalParam(param.id, param.value);
 		}
 
 		/**
@@ -102,14 +79,6 @@ package org.assetloader.base
 		public function get groupLoader() : IGroupLoader 
 		{
 			return _groupLoader;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get globalParams() : Object
-		{
-			return _globalParams;
 		}
 	}
 }

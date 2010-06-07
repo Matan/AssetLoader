@@ -1,6 +1,7 @@
 package org.assetloader.base
 {
 	import org.assetloader.core.ILoadGroup;
+	import org.assetloader.core.ILoadStats;
 	import org.assetloader.core.ILoadUnit;
 	import org.assetloader.core.ILoader;
 
@@ -63,6 +64,8 @@ package org.assetloader.base
 			
 			addListeners(loader);
 			
+			updateTotalBytes();
+			
 			return loader;
 		}
 
@@ -82,6 +85,8 @@ package org.assetloader.base
 				
 				_numUnits = _ids.length;
 			}
+			
+			updateTotalBytes();
 		}
 
 		/**
@@ -102,6 +107,33 @@ package org.assetloader.base
 			_numUnits = 0;
 			
 			super.destroy();
+		}
+
+		//--------------------------------------------------------------------------------------------------------------------------------//
+		// PROTECTED
+		//--------------------------------------------------------------------------------------------------------------------------------//
+
+		protected function updateTotalBytes() : void
+		{
+			var bytesTotal : uint = 0;
+			
+			var unit : ILoadUnit;			var loader : ILoader;
+			var stats : ILoadStats;
+			
+			for(var i : int = 0;i < _numUnits;i++) 
+			{
+				unit = getUnit(_ids[i]);
+				
+				if(!unit.getParam(Param.ON_DEMAND))
+				{
+					loader = unit.loader;
+					stats = loader.stats;
+				
+					bytesTotal += stats.bytesTotal;
+				}
+			}
+			
+			_stats.bytesTotal = bytesTotal;
 		}
 
 		//--------------------------------------------------------------------------------------------------------------------------------//

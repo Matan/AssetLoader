@@ -31,7 +31,7 @@ package runner.controller
 			groupLoader.numConnections = 0;
 			
 			var group : ILoadGroup = groupLoader.group;
-			group.setGlobalParam(Param.PREVENT_CACHE, true);
+			group.setParam(Param.PREVENT_CACHE, true);
 			
 			groupLoader.addLazy(AssetId.SAMPLE_TXT, host + "sampleTXT.txt");
 			groupLoader.addLazy(AssetId.SAMPLE_JSON, host + "sampleJSON.json");
@@ -42,9 +42,9 @@ package runner.controller
 			
 			var preventCache : Param = new Param(Param.PREVENT_CACHE, true);			var onDemand : Param = new Param(Param.ON_DEMAND, true);
 			
-			loader.addLazy(AssetId.SAMPLE_IMAGE, host + "sampleIMAGE.jpg", AssetType.AUTO, preventCache);
-			loader.addLazy(AssetId.SAMPLE_VIDEO, host + "sampleVIDEO.mp4", AssetType.AUTO, preventCache, onDemand);
-			loader.addLazy(AssetId.SAMPLE_SWF, host + "sampleSWF.swf", AssetType.AUTO, preventCache);
+			loader.addLazy(AssetId.SAMPLE_IMAGE, host + "sampleIMAGE.jpg", AssetType.AUTO, preventCache, new Param(Param.WEIGHT, 328563));
+			loader.addLazy(AssetId.SAMPLE_VIDEO, host + "sampleVIDEO.mp4", AssetType.AUTO, preventCache, onDemand, new Param(Param.WEIGHT, 10034673));
+			loader.addLazy(AssetId.SAMPLE_SWF, host + "sampleSWF.swf", AssetType.AUTO, preventCache, new Param(Param.WEIGHT, 941410));
 						loader.addLazy(AssetId.SAMPLE_ERROR, host + "fileThatDoesNotExist.php");
 			
 			contextView.addChild(new Canvas());
