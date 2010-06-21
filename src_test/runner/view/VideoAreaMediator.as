@@ -25,7 +25,7 @@ package runner.view
 		{
 			var vidLoader : ILoader = loader.getLoader(AssetId.SAMPLE_VIDEO);
 			
-			view.bar.source = vidLoader;
+			view.statsMonitor.attach(vidLoader);
 			
 			eventMap.mapListener(vidLoader, VideoAssetEvent.READY, videoReady_handler, VideoAssetEvent);
 			eventMap.mapListener(view.startBtn, MouseEvent.CLICK, startClick_handler, MouseEvent);

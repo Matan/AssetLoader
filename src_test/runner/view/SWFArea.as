@@ -1,6 +1,6 @@
 package runner.view 
 {
-	import fl.controls.ProgressBar;
+	import runner.utils.StatsMonitor;
 
 	import flash.display.Sprite;
 
@@ -13,21 +13,21 @@ package runner.view
 		protected var _height : Number;
 
 		protected var _swf : Sprite;
-		protected var _bar : ProgressBar;
+		protected var _statsMonitor : StatsMonitor;
 
 		public function SWFArea()
 		{
-			_bar = new ProgressBar();
-			_bar.height = 10;
-			addChild(_bar);
+			_statsMonitor = new StatsMonitor();
+			addChild(_statsMonitor);
 		}
 
 		public function setSize(width : Number, height : Number) : void 
 		{
 			_width = width;
 			_height = height;
-
-			_bar.width = _width;
+			
+			_statsMonitor.x = width / 2 - _statsMonitor.width / 2;
+			_statsMonitor.y = height / 2 - _statsMonitor.height / 2;
 
 			if(_swf)
 			{
@@ -50,10 +50,10 @@ package runner.view
 			
 			addChildAt(_swf, 0);
 		}
-
-		public function get bar() : ProgressBar
+		
+		public function get statsMonitor() : StatsMonitor
 		{
-			return _bar;
+			return _statsMonitor;
 		}
 	}
 }

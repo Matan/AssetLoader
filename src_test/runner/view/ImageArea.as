@@ -1,8 +1,8 @@
 package runner.view 
 {
-	import fl.controls.ProgressBar;
-
 	import mu.display.image.Image;
+
+	import runner.utils.StatsMonitor;
 
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
@@ -13,8 +13,8 @@ package runner.view
 	public class ImageArea extends Sprite 
 	{
 		protected var _image : Image;
-		protected var _bar : ProgressBar;
-		
+		protected var _statsMonitor : StatsMonitor;
+
 		protected var _bitmap : Bitmap;
 
 		public function ImageArea()
@@ -23,15 +23,14 @@ package runner.view
 			_image.keepProportion = false;
 			addChild(_image);
 			
-			_bar = new ProgressBar();
-			_bar.height = 10;
-			addChild(_bar);
+			_statsMonitor = new StatsMonitor();
+			addChild(_statsMonitor);
 		}
 
 		public function setSize(width : Number, height : Number) : void 
 		{
-			_bar.width = width;
 			_image.setSize(width, height);
+			_statsMonitor.x = width / 2 - _statsMonitor.width / 2;			_statsMonitor.y = height / 2 - _statsMonitor.height / 2;
 		}
 
 		public function get bitmap() : Bitmap
@@ -44,10 +43,10 @@ package runner.view
 			_bitmap = bitmap;
 			_image.bitmapData = bitmap.bitmapData;
 		}
-		
-		public function get bar() : ProgressBar
+
+		public function get statsMonitor() : StatsMonitor
 		{
-			return _bar;
+			return _statsMonitor;
 		}
 	}
 }

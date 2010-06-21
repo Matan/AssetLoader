@@ -24,7 +24,7 @@ package runner.view
 			eventMap.mapListener(eventDispatcher, ImageAssetEvent.LOADED, imageLoaded_handler, ImageAssetEvent);
 			
 			var unit:ILoadUnit = loader.getUnit(AssetId.SAMPLE_IMAGE);
-			view.bar.source = unit.loader;
+			view.statsMonitor.attach(unit.loader);
 		}
 
 		protected function imageLoaded_handler(event : ImageAssetEvent) : void 

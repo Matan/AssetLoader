@@ -1,15 +1,14 @@
 package runner.view 
 {
-	import flash.text.TextFieldAutoSize;
-	import flash.text.TextFormat;
-	import flash.text.TextField;
-
 	import fl.controls.Button;
-	import fl.controls.ProgressBarMode;
 	import fl.controls.ProgressBar;
+	import fl.controls.ProgressBarMode;
 
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
 
 	/**
 	 * @author Matan Uberstein
@@ -23,8 +22,8 @@ package runner.view
 		protected var _console : Console;
 
 		protected var _startBtn : Button;		protected var _stopBtn : Button;		protected var _destroyBtn : Button;
-		protected var _statsField : TextField;
-		public function Canvas()
+		protected var _statsField : TextField;
+				public function Canvas()
 		{
 		}
 

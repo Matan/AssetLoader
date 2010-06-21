@@ -24,7 +24,7 @@ package runner.view
 			eventMap.mapListener(eventDispatcher, SWFAssetEvent.LOADED, swfLoaded_handler, SWFAssetEvent);
 			
 			var unit : ILoadUnit = loader.getUnit(AssetId.SAMPLE_SWF);
-			view.bar.source = unit.loader;
+			view.statsMonitor.attach(unit.loader);
 		}
 
 		protected function swfLoaded_handler(event : SWFAssetEvent) : void 
