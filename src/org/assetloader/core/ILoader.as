@@ -48,6 +48,14 @@ package org.assetloader.core
 		function set unit(unit : ILoadUnit) : void
 
 		/**
+		 * Gets the parent loader of this loader.
+		 * @return ILoader
+		 * 
+		 * @see org.assetloader.core.ILoader
+		 */
+		function get parent() : ILoader
+
+		/**
 		 * Gets the current loading stats of loader.
 		 * @return ILoadStats
 		 * @see org.assetloader.core.ILoadStats

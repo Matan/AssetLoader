@@ -11,9 +11,9 @@ package org.assetloader.events
 
 		protected var _data : Object;
 
-		public function JSONAssetEvent(type : String, id : String, groupId : String, assetType : String, data : Object)
+		public function JSONAssetEvent(type : String, id : String, parentId : String, assetType : String, data : Object)
 		{
-			super(type, id, groupId, assetType);
+			super(type, id, parentId, assetType);
 			_data = data;
 		}
 
@@ -24,7 +24,7 @@ package org.assetloader.events
 
 		override public function clone() : Event 
 		{
-			return new JSONAssetEvent(type, id, groupId, assetType, data);
+			return new JSONAssetEvent(type, id, parentId, assetType, data);
 		}
 	}
 }

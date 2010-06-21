@@ -22,14 +22,14 @@ package org.assetloader.events
 
 		public var errorType : String;		public var errorText : String;
 
-		public function AssetLoaderEvent(type : String, id : String = null, groupId : String = null, assetType : String = null)
+		public function AssetLoaderEvent(type : String, id : String = null, parentId : String = null, assetType : String = null)
 		{
-			super(type, id, groupId, assetType);
+			super(type, id, parentId, assetType);
 		}
 
 		override public function clone() : Event 
 		{
-			var event : AssetLoaderEvent = new AssetLoaderEvent(type, id, groupId, assetType);
+			var event : AssetLoaderEvent = new AssetLoaderEvent(type, id, parentId, assetType);
 			
 			event.data = data;
 						event.progress = progress;			event.bytesLoaded = bytesLoaded;			event.bytesTotal = bytesTotal;

@@ -2,9 +2,9 @@ package org.assetloader.base
 {
 	import mu.utils.ToStr;
 
-	import org.assetloader.core.IParam;
 	import org.assetloader.core.ILoadUnit;
 	import org.assetloader.core.ILoader;
+	import org.assetloader.core.IParam;
 	import org.assetloader.events.BinaryAssetEvent;
 	import org.assetloader.events.CSSAssetEvent;
 	import org.assetloader.events.DisplayObjectAssetEvent;
@@ -33,19 +33,21 @@ package org.assetloader.base
 	 */
 	public class LoadUnit implements ILoadUnit
 	{
+		protected var _parent : ILoadUnit;
 		protected var _id : String;
-		protected var _loader : ILoader;
-		protected var _request : URLRequest;		protected var _type : String;		protected var _smartUrl : SmartURL;		protected var _params : Object;
+		protected var _loader : ILoader;		protected var _request : URLRequest;		protected var _type : String;		protected var _smartUrl : SmartURL;
+		protected var _params : Object;
 		protected var _eventClass : Class;
 		protected var _retryTally : uint;
 
-		public function LoadUnit(id : String, request : URLRequest, type : String, params : Array = null) 
+		public function LoadUnit(id : String, request : URLRequest, type : String, params : Array = null, parent : ILoadUnit = null) 
 		{
-			init(id, request, type, params);
+			init(id, request, type, params, parent);
 		}
 
-		protected function init(id : String, request : URLRequest, type : String, params : Array = null) : void
+		protected function init(id : String, request : URLRequest, type : String, params : Array = null, parent : ILoadUnit = null) : void
 		{
+			_parent = parent;
 			_id = id;
 			_request = request;
 			_type = type;
@@ -270,6 +272,14 @@ package org.assetloader.base
 		public function get loader() : ILoader
 		{
 			return _loader;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get parent() : ILoadUnit
+		{
+			return _parent;
 		}
 
 		/**

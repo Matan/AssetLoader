@@ -12,9 +12,9 @@ package org.assetloader.events
 
 		protected var _sound : Sound;
 
-		public function SoundAssetEvent(type : String, id : String, groupId : String, assetType : String, sound : Sound)
+		public function SoundAssetEvent(type : String, id : String, parentId : String, assetType : String, sound : Sound)
 		{
-			super(type, id, groupId, assetType);
+			super(type, id, parentId, assetType);
 			_sound = sound;
 		}
 
@@ -25,7 +25,7 @@ package org.assetloader.events
 
 		override public function clone() : Event 
 		{
-			return new SoundAssetEvent(type, id, groupId, assetType, sound);
+			return new SoundAssetEvent(type, id, parentId, assetType, sound);
 		}
 	}
 }

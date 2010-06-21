@@ -44,7 +44,7 @@ package org.assetloader.base
 		 */
 		public function add(id : String, request : URLRequest, type : String = "AUTO", ...assetParams) : ILoader
 		{
-			return addUnit(new LoadUnit(id, request, type, assetParams));
+			return addUnit(new LoadUnit(id, request, type, assetParams, unit));
 		}
 
 		/**
@@ -168,7 +168,7 @@ package org.assetloader.base
 		 */
 		override public function set unit(value : ILoadUnit) : void 
 		{
-			_unit = value;
+			super.unit = value;
 			_group = ILoadGroup(_unit);
 		}
 

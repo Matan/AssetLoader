@@ -195,7 +195,11 @@ package org.assetloader.loaders
 		{
 			if(hasEventListener(type))
 			{
-				var event : VideoAssetEvent = new VideoAssetEvent(type, _unit.id, null, AssetType.VIDEO, _netStream);
+				var parentId : String;
+				if(_parent)
+					parentId = _parent.unit.id;
+				
+				var event : VideoAssetEvent = new VideoAssetEvent(type, _unit.id, parentId, AssetType.VIDEO, _netStream);
 				event.data = data;
 				return dispatchEvent(event);
 			}

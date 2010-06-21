@@ -22,9 +22,9 @@ package org.assetloader.events
 
 		public var data : Object;
 
-		public function VideoAssetEvent(type : String, id : String, groupId : String, assetType : String, netStream : NetStream)
+		public function VideoAssetEvent(type : String, id : String, parentId : String, assetType : String, netStream : NetStream)
 		{
-			super(type, id, groupId, assetType);
+			super(type, id, parentId, assetType);
 			_netStream = netStream;
 		}
 
@@ -35,7 +35,7 @@ package org.assetloader.events
 
 		override public function clone() : Event 
 		{
-			return new VideoAssetEvent(type, id, groupId, assetType, netStream);
+			return new VideoAssetEvent(type, id, parentId, assetType, netStream);
 		}
 	}
 }

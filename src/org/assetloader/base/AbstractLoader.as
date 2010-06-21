@@ -34,7 +34,7 @@ package org.assetloader.base
 	public class AbstractLoader extends EventDispatcher implements ILoader
 	{
 
-		protected var _unit : ILoadUnit;
+		protected var _parent : ILoader;		protected var _unit : ILoadUnit;
 		protected var _stats : ILoadStats;
 
 		protected var _request : URLRequest;
@@ -204,8 +204,19 @@ package org.assetloader.base
 		{
 			_unit = unit;
 			
+			if(_unit.parent)
+				_parent = _unit.parent.loader;
+			
 			if(_unit.hasParam(Param.WEIGHT))
 				_stats.bytesTotal = _unit.getParam(Param.WEIGHT);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get parent() : ILoader 
+		{
+			return _parent;
 		}
 
 		/**

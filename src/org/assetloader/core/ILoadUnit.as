@@ -55,7 +55,14 @@ package org.assetloader.core
 		 * @see org.assetloader.core.IParam
 		 * @see org.assetloader.base.Param
 		 */
-		function addParam(param:IParam) : void
+		function addParam(param : IParam) : void
+
+		/**
+		 * @return ILoader instance who contains this unit.
+		 * 
+		 * @see org.assetloader.core.ILoader
+		 */
+		function get parent() : ILoadUnit
 
 		/**
 		 * @return String of asset id.

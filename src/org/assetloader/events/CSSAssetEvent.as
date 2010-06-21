@@ -12,9 +12,9 @@ package org.assetloader.events
 
 		protected var _styleSheet : StyleSheet;
 
-		public function CSSAssetEvent(type : String, id : String, groupId : String, assetType : String, styleSheet : StyleSheet)
+		public function CSSAssetEvent(type : String, id : String, parentId : String, assetType : String, styleSheet : StyleSheet)
 		{
-			super(type, id, groupId, assetType);
+			super(type, id, parentId, assetType);
 			_styleSheet = styleSheet;
 		}
 
@@ -25,7 +25,7 @@ package org.assetloader.events
 
 		override public function clone() : Event 
 		{
-			return new CSSAssetEvent(type, id, groupId, assetType, styleSheet);
+			return new CSSAssetEvent(type, id, parentId, assetType, styleSheet);
 		}
 	}
 }

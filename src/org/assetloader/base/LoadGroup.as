@@ -14,15 +14,16 @@ package org.assetloader.base
 	{
 		protected var _groupLoader : IGroupLoader;
 
-		public function LoadGroup(id : String, units : Array = null, params : Array = null)
+		public function LoadGroup(id : String, units : Array = null, params : Array = null, parent : ILoadUnit = null)
 		{
-			super(id, null, AssetType.GROUP, params);
+			super(id, null, AssetType.GROUP, params, parent);
 			if(units)
 				processUnits(units);
 		}
 
-		override protected function init(id : String, request : URLRequest, type : String, params : Array = null) : void 
+		override protected function init(id : String, request : URLRequest, type : String, params : Array = null, parent : ILoadUnit = null) : void
 		{
+			_parent = parent;
 			_id = id;
 			_type = type;
 			_request = request;

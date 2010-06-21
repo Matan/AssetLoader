@@ -12,9 +12,9 @@ package org.assetloader.events
 
 		protected var _displayObject : DisplayObject;
 
-		public function DisplayObjectAssetEvent(type : String, id : String, groupId : String, assetType : String, displayObject : DisplayObject)
+		public function DisplayObjectAssetEvent(type : String, id : String, parentId : String, assetType : String, displayObject : DisplayObject)
 		{
-			super(type, id, groupId, assetType);
+			super(type, id, parentId, assetType);
 			_displayObject = displayObject;
 		}
 
@@ -25,7 +25,7 @@ package org.assetloader.events
 
 		override public function clone() : Event 
 		{
-			return new DisplayObjectAssetEvent(type, id, groupId, assetType, displayObject);
+			return new DisplayObjectAssetEvent(type, id, parentId, assetType, displayObject);
 		}
 	}
 }

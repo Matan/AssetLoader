@@ -18,9 +18,9 @@ package org.assetloader.events
 		public var errorType : String;
 		public var errorText : String;
 
-		public function GroupLoaderEvent(type : String, id : String, groupId : String, assetType : String, assets : Dictionary)
+		public function GroupLoaderEvent(type : String, id : String, parentId : String, assetType : String, assets : Dictionary)
 		{
-			super(type, id, groupId, assetType);
+			super(type, id, parentId, assetType);
 			data = _assets = assets;
 		}
 
@@ -31,7 +31,7 @@ package org.assetloader.events
 
 		override public function clone() : Event 
 		{
-			var event : GroupLoaderEvent = new GroupLoaderEvent(type, id, groupId, assetType, assets);
+			var event : GroupLoaderEvent = new GroupLoaderEvent(type, id, parentId, assetType, assets);
 			event.data = data;
 			return event;
 		}
