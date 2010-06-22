@@ -11,8 +11,8 @@ package org.assetloader.base
 	 */
 	public class LoaderStats implements ILoadStats
 	{
-		protected var _latency : Number;		protected var _speed : Number;		protected var _averageSpeed : Number;
-		protected var _progress : Number;
+		protected var _latency : Number = 0;		protected var _speed : Number = 0;		protected var _averageSpeed : Number = 0;
+		protected var _progress : Number = 0;
 
 		protected var _bytesLoaded : uint = 0;		protected var _bytesTotal : uint = 0;
 
@@ -97,10 +97,10 @@ package org.assetloader.base
 			_openTime = NaN;
 			_updateTime = NaN;
 			
-			_latency = NaN;
-			_speed = NaN;
-			_averageSpeed = NaN;
-			_progress = NaN;
+			_latency = 0;
+			_speed = 0;
+			_averageSpeed = 0;
+			_progress = 0;
 			
 			_bytesLoaded = 0;
 			_bytesTotal = 0;
