@@ -5,8 +5,7 @@ package org.assetloader.loaders
 
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
-	import flash.net.URLLoader;
-	import flash.net.URLLoaderDataFormat;
+	import flash.net.URLStream;
 	import flash.utils.ByteArray;
 
 	[Event(name="httpStatus", type="flash.events.HTTPStatusEvent")]
@@ -27,7 +26,7 @@ package org.assetloader.loaders
 	public class BinaryLoader extends AbstractLoader implements ILoader
 	{
 
-		protected var _loader : URLLoader;
+		protected var _loader : URLStream;
 
 		public function BinaryLoader() 
 		{
@@ -36,8 +35,7 @@ package org.assetloader.loaders
 
 		override protected function constructLoader() : IEventDispatcher 
 		{
-			_loader = new URLLoader();
-			_loader.dataFormat = URLLoaderDataFormat.BINARY;
+			_loader = new URLStream();
 			return _loader;
 		}
 
@@ -69,11 +67,10 @@ package org.assetloader.loaders
 
 		override protected function complete_handler(event : Event) : void 
 		{
-			var ba : ByteArray = new ByteArray();
-			ba.writeBytes(_loader.data);
-			ba.position = 0;
+			var bytes : ByteArray = new ByteArray();
+			_loader.readBytes(bytes);
 			
-			_data = ba;
+			_data = bytes;
 			
 			super.complete_handler(event);
 		}

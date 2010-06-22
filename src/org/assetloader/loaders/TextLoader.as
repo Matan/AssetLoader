@@ -6,7 +6,8 @@ package org.assetloader.loaders
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
-	import flash.net.URLLoader;
+	import flash.net.URLStream;
+	import flash.utils.ByteArray;
 
 	[Event(name="error", type="flash.events.ErrorEvent")]
 
@@ -27,7 +28,7 @@ package org.assetloader.loaders
 	 */
 	public class TextLoader extends AbstractLoader implements ILoader
 	{
-		protected var _loader : URLLoader;
+		protected var _loader : URLStream;
 
 		public function TextLoader() 
 		{
@@ -36,7 +37,7 @@ package org.assetloader.loaders
 
 		override protected function constructLoader() : IEventDispatcher 
 		{
-			_loader = new URLLoader();
+			_loader = new URLStream();
 			return _loader;
 		}
 
@@ -51,7 +52,7 @@ package org.assetloader.loaders
 			{
 				try
 				{
-					_loader.close();	
+					_loader.close();
 				}catch(error : Error)
 				{
 				}
@@ -67,7 +68,10 @@ package org.assetloader.loaders
 
 		override protected function complete_handler(event : Event) : void 
 		{
-			_data = _loader.data;
+			var bytes : ByteArray = new ByteArray();
+			_loader.readBytes(bytes);
+			
+			_data = bytes.toString();
 			
 			var testResult : String = testData(_data);
 			
