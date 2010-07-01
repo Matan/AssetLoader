@@ -177,14 +177,14 @@ package org.assetloader.base
 					break;
 					
 				case AssetType.DISPLAY_OBJECT:
-					setParam(Param.LOADER_CONTEXT, null);
+					setParamDefault(Param.LOADER_CONTEXT, null);
 				
 					_loader = new DisplayObjectLoader();
 					_eventClass = DisplayObjectAssetEvent;
 					break;
 					
 				case AssetType.SWF:
-					setParam(Param.LOADER_CONTEXT, null);
+					setParamDefault(Param.LOADER_CONTEXT, null);
 				
 					_loader = new SWFLoader();
 					_eventClass = SWFAssetEvent;
@@ -192,30 +192,30 @@ package org.assetloader.base
 					
 				case AssetType.IMAGE:
 				
-					setParam(Param.LOADER_CONTEXT, null);
+					setParamDefault(Param.LOADER_CONTEXT, null);
 					
-					setParam(Param.TRANSPARENT, true);
-					setParam(Param.FILL_COLOR, 4.294967295E9);
-					setParam(Param.MATRIX, null);
-					setParam(Param.COLOR_TRANSFROM, null);
-					setParam(Param.BLEND_MODE, null);
-					setParam(Param.CLIP_RECTANGLE, null);
-					setParam(Param.SMOOTHING, false);
-					setParam(Param.PIXEL_SNAPPING, "auto");
+					setParamDefault(Param.TRANSPARENT, true);
+					setParamDefault(Param.FILL_COLOR, 4.294967295E9);
+					setParamDefault(Param.MATRIX, null);
+					setParamDefault(Param.COLOR_TRANSFROM, null);
+					setParamDefault(Param.BLEND_MODE, null);
+					setParamDefault(Param.CLIP_RECTANGLE, null);
+					setParamDefault(Param.SMOOTHING, false);
+					setParamDefault(Param.PIXEL_SNAPPING, "auto");
 					
 					_loader = new ImageLoader();
 					_eventClass = ImageAssetEvent;
 					break;
 					
 				case AssetType.SOUND:
-					setParam(Param.SOUND_LOADER_CONTEXT, null);
+					setParamDefault(Param.SOUND_LOADER_CONTEXT, null);
 				
 					_loader = new SoundLoader();
 					_eventClass = SoundAssetEvent;
 					break;
 					
 				case AssetType.VIDEO:
-					setParam(Param.CHECK_POLICY_FILE, true);
+					setParamDefault(Param.CHECK_POLICY_FILE, true);
 				
 					_loader = new VideoLoader();
 					_eventClass = VideoAssetEvent;
