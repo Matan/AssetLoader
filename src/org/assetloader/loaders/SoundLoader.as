@@ -37,7 +37,7 @@ package org.assetloader.loaders
 
 		override protected function constructLoader() : IEventDispatcher 
 		{
-			_sound = new Sound();
+			_sound = _data = new Sound();
 			return _sound;
 		}
 
@@ -72,25 +72,23 @@ package org.assetloader.loaders
 			_sound = null;
 		}
 
-		override protected function complete_handler(event : Event) : void 
-		{
-			_data = _sound;
-			
-			super.complete_handler(event);
-		}
-
 		override protected function addListeners(dispatcher : IEventDispatcher) : void 
 		{
 			super.addListeners(dispatcher);
 			if(dispatcher)
-				dispatcher.addEventListener(SampleDataEvent.SAMPLE_DATA, dispatchEvent);
+			{
+				dispatcher.addEventListener(Event.ID3, dispatchEvent);				dispatcher.addEventListener(SampleDataEvent.SAMPLE_DATA, dispatchEvent);
+			}
 		}
 
 		override protected function removeListeners(dispatcher : IEventDispatcher) : void 
 		{
 			super.removeListeners(dispatcher);
 			if(dispatcher)
+			{
+				dispatcher.removeEventListener(Event.ID3, dispatchEvent);
 				dispatcher.removeEventListener(SampleDataEvent.SAMPLE_DATA, dispatchEvent);
+			}
 		}
 	}
 }
