@@ -146,6 +146,11 @@ package org.assetloader.base
 		{
 			_stats.done();
 			
+			var progressEvent : ProgressEvent = new ProgressEvent(ProgressEvent.PROGRESS);
+			progressEvent.bytesLoaded = _stats.bytesLoaded;			progressEvent.bytesTotal = _stats.bytesTotal;
+			
+			dispatchEvent(progressEvent);
+			
 			removeListeners(_eventDispatcher);
 			
 			_inProgress = false;

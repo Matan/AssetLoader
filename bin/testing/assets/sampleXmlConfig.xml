@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<loader connections="1" base="http://www.matan.co.za/AssetLoader/testAssets/" >
+	
+	<group id="SAMPLE_GROUP" connections="2" preventCache="false" >
+		<asset id="SAMPLE_TXT" src="sampleTXT.txt" />
+		<asset id="SAMPLE_JSON" src="sampleJSON.json" />
+		<asset id="SAMPLE_XML" src="sampleXML.xml" />
+		<asset id="SAMPLE_CSS" src="sampleCSS.css" />
+		<asset id="SAMPLE_BINARY" src="sampleZIP.zip" weight="3493" />
+		<asset id="SAMPLE_SOUND" src="sampleSOUND.mp3" weight="213 kb" />
+	</group>
+	
+	<params preventCache="true" >
+		<asset id="SAMPLE_IMAGE" src="sampleIMAGE.jpg" weight="328.5 kb" />
+		<asset id="SAMPLE_VIDEO" src="sampleVIDEO.mp4" weight="10 mb" onDemand="true" />
+		<asset id="SAMPLE_SWF" src="sampleSWF.swf" weight="941410" priority="1" />
+	</params>
+	
+	<asset id="SAMPLE_ERROR" src="fileThatDoesNotExist.php" type="image" retries="5" base="/" />
+	
+</loader>
