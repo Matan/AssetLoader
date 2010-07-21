@@ -147,7 +147,7 @@ package org.assetloader.loaders
 				
 				open_handler(new Event(Event.OPEN));
 				
-				dispatchVideoAssetEvent(VideoAssetEvent.READY);
+				dispatchVideoAssetEvent(VideoAssetEvent.READY, _netStream);
 				
 				_hasDispatchedReady = true;
 			}
