@@ -1,5 +1,7 @@
 package org.assetloader.loaders 
 {
+	import flash.events.ErrorEvent;
+
 	import org.assetloader.base.AbstractLoader;
 	import org.assetloader.base.Param;
 	import org.assetloader.base.AssetType;
@@ -161,6 +163,28 @@ package org.assetloader.loaders
 				progress_handler(new ProgressEvent(ProgressEvent.PROGRESS, false, false, _netStream.bytesLoaded, _netStream.bytesTotal));
 		}
 
+		protected function netStatus_handler(event : NetStatusEvent) : void 
+		{
+			var code : String = event.info.code;
+			
+			var errorEvent : ErrorEvent;
+			
+			switch(code)
+			{
+				case "NetStream.Play.StreamNotFound":
+					
+					errorEvent = new IOErrorEvent(IOErrorEvent.IO_ERROR);
+					errorEvent.text = code;
+					error_handler(errorEvent);
+					
+					break;
+					
+				default:
+					dispatchEvent(event);
+					break;
+			}
+		}
+
 		protected function onPlayStatus(data : Object) : void
 		{
 			dispatchVideoAssetEvent(VideoAssetEvent.ON_PLAY_STATUS, data);
@@ -213,7 +237,7 @@ package org.assetloader.loaders
 			{
 				dispatcher.addEventListener(IOErrorEvent.IO_ERROR, error_handler);
 				dispatcher.addEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
-				dispatcher.addEventListener(NetStatusEvent.NET_STATUS, dispatchEvent);
+				dispatcher.addEventListener(NetStatusEvent.NET_STATUS, netStatus_handler);
 			}
 		}
 
@@ -223,7 +247,7 @@ package org.assetloader.loaders
 			{
 				dispatcher.removeEventListener(IOErrorEvent.IO_ERROR, error_handler);
 				dispatcher.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
-				dispatcher.removeEventListener(NetStatusEvent.NET_STATUS, dispatchEvent);
+				dispatcher.removeEventListener(NetStatusEvent.NET_STATUS, netStatus_handler);
 			}
 		}
 	}
