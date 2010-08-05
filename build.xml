@@ -98,8 +98,6 @@
 		<echo>[asdoc] Zipping ${project.doc} folder to ${project.name.versioned}-ASDoc.zip</echo>
 		<zip destfile="${project.bin}/${project.name.versioned}-ASDoc.zip" basedir="${project.doc}" />
 
-		<echo>[asdoc] Deleting ${project.doc} folder</echo>
-		<delete dir="${project.doc}" />
 	</target>
 	
 	<target name="build" depends="compile, asdoc" >
