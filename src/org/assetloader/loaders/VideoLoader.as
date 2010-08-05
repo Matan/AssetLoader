@@ -225,6 +225,7 @@ package org.assetloader.loaders
 				
 				var event : VideoAssetEvent = new VideoAssetEvent(type, _unit.id, parentId, AssetType.VIDEO, _netStream);
 				event.data = data;
+				
 				return dispatchEvent(event);
 			}
 			return false;

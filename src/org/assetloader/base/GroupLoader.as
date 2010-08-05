@@ -278,26 +278,32 @@ package org.assetloader.base
 
 		override protected function addListeners(dispatcher : IEventDispatcher) : void
 		{
-			dispatcher.addEventListener(Event.OPEN, open_handler);
-			dispatcher.addEventListener(ProgressEvent.PROGRESS, progress_handler);
-			dispatcher.addEventListener(Event.COMPLETE, complete_handler);
+			if(dispatcher)
+			{
+				dispatcher.addEventListener(Event.OPEN, open_handler);
+				dispatcher.addEventListener(ProgressEvent.PROGRESS, progress_handler);
+				dispatcher.addEventListener(Event.COMPLETE, complete_handler);
 			
-			dispatcher.addEventListener(IOErrorEvent.IO_ERROR, error_handler);
-			dispatcher.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error_handler);
-			dispatcher.addEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
-			dispatcher.addEventListener(ErrorEvent.ERROR, error_handler);
+				dispatcher.addEventListener(IOErrorEvent.IO_ERROR, error_handler);
+				dispatcher.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error_handler);
+				dispatcher.addEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
+				dispatcher.addEventListener(ErrorEvent.ERROR, error_handler);
+			}
 		}
 
 		override protected function removeListeners(dispatcher : IEventDispatcher) : void
 		{
-			dispatcher.removeEventListener(Event.OPEN, open_handler);
-			dispatcher.removeEventListener(ProgressEvent.PROGRESS, progress_handler);
-			dispatcher.removeEventListener(Event.COMPLETE, complete_handler);
+			if(dispatcher)
+			{
+				dispatcher.removeEventListener(Event.OPEN, open_handler);
+				dispatcher.removeEventListener(ProgressEvent.PROGRESS, progress_handler);
+				dispatcher.removeEventListener(Event.COMPLETE, complete_handler);
 			
-			dispatcher.removeEventListener(IOErrorEvent.IO_ERROR, error_handler);
-			dispatcher.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, error_handler);
-			dispatcher.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
-			dispatcher.removeEventListener(ErrorEvent.ERROR, error_handler);
+				dispatcher.removeEventListener(IOErrorEvent.IO_ERROR, error_handler);
+				dispatcher.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, error_handler);
+				dispatcher.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, error_handler);
+				dispatcher.removeEventListener(ErrorEvent.ERROR, error_handler);
+			}
 		}
 
 		//--------------------------------------------------------------------------------------------------------------------------------//

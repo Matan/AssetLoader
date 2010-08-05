@@ -157,13 +157,15 @@ package org.assetloader
 		override protected function addListeners(dispatcher : IEventDispatcher) : void 
 		{
 			super.addListeners(dispatcher);
-			dispatcher.addEventListener(GroupLoaderEvent.ASSET_LOADED, assetLoaded_handler);
+			if(dispatcher)
+				dispatcher.addEventListener(GroupLoaderEvent.ASSET_LOADED, assetLoaded_handler);
 		}
 
 		override protected function removeListeners(dispatcher : IEventDispatcher) : void 
 		{
 			super.removeListeners(dispatcher);
-			dispatcher.removeEventListener(GroupLoaderEvent.ASSET_LOADED, assetLoaded_handler);
+			if(dispatcher)
+				dispatcher.removeEventListener(GroupLoaderEvent.ASSET_LOADED, assetLoaded_handler);
 		}
 
 		//--------------------------------------------------------------------------------------------------------------------------------//
