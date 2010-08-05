@@ -1,5 +1,7 @@
 /.settings/*
 
+/doc/*
+
 .actionScriptProperties
 .flexProperties
 .flexLibProperties
