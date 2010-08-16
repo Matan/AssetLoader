@@ -1,5 +1,6 @@
 package org.assetloader
 {
+	import org.assetloader.base.config.ConfigVO;
 	import org.assetloader.base.GroupLoader;
 	import org.assetloader.base.LoadGroup;
 	import org.assetloader.core.IAssetLoader;
@@ -20,7 +21,8 @@ package org.assetloader
 
 	[Event(name="PROGRESS", type="org.assetloader.events.AssetLoaderEvent")]
 
-	[Event(name="ERROR", type="org.assetloader.events.AssetLoaderEvent")]
+	[Event(name="ERROR", type="org.assetloader.events.AssetLoaderEvent")]
+	[Event(name="CONFIG_LOADED", type="org.assetloader.events.AssetLoaderEvent")]
 
 	[Event(name="BINARY_LOADED", type="org.assetloader.events.BinaryAssetEvent")]
 	[Event(name="CSS_LOADED", type="org.assetloader.events.CSSAssetEvent")]
@@ -153,7 +155,11 @@ package org.assetloader
 			return dispatchEvent(event);
 		}
 
-		
+		override protected function dispatchConfigLoaded() : void 
+		{
+			dispatchEvent(new AssetLoaderEvent(AssetLoaderEvent.CONFIG_LOADED));
+		}
+
 		override protected function addListeners(dispatcher : IEventDispatcher) : void 
 		{
 			super.addListeners(dispatcher);
@@ -166,6 +172,26 @@ package org.assetloader
 			super.removeListeners(dispatcher);
 			if(dispatcher)
 				dispatcher.removeEventListener(GroupLoaderEvent.ASSET_LOADED, assetLoaded_handler);
+		}
+
+		override protected function addConfigVo(configVo : ConfigVO, params : Array) : void 
+		{
+			if(configVo.parentId)
+			{
+				var groupLoader : IGroupLoader;
+				
+				if(!hasGroup(configVo.parentId))
+				{
+					groupLoader = addGroup(configVo.parentId);
+					groupLoader.numConnections = configVo.connections;
+				}
+				else
+					groupLoader = getGroupLoader(configVo.parentId);
+				
+				groupLoader.addLazy(configVo.id, configVo.base + configVo.src, configVo.type, params);
+			}
+			else
+				super.addConfigVo(configVo, params);
 		}
 
 		//--------------------------------------------------------------------------------------------------------------------------------//

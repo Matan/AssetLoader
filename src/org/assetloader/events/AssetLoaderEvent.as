@@ -13,6 +13,7 @@ package org.assetloader.events
 		public static const CONNECTION_OPENED : String = "CONNECTION_OPENED";
 		public static const PROGRESS : String = "PROGRESS";		public static const COMPLETE : String = "COMPLETE";
 		public static const ASSET_LOADED : String = "ASSET_LOADED";
+		public static const CONFIG_LOADED : String = "CONFIG_LOADED";
 
 		public var data : *;
 

@@ -1,8 +1,9 @@
 package runner 
 {
-	import runner.controller.AddGroupSampleCommand;
+	import runner.controller.AddConfigXmlCommand;
 	import runner.controller.BinaryLoadedCommand;
 	import runner.controller.CSSLoadedCommand;
+	import runner.controller.ConfigLoadedCommand;
 	import runner.controller.GroupLoadedCommand;
 	import runner.controller.JSONLoadedCommand;
 	import runner.controller.LoaderErrorCommand;
@@ -48,8 +49,8 @@ package runner
 
 		override public function startup() : void 
 		{
-			//commandMap.mapEvent(ContextEvent.STARTUP_COMPLETE, AddLazySampleCommand, ContextEvent);			commandMap.mapEvent(ContextEvent.STARTUP_COMPLETE, AddGroupSampleCommand, ContextEvent);
-			
+			//commandMap.mapEvent(ContextEvent.STARTUP_COMPLETE, AddLazySampleCommand, ContextEvent, true);			//commandMap.mapEvent(ContextEvent.STARTUP_COMPLETE, AddGroupSampleCommand, ContextEvent, true);			commandMap.mapEvent(ContextEvent.STARTUP_COMPLETE, AddConfigXmlCommand, ContextEvent, true);
+						commandMap.mapEvent(AssetLoaderEvent.CONFIG_LOADED, ConfigLoadedCommand, AssetLoaderEvent, true);
 			commandMap.mapEvent(AssetLoaderEvent.ERROR, LoaderErrorCommand, AssetLoaderEvent);
 			
 			commandMap.mapEvent(GroupLoaderEvent.LOADED, GroupLoadedCommand, GroupLoaderEvent);			commandMap.mapEvent(TextAssetEvent.LOADED, TextLoadedCommand, TextAssetEvent);			commandMap.mapEvent(JSONAssetEvent.LOADED, JSONLoadedCommand, JSONAssetEvent);			commandMap.mapEvent(XMLAssetEvent.LOADED, XMLLoadedCommand, XMLAssetEvent);			commandMap.mapEvent(CSSAssetEvent.LOADED, CSSLoadedCommand, CSSAssetEvent);			commandMap.mapEvent(BinaryAssetEvent.LOADED, BinaryLoadedCommand, BinaryAssetEvent);			commandMap.mapEvent(SoundAssetEvent.LOADED, SoundLoadedCommand, SoundAssetEvent);

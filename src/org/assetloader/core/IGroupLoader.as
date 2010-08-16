@@ -65,6 +65,15 @@ package org.assetloader.core
 		function addUnit(unit : ILoadUnit) : ILoader
 
 		/**
+		 * Adds multiple assets to the loading queue. Once invoked the an implematation of the IConfigParser is constructed.
+		 * 
+		 * @param config String, If a url is passed, the file will be loaded first and then IConfigParser will convert string into required type.
+		 * 
+		 * @see #configParserClass
+		 */
+		function addConfig(config : String) : void
+
+		/**
 		 * Removes asset from queue and destroys it's ILoader instance.
 		 * 
 		 * @param id Unique String that identifies asset.
@@ -177,5 +186,25 @@ package org.assetloader.core
 		 * @param value int
 		 */
 		function set numConnections(value : int) : void
+
+		/**
+		 * Gets the config parser class.
+		 * 
+		 * @default org.assetloader.base.config.XmlConfigParser
+		 * 
+		 * @return Class
+		 * 
+		 * @see org.assetloader.core.IConfigParser
+		 */
+		function get configParserClass() : Class 
+
+		/**
+		 * Sets the config parser class. This class must implement IConfigParser.
+		 * 
+		 * @default org.assetloader.base.config.XmlConfigParser
+		 * 
+		 * @see org.assetloader.core.IConfigParser
+		 */
+		function set configParserClass(value : Class) : void 
 	}
 }

@@ -8,7 +8,8 @@ package org.assetloader.events
 	 */
 	public class GroupLoaderEvent extends AbstractAssetEvent 
 	{
-		public static const ASSET_LOADED : String = "ASSET_LOADED";		public static const LOADED : String = "GROUP_LOADED";
+		public static const ASSET_LOADED : String = "ASSET_LOADED";		public static const CONFIG_LOADED : String = "CONFIG_LOADED";
+		public static const LOADED : String = "GROUP_LOADED";
 		public static const ERROR : String = "GROUP_ERROR";
 
 		protected var _assets : Dictionary;
@@ -18,7 +19,7 @@ package org.assetloader.events
 		public var errorType : String;
 		public var errorText : String;
 
-		public function GroupLoaderEvent(type : String, id : String, parentId : String, assetType : String, assets : Dictionary)
+		public function GroupLoaderEvent(type : String, id : String = null, parentId : String = null, assetType : String = null, assets : Dictionary = null)
 		{
 			super(type, id, parentId, assetType);
 			data = _assets = assets;

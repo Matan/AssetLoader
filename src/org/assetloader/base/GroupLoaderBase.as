@@ -1,5 +1,8 @@
 package org.assetloader.base
 {
+	import org.assetloader.base.config.ConfigVO;
+	import org.assetloader.base.config.XmlConfigParser;
+	import org.assetloader.core.IConfigParser;
 	import org.assetloader.core.ILoadGroup;
 	import org.assetloader.core.ILoadStats;
 	import org.assetloader.core.ILoadUnit;
@@ -18,6 +21,9 @@ package org.assetloader.base
 		protected var _assets : Dictionary;
 		protected var _units : Dictionary;
 		protected var _ids : Array;
+
+		protected var _configParserClass : Class = XmlConfigParser;
+		protected var _configParser : IConfigParser;
 
 		protected var _numUnits : int;
 		protected var _numConnections : int = 3;
@@ -67,6 +73,34 @@ package org.assetloader.base
 			updateTotalBytes();
 			
 			return loader;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function addConfig(config : String) : void
+		{
+			var configVos : Array = configParser.parse(config);
+			if(configVos)
+			{
+				var aL : int = configVos.length;
+				for(var i : int = 0;i < aL;i++) 
+				{
+					var configVo : ConfigVO = configVos[i];
+					
+					var params : Array = [];
+				
+					if(!isNaN(configVo.priority))
+						params.push(new Param(Param.PRIORITY, configVo.priority));
+				
+					params.push(new Param(Param.WEIGHT, configVo.weight));
+					params.push(new Param(Param.RETRIES, configVo.retries));
+					params.push(new Param(Param.ON_DEMAND, configVo.onDemand));
+					params.push(new Param(Param.PREVENT_CACHE, configVo.preventCache));
+				
+					addConfigVo(configVo, params);
+				}
+			}
 		}
 
 		/**
@@ -134,6 +168,20 @@ package org.assetloader.base
 			}
 			
 			_stats.bytesTotal = bytesTotal;
+		}
+
+		protected function addConfigVo(configVo : ConfigVO, params : Array) : void
+		{
+			addLazy(configVo.id, configVo.base + configVo.src, configVo.type, params);
+		}
+
+		protected function get configParser() : IConfigParser 
+		{
+			if(_configParser)
+				return _configParser;
+			
+			_configParser = new _configParserClass();
+			return _configParser;
 		}
 
 		//--------------------------------------------------------------------------------------------------------------------------------//
@@ -247,6 +295,22 @@ package org.assetloader.base
 		public function get numUnits() : int
 		{
 			return _numUnits;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get configParserClass() : Class 
+		{
+			return _configParserClass;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function set configParserClass(value : Class) : void 
+		{
+			_configParserClass = value;
 		}
 	}
 }

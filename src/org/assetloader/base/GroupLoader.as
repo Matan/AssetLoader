@@ -18,6 +18,8 @@ package org.assetloader.base
 
 	[Event(name="ERROR", type="org.assetloader.events.GroupLoaderEvent")]
 
+	[Event(name="CONFIG_LOADED", type="org.assetloader.events.GroupLoaderEvent")]
+
 	[Event(name="progress", type="flash.events.ProgressEvent")]
 
 	[Event(name="complete", type="flash.events.Event")]
@@ -76,6 +78,21 @@ package org.assetloader.base
 			}
 			
 			return loader;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		override public function addConfig(data : String) : void 
+		{
+			if(!configParser.isValid(data))
+			{
+				var loader : ILoader = addLazy(data, data, AssetType.TEXT, new Param(Param.PREVENT_CACHE, true));
+				loader.addEventListener(Event.COMPLETE, configLoader_complete_handler);
+				startUnit(data);
+			}
+			else
+				super.addConfig(data);
 		}
 
 		/**
@@ -276,6 +293,15 @@ package org.assetloader.base
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
 
+		protected function dispatchConfigLoaded() : void
+		{
+			var parentId : String = null;
+			if(unit.parent)
+				parentId = unit.parent.id;
+			
+			dispatchEvent(new GroupLoaderEvent(GroupLoaderEvent.CONFIG_LOADED, group.id, parentId, null, _assets));
+		}
+
 		override protected function addListeners(dispatcher : IEventDispatcher) : void
 		{
 			if(dispatcher)
@@ -377,6 +403,18 @@ package org.assetloader.base
 			}
 			else
 				startNextUnit();
+		}
+
+		protected function configLoader_complete_handler(event : Event) : void 
+		{
+			var loader : ILoader = ILoader(event.target);
+			loader.removeEventListener(Event.COMPLETE, configLoader_complete_handler);
+			
+			addConfig(loader.data);
+			
+			dispatchConfigLoaded();
+			
+			remove(loader.unit.id);
 		}
 	}
 }
