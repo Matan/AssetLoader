@@ -59,7 +59,7 @@ package org.assetloader.base.config
 				switch(String(node.name())) 
 				{
 					case "asset" :
-						assets.push(parseAssetNode(node, parent));
+						assets.push(parseAsset(node, parent));
 						break;
 					default :
 						assets.push.apply(null, parseXml(node, parent));
@@ -70,7 +70,7 @@ package org.assetloader.base.config
 			return assets;
 		}
 
-		protected function parseAssetNode(xml : XML, parent : ConfigVO) : ConfigVO
+		protected function parseAsset(xml : XML, parent : ConfigVO) : ConfigVO
 		{
 			var asset : ConfigVO = new ConfigVO();
 			
@@ -80,7 +80,7 @@ package org.assetloader.base.config
 			asset.src = (xml.@src || "");
 			asset.type = (xml.@type || parent.type);
 			asset.retries = xml.@retries || parent.retries;
-			asset.weight = parseWeightString(xml.@weight);
+			asset.weight = convertWeight(xml.@weight);
 			asset.priority = xml.@priority || NaN;
 			asset.onDemand = toBoolean(xml.@onDemand, parent.onDemand);
 			asset.preventCache = toBoolean(xml.@preventCache, parent.preventCache);
@@ -106,7 +106,7 @@ package org.assetloader.base.config
 			return child;
 		}
 
-		protected function parseWeightString(str : String) : uint
+		protected function convertWeight(str : String) : uint
 		{
 			if(!str)
 				return 0;
