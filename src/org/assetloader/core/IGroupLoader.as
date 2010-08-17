@@ -71,7 +71,7 @@ package org.assetloader.core
 		 * 
 		 * @see #configParserClass
 		 */
-		function addConfig(config : String) : void
+		function addConfig(data : String) : void
 
 		/**
 		 * Removes asset from queue and destroys it's ILoader instance.

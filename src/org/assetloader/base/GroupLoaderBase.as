@@ -17,14 +17,11 @@ package org.assetloader.base
 	public class GroupLoaderBase extends AbstractLoader
 	{
 		protected var _group : ILoadGroup;
-
 		protected var _assets : Dictionary;
 		protected var _units : Dictionary;
 		protected var _ids : Array;
-
 		protected var _configParserClass : Class = XmlConfigParser;
 		protected var _configParser : IConfigParser;
-
 		protected var _numUnits : int;
 		protected var _numConnections : int = 3;
 
@@ -33,7 +30,7 @@ package org.assetloader.base
 			_assets = new Dictionary(true);
 			_units = new Dictionary(true);
 			_ids = [];
-			
+
 			super();
 		}
 
@@ -60,18 +57,18 @@ package org.assetloader.base
 		{
 			_units[unit.id] = unit;
 			_ids.push(unit.id);
-			
+
 			_numUnits = _ids.length;
-			
+
 			if(!unit.hasParam(Param.PRIORITY))
 				unit.setParam(Param.PRIORITY, -(_numUnits - 1));
-			
+
 			var loader : ILoader = unit.loader;
-			
+
 			addListeners(loader);
-			
+
 			updateTotalBytes();
-			
+
 			return loader;
 		}
 
@@ -80,24 +77,32 @@ package org.assetloader.base
 		 */
 		public function addConfig(config : String) : void
 		{
-			var configVos : Array = configParser.parse(config);
+			try
+			{
+				var configVos : Array = configParser.parse(config);
+			}
+			catch(error : Error)
+			{
+				throw new AssetLoaderError(AssetLoaderError.COULD_NOT_PARSE_CONFIG + error.message, error.errorID);
+			}
+			
 			if(configVos)
 			{
 				var aL : int = configVos.length;
-				for(var i : int = 0;i < aL;i++) 
+				for(var i : int = 0;i < aL;i++)
 				{
 					var configVo : ConfigVO = configVos[i];
-					
+
 					var params : Array = [];
-				
+
 					if(!isNaN(configVo.priority))
 						params.push(new Param(Param.PRIORITY, configVo.priority));
-				
+
 					params.push(new Param(Param.WEIGHT, configVo.weight));
 					params.push(new Param(Param.RETRIES, configVo.retries));
 					params.push(new Param(Param.ON_DEMAND, configVo.onDemand));
 					params.push(new Param(Param.PREVENT_CACHE, configVo.preventCache));
-				
+
 					addConfigVo(configVo, params);
 				}
 			}
@@ -114,12 +119,12 @@ package org.assetloader.base
 				_ids.splice(_ids.indexOf(id), 1);
 				delete _units[id];
 				delete _assets[id];
-				
+
 				loader.destroy();
-				
+
 				_numUnits = _ids.length;
 			}
-			
+
 			updateTotalBytes();
 		}
 
@@ -131,42 +136,41 @@ package org.assetloader.base
 			var id : String;
 			while(id = _ids.pop())
 			{
-				
 				var loader : ILoader = getLoader(id);
 				delete _units[id];
 				delete _assets[id];
-				
+
 				loader.destroy();
 			}
 			_numUnits = 0;
-			
+
 			super.destroy();
 		}
 
-		//--------------------------------------------------------------------------------------------------------------------------------//
+		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PROTECTED
-		//--------------------------------------------------------------------------------------------------------------------------------//
-
+		// --------------------------------------------------------------------------------------------------------------------------------//
 		protected function updateTotalBytes() : void
 		{
 			var bytesTotal : uint = 0;
-			
-			var unit : ILoadUnit;			var loader : ILoader;
+
+			var unit : ILoadUnit;
+			var loader : ILoader;
 			var stats : ILoadStats;
-			
-			for(var i : int = 0;i < _numUnits;i++) 
+
+			for(var i : int = 0;i < _numUnits;i++)
 			{
 				unit = getUnit(_ids[i]);
-				
+
 				if(!unit.getParam(Param.ON_DEMAND))
 				{
 					loader = unit.loader;
 					stats = loader.stats;
-				
+
 					bytesTotal += stats.bytesTotal;
 				}
 			}
-			
+
 			_stats.bytesTotal = bytesTotal;
 		}
 
@@ -175,18 +179,18 @@ package org.assetloader.base
 			addLazy(configVo.id, configVo.base + configVo.src, configVo.type, params);
 		}
 
-		protected function get configParser() : IConfigParser 
+		protected function get configParser() : IConfigParser
 		{
 			if(_configParser)
 				return _configParser;
-			
+
 			_configParser = new _configParserClass();
 			return _configParser;
 		}
 
-		//--------------------------------------------------------------------------------------------------------------------------------//
+		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PUBLIC GETTERS/SETTERS
-		//--------------------------------------------------------------------------------------------------------------------------------//
+		// --------------------------------------------------------------------------------------------------------------------------------//
 		/**
 		 * @inheritDoc
 		 */
@@ -206,7 +210,7 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		public function get group() : ILoadGroup 
+		public function get group() : ILoadGroup
 		{
 			return _group;
 		}
@@ -214,7 +218,7 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		override public function set unit(value : ILoadUnit) : void 
+		override public function set unit(value : ILoadUnit) : void
 		{
 			super.unit = value;
 			_group = ILoadGroup(_unit);
@@ -284,7 +288,7 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		public function get ids() : Array 
+		public function get ids() : Array
 		{
 			return _ids;
 		}
@@ -300,7 +304,7 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		public function get configParserClass() : Class 
+		public function get configParserClass() : Class
 		{
 			return _configParserClass;
 		}
@@ -308,7 +312,7 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		public function set configParserClass(value : Class) : void 
+		public function set configParserClass(value : Class) : void
 		{
 			_configParserClass = value;
 		}

@@ -1,8 +1,8 @@
 package org.assetloader
 {
-	import org.assetloader.base.config.ConfigVO;
 	import org.assetloader.base.GroupLoader;
 	import org.assetloader.base.LoadGroup;
+	import org.assetloader.base.config.ConfigVO;
 	import org.assetloader.core.IAssetLoader;
 	import org.assetloader.core.IGroupLoader;
 	import org.assetloader.core.ILoadGroup;
@@ -158,6 +158,11 @@ package org.assetloader
 		override protected function dispatchConfigLoaded() : void 
 		{
 			dispatchEvent(new AssetLoaderEvent(AssetLoaderEvent.CONFIG_LOADED));
+		}
+		
+		override protected function dispatchConfigError() : void 
+		{
+			dispatchEvent(new AssetLoaderEvent(AssetLoaderEvent.CONFIG_ERROR));
 		}
 
 		override protected function addListeners(dispatcher : IEventDispatcher) : void 

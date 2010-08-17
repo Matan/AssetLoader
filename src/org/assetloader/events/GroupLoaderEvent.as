@@ -8,7 +8,9 @@ package org.assetloader.events
 	 */
 	public class GroupLoaderEvent extends AbstractAssetEvent 
 	{
-		public static const ASSET_LOADED : String = "ASSET_LOADED";		public static const CONFIG_LOADED : String = "CONFIG_LOADED";
+		public static const CONFIG_LOADED : String = "CONFIG_LOADED";		public static const CONFIG_ERROR : String = "CONFIG_ERROR";
+		
+		public static const ASSET_LOADED : String = "ASSET_LOADED";
 		public static const LOADED : String = "GROUP_LOADED";
 		public static const ERROR : String = "GROUP_ERROR";
 

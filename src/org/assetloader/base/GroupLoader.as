@@ -301,6 +301,14 @@ package org.assetloader.base
 			
 			dispatchEvent(new GroupLoaderEvent(GroupLoaderEvent.CONFIG_LOADED, group.id, parentId, null, _assets));
 		}
+		
+		protected function dispatchConfigError() : void
+		{
+			var parentId : String = null;
+			if(unit.parent)
+				parentId = unit.parent.id;
+			
+			dispatchEvent(new GroupLoaderEvent(GroupLoaderEvent.CONFIG_ERROR, group.id, parentId, null, _assets));		}
 
 		override protected function addListeners(dispatcher : IEventDispatcher) : void
 		{
@@ -410,7 +418,10 @@ package org.assetloader.base
 			var loader : ILoader = ILoader(event.target);
 			loader.removeEventListener(Event.COMPLETE, configLoader_complete_handler);
 			
-			addConfig(loader.data);
+			if(!configParser.isValid(loader.data))
+				dispatchConfigError();
+			else
+				super.addConfig(loader.data);
 			
 			dispatchConfigLoaded();
 			
