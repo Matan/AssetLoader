@@ -63,13 +63,14 @@ package org.assetloader.base
 		{
 			super.setParam(id, value);
 			
-			//Child units must inherit certain params
-			if(id != Param.WEIGHT && id != Param.PRIORITY)
+			// Child units must inherit certain params
+			if(id != Param.WEIGHT && id != Param.PRIORITY && id != Param.ON_DEMAND)
 			{
 				for each(var unitId : String in _groupLoader.ids) 
 				{
 					var unit : ILoadUnit = _groupLoader.getUnit(unitId);
-					unit.setParam(id, value);
+					if(unit)
+						unit.setParam(id, value);
 				}
 			}
 		}
