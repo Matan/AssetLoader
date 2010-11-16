@@ -81,7 +81,15 @@ package org.assetloader.core
 		 * 
 		 * @return Boolean
 		 */
-		function get loaded() : Boolean
+		function get loaded() : Boolean
+		
+		/**
+		 * True if the loader has failed after the set amount of retries.
+		 * 
+		 * @default false;
+		 * @return Boolean
+		 */
+		function get failed() : Boolean
 		/**
 		 * @return Data that was returned after loading operation completed.
 		 */
@@ -164,16 +172,6 @@ package org.assetloader.core
 		 * @see org.assetloader.base.Param
 		 */
 		function get retryTally() : uint
-
-		/**
-		 * Sets the amount of times the loading operation failed and retried.
-		 * @param value uint
-		 * 
-		 * @see AssetParam.RETRIES
-		 * @see org.assetloader.core.IParam
-		 * @see org.assetloader.base.Param
-		 */
-		function set retryTally(value : uint) : void
 		
 		function get onError() : ErrorSignal
 

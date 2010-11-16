@@ -21,7 +21,7 @@ package org.assetloader.base
 		/**
 		 * Amount of times the loading is retried.
 		 * 
-		 * <p>Use: All asset types.</p>
+		 * <p>Use: All asset types except Group.</p>
 		 * <p>Type: <code>uint</code></p>
 		 * <p>Default: 3</p>
 		 */		public static const RETRIES : String = "RETRIES";

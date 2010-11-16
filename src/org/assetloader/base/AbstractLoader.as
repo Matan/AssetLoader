@@ -39,7 +39,7 @@ package org.assetloader.base
 		protected var _invoked : Boolean;
 		protected var _inProgress : Boolean;
 		protected var _stopped : Boolean;
-		protected var _loaded : Boolean;
+		protected var _loaded : Boolean;		protected var _failed : Boolean;
 
 		protected var _data : *;
 
@@ -282,9 +282,9 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
-		public function set retryTally(value : uint) : void
+		public function get failed() : Boolean
 		{
-			_retryTally = value;
+			return _failed;
 		}
 
 		// --------------------------------------------------------------------------------------------------------------------------------//

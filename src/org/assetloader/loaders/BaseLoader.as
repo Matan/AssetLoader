@@ -1,6 +1,7 @@
 package org.assetloader.loaders
 {
 	import org.assetloader.base.AbstractLoader;
+	import org.assetloader.base.Param;
 	import org.assetloader.core.ILoader;
 
 	import flash.events.ErrorEvent;
@@ -63,9 +64,10 @@ package org.assetloader.loaders
 		{
 			removeListeners(_eventDispatcher);
 			_eventDispatcher = null;
-			
+
 			super.stop();
 		}
+
 		/**
 		 * @inheritDoc
 		 */
@@ -73,7 +75,7 @@ package org.assetloader.loaders
 		{
 			removeListeners(_eventDispatcher);
 			_eventDispatcher = null;
-			
+
 			super.destroy();
 		}
 
@@ -82,9 +84,16 @@ package org.assetloader.loaders
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		protected function error_handler(event : ErrorEvent) : void
 		{
-			removeListeners(_eventDispatcher);
-
-			_onError.dispatch(event.type, event.text);
+			if(_retryTally < getParam(Param.RETRIES))
+			{
+				_retryTally++;
+				start();
+			}
+			else
+			{
+				removeListeners(_eventDispatcher);
+				_onError.dispatch(event.type, event.text);
+			}
 		}
 
 		protected function httpStatus_handler(event : HTTPStatusEvent) : void

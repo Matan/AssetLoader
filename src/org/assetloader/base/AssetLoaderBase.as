@@ -37,7 +37,7 @@ package org.assetloader.base
 
 			super(id, AssetType.GROUP);
 		}
-		
+
 		override protected function initSignals() : void
 		{
 			super.initSignals();
@@ -100,7 +100,7 @@ package org.assetloader.base
 			}
 
 			updateTotalBytes();
-			
+
 			loader.onRemovedFromParent.dispatch(this);
 
 			return loader;

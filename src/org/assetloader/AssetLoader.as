@@ -188,7 +188,7 @@ package org.assetloader
 				{
 					var loader : ILoader = getLoader(_ids[i]);
 
-					if(!loader.loaded && loader.retryTally <= loader.getParam(Param.RETRIES) && !loader.getParam(Param.ON_DEMAND))
+					if(!loader.loaded && !loader.failed && !loader.getParam(Param.ON_DEMAND))
 					{
 						if(!loader.invoked || (loader.invoked && loader.stopped))
 						{
@@ -212,20 +212,9 @@ package org.assetloader
 
 		override protected function error_handler(signal : ErrorSignal) : void
 		{
-			var loader : ILoader = signal.loader;
-
-			if(loader.retryTally < loader.getParam(Param.RETRIES))
-			{
-				loader.retryTally++;
-				startLoader(loader.id);
-			}
-			else
-			{
-				_onChildError.dispatch(signal.type, signal.message, signal.loader);
-				super.error_handler(signal);
-
-				startNextLoader();
-			}
+			_onChildError.dispatch(signal.type, signal.message, signal.loader);
+			super.error_handler(signal);
+			startNextLoader();
 		}
 
 		override protected function complete_handler(signal : LoaderSignal, data : * = null) : void
