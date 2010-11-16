@@ -1,6 +1,7 @@
 package org.assetloader.loaders 
 {
-	import org.assetloader.base.AbstractLoader;
+	import org.assetloader.signals.LoaderSignal;
+	import org.assetloader.base.AssetType;
 	import org.assetloader.base.Param;
 	import org.assetloader.core.ILoader;
 
@@ -9,33 +10,34 @@ package org.assetloader.loaders
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
-
-	[Event(name="error", type="flash.events.ErrorEvent")]
-
-	[Event(name="httpStatus", type="flash.events.HTTPStatusEvent")]
-
-	[Event(name="securityError", type="flash.events.SecurityErrorEvent")]
-
-	[Event(name="ioError", type="flash.events.IOErrorEvent")]
-
-	[Event(name="progress", type="flash.events.ProgressEvent")]
-
-	[Event(name="complete", type="flash.events.Event")]
-
-	[Event(name="open", type="flash.events.Event")]
+	import flash.net.URLRequest;
 
 	/**
 	 * @author Matan Uberstein
 	 */
-	public class DisplayObjectLoader extends AbstractLoader implements ILoader
+	public class DisplayObjectLoader extends BaseLoader
 	{
+		protected var _displayObject : DisplayObject;
+		
 		protected var _loader : Loader;
 
-		public function DisplayObjectLoader() 
+		public function DisplayObjectLoader(id : String, request : URLRequest, parent : ILoader = null) 
 		{
-			super();
+			super(id, request, AssetType.DISPLAY_OBJECT, parent);
 		}
 
+		override protected function initParams() : void
+		{
+			super.initParams();
+			setParam(Param.LOADER_CONTEXT, null);
+		}
+
+		override protected function initSignals() : void
+		{
+			super.initSignals();
+			_onComplete = new LoaderSignal(this, DisplayObject);
+		}
+		
 		override protected function constructLoader() : IEventDispatcher 
 		{
 			_loader = new Loader();
@@ -44,7 +46,7 @@ package org.assetloader.loaders
 
 		override protected function invokeLoading() : void
 		{
-			_loader.load(_request, _unit.getParam(Param.LOADER_CONTEXT));
+			_loader.load(request, getParam(Param.LOADER_CONTEXT));
 		}
 
 		override public function stop() : void
@@ -65,17 +67,18 @@ package org.assetloader.loaders
 		{
 			super.destroy();
 			_loader = null;
+			_displayObject = null;
 		}
 
 		override protected function complete_handler(event : Event) : void 
 		{
-			_data = _loader.content;
+			_data = _displayObject = _loader.content;
 			
 			var testResult : String = testData(_data);
 			
 			if(testResult != "")
 			{
-				dispatchEvent(new ErrorEvent(ErrorEvent.ERROR, false, false, testResult));
+				_onError.dispatch(ErrorEvent.ERROR, testResult);
 				return;
 			}
 			
@@ -87,7 +90,12 @@ package org.assetloader.loaders
 		 */
 		protected function testData(data : DisplayObject) : String
 		{
-			return data ? "Data is not a DisplayObject." : "";
+			return !data ? "Data is not a DisplayObject." : "";
+		}
+
+		public function get displayObject() : DisplayObject
+		{
+			return _displayObject;
 		}
 	}
 }

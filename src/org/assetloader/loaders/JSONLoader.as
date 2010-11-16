@@ -2,21 +2,43 @@ package org.assetloader.loaders
 {
 	import com.adobe.serialization.json.JSON;
 
+	import org.assetloader.base.AssetType;
+	import org.assetloader.core.ILoader;
+	import org.assetloader.signals.LoaderSignal;
+
+	import flash.net.URLRequest;
+
 	/**
 	 * @author Matan Uberstein
 	 */
 	public class JSONLoader extends TextLoader 
 	{
-		public function JSONLoader()
+		protected var _jsonObject : Object;
+		
+		public function JSONLoader(id : String, request : URLRequest, parent : ILoader = null) 
 		{
+			super(id, request, parent);
+			_type = AssetType.JSON;
 		}
 
+		override protected function initSignals() : void
+		{
+			super.initSignals();
+			_onComplete = new LoaderSignal(this, Object);
+		}
+
+		override public function destroy() : void
+		{
+			super.destroy();
+			_jsonObject = null;
+		}
+		
 		override protected function testData(data : String) : String 
 		{
 			var errMsg : String = "";
 			try
 			{
-				_data = JSON.decode(data);
+				_data = _jsonObject = JSON.decode(data);
 			}
 			catch(err : Error)
 			{
@@ -24,6 +46,11 @@ package org.assetloader.loaders
 			}
 			
 			return errMsg;
+		}
+
+		public function get jsonObject() : Object
+		{
+			return _jsonObject;
 		}
 	}
 }

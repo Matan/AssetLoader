@@ -1,44 +1,36 @@
-package org.assetloader.base 
+package org.assetloader.base
 {
 	import org.assetloader.core.ILoadStats;
-	import org.assetloader.core.ILoadUnit;
 	import org.assetloader.core.ILoader;
+	import org.assetloader.core.IParam;
+	import org.assetloader.signals.ErrorSignal;
+	import org.assetloader.signals.HttpStatusSignal;
+	import org.assetloader.signals.LoaderSignal;
+	import org.assetloader.signals.ProgressSignal;
 
-	import flash.events.ErrorEvent;
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.events.HTTPStatusEvent;
-	import flash.events.IEventDispatcher;
-	import flash.events.IOErrorEvent;
-	import flash.events.ProgressEvent;
-	import flash.events.SecurityErrorEvent;
 	import flash.net.URLRequest;
-
-	[Event(name="error", type="flash.events.ErrorEvent")]
-
-	[Event(name="httpStatus", type="flash.events.HTTPStatusEvent")]
-
-	[Event(name="securityError", type="flash.events.SecurityErrorEvent")]
-
-	[Event(name="ioError", type="flash.events.IOErrorEvent")]
-
-	[Event(name="progress", type="flash.events.ProgressEvent")]
-
-	[Event(name="complete", type="flash.events.Event")]
-
-	[Event(name="open", type="flash.events.Event")]
 
 	/**
 	 * @author Matan Uberstein
 	 */
-	public class AbstractLoader extends EventDispatcher implements ILoader
+	public class AbstractLoader implements ILoader
 	{
+		protected var _onError : ErrorSignal;
+		protected var _onHttpStatus : HttpStatusSignal;
 
-		protected var _parent : ILoader;		protected var _unit : ILoadUnit;
+		protected var _onOpen : LoaderSignal;
+		protected var _onProgress : ProgressSignal;
+		protected var _onComplete : LoaderSignal;
+
+		protected var _id : String;
+		protected var _type : String;
+		protected var _parent : ILoader;
+		protected var _request : URLRequest;
+
 		protected var _stats : ILoadStats;
 
-		protected var _request : URLRequest;
-		protected var _eventDispatcher : IEventDispatcher;
+		protected var _params : Object;
+		protected var _retryTally : uint;
 
 		protected var _invoked : Boolean;
 		protected var _inProgress : Boolean;
@@ -47,47 +39,43 @@ package org.assetloader.base
 
 		protected var _data : *;
 
-		public function AbstractLoader() 
+		public function AbstractLoader(id : String, type : String, request : URLRequest = null, parent : ILoader = null)
 		{
+			_id = id;
+			_type = type;
+			_request = request;
+			_parent = parent;
+
 			_stats = new LoaderStats();
+
+			initParams();
+			initSignals();
+		}
+
+		protected function initParams() : void
+		{
+			_params = {};
+
+			setParam(Param.RETRIES, 3);
+			setParam(Param.ON_DEMAND, false);
+			setParam(Param.PREVENT_CACHE, false);
+			setParam(Param.WEIGHT, 0);
+		}
+
+		protected function initSignals() : void
+		{
+			_onError = new ErrorSignal(this);
+			_onHttpStatus = new HttpStatusSignal(this);
+
+			_onOpen = new LoaderSignal(this);
+			_onProgress = new ProgressSignal(this);
+			_onComplete = new LoaderSignal(this);
 		}
 
 		/**
 		 * @inheritDoc
 		 */
 		public function start() : void
-		{
-			if(!_invoked)
-			{
-				_invoked = true;
-				_stopped = false;
-				
-				_request = _unit.request;
-				
-				if(_unit.hasParam(Param.HEADERS))
-					_request.requestHeaders = _unit.getParam(Param.HEADERS);
-			
-				_stats.start();
-				
-				_eventDispatcher = constructLoader();
-				
-				addListeners(_eventDispatcher);
-				
-				invokeLoading();
-			}
-			else
-			{
-				destroy();
-				start();
-			}
-		}
-
-		protected function constructLoader() : IEventDispatcher
-		{
-			return null;
-		}
-
-		protected function invokeLoading() : void
 		{
 		}
 
@@ -97,6 +85,7 @@ package org.assetloader.base
 		public function stop() : void
 		{
 			_stopped = true;
+			_inProgress = false;
 		}
 
 		/**
@@ -104,122 +93,25 @@ package org.assetloader.base
 		 */
 		public function destroy() : void
 		{
-			removeListeners(_eventDispatcher);
 			stop();
-			
+
 			_stats.reset();
+
+			_data = null;
 			
 			_invoked = false;
-			_eventDispatcher = null;
-			_request = null;
-			_data = null;
-			_loaded = false;
-			_stopped = false;
-		}
-
-		//--------------------------------------------------------------------------------------------------------------------------------//
-		// HANDLERS
-		//--------------------------------------------------------------------------------------------------------------------------------//
-		protected function error_handler(event : ErrorEvent) : void 
-		{
-			removeListeners(_eventDispatcher);
-			
-			dispatchEvent(event);
-		}
-
-		protected function open_handler(event : Event) : void 
-		{
-			_stats.open();
-			
-			_inProgress = true;
-			
-			dispatchEvent(event);
-		}
-
-		protected function progress_handler(event : ProgressEvent) : void
-		{
-			_stats.update(event.bytesLoaded, event.bytesTotal);
-			dispatchEvent(event);
-		}
-
-		protected function complete_handler(event : Event) : void 
-		{
-			_stats.done();
-			
-			var progressEvent : ProgressEvent = new ProgressEvent(ProgressEvent.PROGRESS);
-			progressEvent.bytesLoaded = _stats.bytesLoaded;			progressEvent.bytesTotal = _stats.bytesTotal;
-			
-			dispatchEvent(progressEvent);
-			
-			removeListeners(_eventDispatcher);
-			
 			_inProgress = false;
-			_loaded = true;
-			dispatchEvent(event);
+			_stopped = false;
+			_loaded = false;
 		}
 
-		//--------------------------------------------------------------------------------------------------------------------------------//
-		// PROTECTED
-		//--------------------------------------------------------------------------------------------------------------------------------//
-		protected function addListeners(dispatcher : IEventDispatcher) : void
-		{
-			if(dispatcher)
-			{
-				dispatcher.addEventListener(IOErrorEvent.IO_ERROR, error_handler);
-				dispatcher.addEventListener(SecurityErrorEvent.SECURITY_ERROR, error_handler);
-				
-				dispatcher.addEventListener(Event.OPEN, open_handler);
-				dispatcher.addEventListener(ProgressEvent.PROGRESS, progress_handler);
-				dispatcher.addEventListener(Event.COMPLETE, complete_handler);
-				
-				dispatcher.addEventListener(HTTPStatusEvent.HTTP_STATUS, dispatchEvent);
-			}
-		}
-
-		protected function removeListeners(dispatcher : IEventDispatcher) : void
-		{
-			if(dispatcher)
-			{
-				dispatcher.removeEventListener(IOErrorEvent.IO_ERROR, error_handler);
-				dispatcher.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, error_handler);
-				
-				dispatcher.removeEventListener(Event.OPEN, open_handler);
-				dispatcher.removeEventListener(ProgressEvent.PROGRESS, progress_handler);
-				dispatcher.removeEventListener(Event.COMPLETE, complete_handler);
-				
-				dispatcher.removeEventListener(HTTPStatusEvent.HTTP_STATUS, dispatchEvent);
-			}
-		}
-
-		//--------------------------------------------------------------------------------------------------------------------------------//
+		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PUBLIC GETTERS/SETTERS
-		//--------------------------------------------------------------------------------------------------------------------------------//
+		// --------------------------------------------------------------------------------------------------------------------------------//
 		/**
 		 * @inheritDoc
 		 */
-		public function get unit() : ILoadUnit
-		{
-			return _unit;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function set unit(unit : ILoadUnit) : void
-		{
-			_unit = unit;
-			
-			if(_unit.parent)
-				_parent = _unit.parent.loader;
-			
-			if(_unit.hasParam(Param.WEIGHT))
-				_stats.bytesTotal = _unit.getParam(Param.WEIGHT);
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get parent() : ILoader 
+		public function get parent() : ILoader
 		{
 			return _parent;
 		}
@@ -270,6 +162,129 @@ package org.assetloader.base
 		public function get data() : *
 		{
 			return _data;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function hasParam(id : String) : Boolean
+		{
+			return (_params[id] != undefined);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function setParam(id : String, value : *) : void
+		{
+			_params[id] = value;
+
+			switch(id)
+			{
+				case Param.PREVENT_CACHE:
+					if(value && _request)
+						_request.url += ((_request.url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;
+					break;
+				case Param.HEADERS:
+					if(_request)
+						_request.requestHeaders = value;
+					break;
+				case Param.WEIGHT:
+					_stats.bytesTotal = value;
+					break;
+			}
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function getParam(id : String) : *
+		{
+			return _params[id];
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function addParam(param : IParam) : void
+		{
+			setParam(param.id, param.value);
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get id() : String
+		{
+			return _id;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get request() : URLRequest
+		{
+			return _request;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get type() : String
+		{
+			return _type;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get params() : Object
+		{
+			return _params;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get retryTally() : uint
+		{
+			return _retryTally;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function set retryTally(value : uint) : void
+		{
+			_retryTally = value;
+		}
+
+		// --------------------------------------------------------------------------------------------------------------------------------//
+		// PUBLIC SIGNALS
+		// --------------------------------------------------------------------------------------------------------------------------------//
+		public function get onError() : ErrorSignal
+		{
+			return _onError;
+		}
+
+		public function get onHttpStatus() : HttpStatusSignal
+		{
+			return _onHttpStatus;
+		}
+
+		public function get onOpen() : LoaderSignal
+		{
+			return _onOpen;
+		}
+
+		public function get onProgress() : ProgressSignal
+		{
+			return _onProgress;
+		}
+
+		public function get onComplete() : LoaderSignal
+		{
+			return _onComplete;
 		}
 	}
 }

@@ -1,38 +1,34 @@
 package org.assetloader.loaders 
 {
-	import org.assetloader.base.AbstractLoader;
+	import org.assetloader.signals.LoaderSignal;
+	import org.assetloader.base.AssetType;
 	import org.assetloader.core.ILoader;
 
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
+	import flash.net.URLRequest;
 	import flash.net.URLStream;
 	import flash.utils.ByteArray;
-
-	[Event(name="error", type="flash.events.ErrorEvent")]
-
-	[Event(name="httpStatus", type="flash.events.HTTPStatusEvent")]
-
-	[Event(name="securityError", type="flash.events.SecurityErrorEvent")]
-
-	[Event(name="ioError", type="flash.events.IOErrorEvent")]
-
-	[Event(name="progress", type="flash.events.ProgressEvent")]
-
-	[Event(name="complete", type="flash.events.Event")]
-
-	[Event(name="open", type="flash.events.Event")]
 
 	/**
 	 * @author Matan Uberstein
 	 */
-	public class TextLoader extends AbstractLoader implements ILoader
+	public class TextLoader extends BaseLoader
 	{
+		protected var _text : String;
+		
 		protected var _loader : URLStream;
 
-		public function TextLoader() 
+		public function TextLoader(id : String, request : URLRequest, parent : ILoader = null) 
 		{
-			super();
+			super(id, request, AssetType.TEXT, parent);
+		}
+		
+		override protected function initSignals() : void
+		{
+			super.initSignals();
+			_onComplete = new LoaderSignal(this, String);
 		}
 
 		override protected function constructLoader() : IEventDispatcher 
@@ -43,7 +39,7 @@ package org.assetloader.loaders
 
 		override protected function invokeLoading() : void
 		{
-			_loader.load(_request);
+			_loader.load(request);
 		}
 
 		override public function stop() : void
@@ -64,6 +60,7 @@ package org.assetloader.loaders
 		{
 			super.destroy();
 			_loader = null;
+			_text = null;
 		}
 
 		override protected function complete_handler(event : Event) : void 
@@ -71,13 +68,13 @@ package org.assetloader.loaders
 			var bytes : ByteArray = new ByteArray();
 			_loader.readBytes(bytes);
 			
-			_data = bytes.toString();
+			_data = _text = bytes.toString();
 			
 			var testResult : String = testData(_data);
 			
 			if(testResult != "")
 			{
-				dispatchEvent(new ErrorEvent(ErrorEvent.ERROR, false, false, testResult));
+				_onError.dispatch(ErrorEvent.ERROR, testResult);
 				return;
 			}
 			
@@ -90,6 +87,11 @@ package org.assetloader.loaders
 		protected function testData(data : String) : String
 		{
 			return data == null ? "Data loaded is null." : "";
+		}
+
+		public function get text() : String
+		{
+			return _text;
 		}
 	}
 }

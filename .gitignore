@@ -1,8 +1,11 @@
 /.settings/*
 
-/doc/*
-
-/wiki/*
+/html-template/*
+/bin-debug/*
+/bin-release/*
+/bin/**.cache
+docs/*
+obj/*
 
 .actionScriptProperties
 .flexProperties
@@ -10,5 +13,15 @@
 .FlexUnitSettings
 .project
 
+Icon
 Thumbs.db
 .DS_Store
+dist/*
+report/*
+doc/*
+
+user.properties
+
+*.iml
+*.ipr
+*.iws

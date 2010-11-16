@@ -1,39 +1,36 @@
-package org.assetloader.loaders 
+package org.assetloader.loaders
 {
-	import org.assetloader.base.AbstractLoader;
+	import org.assetloader.signals.LoaderSignal;
+	import org.assetloader.base.AssetType;
 	import org.assetloader.core.ILoader;
 
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
+	import flash.net.URLRequest;
 	import flash.net.URLStream;
 	import flash.utils.ByteArray;
-
-	[Event(name="httpStatus", type="flash.events.HTTPStatusEvent")]
-
-	[Event(name="securityError", type="flash.events.SecurityErrorEvent")]
-
-	[Event(name="ioError", type="flash.events.IOErrorEvent")]
-
-	[Event(name="progress", type="flash.events.ProgressEvent")]
-
-	[Event(name="complete", type="flash.events.Event")]
-
-	[Event(name="open", type="flash.events.Event")]
 
 	/**
 	 * @author Matan Uberstein
 	 */
-	public class BinaryLoader extends AbstractLoader implements ILoader
+	public class BinaryLoader extends BaseLoader
 	{
+		protected var _bytes : ByteArray;
 
 		protected var _loader : URLStream;
 
-		public function BinaryLoader() 
+		public function BinaryLoader(id : String, request : URLRequest, parent : ILoader = null)
 		{
-			super();
+			super(id, request, AssetType.BINARY, parent);
 		}
 
-		override protected function constructLoader() : IEventDispatcher 
+		override protected function initSignals() : void
+		{
+			super.initSignals();
+			_onComplete = new LoaderSignal(this, ByteArray);
+		}
+
+		override protected function constructLoader() : IEventDispatcher
 		{
 			_loader = new URLStream();
 			return _loader;
@@ -41,7 +38,7 @@ package org.assetloader.loaders
 
 		override protected function invokeLoading() : void
 		{
-			_loader.load(_request);
+			_loader.load(request);
 		}
 
 		override public function stop() : void
@@ -50,29 +47,36 @@ package org.assetloader.loaders
 			{
 				try
 				{
-					_loader.close();	
-				}catch(error : Error)
+					_loader.close();
+				}
+				catch(error : Error)
 				{
 				}
 			}
-			
+
 			super.stop();
 		}
 
-		override public function destroy() : void 
+		override public function destroy() : void
 		{
 			super.destroy();
 			_loader = null;
+			_bytes = null;
 		}
 
-		override protected function complete_handler(event : Event) : void 
+		override protected function complete_handler(event : Event) : void
 		{
-			var bytes : ByteArray = new ByteArray();
-			_loader.readBytes(bytes);
-			
-			_data = bytes;
-			
+			_bytes = new ByteArray();
+			_loader.readBytes(_bytes);
+
+			_data = _bytes;
+
 			super.complete_handler(event);
+		}
+
+		public function get bytes() : ByteArray
+		{
+			return _bytes;
 		}
 	}
 }

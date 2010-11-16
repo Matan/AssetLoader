@@ -1,10 +1,10 @@
-package org.assetloader.core 
+package org.assetloader.core
 {
 
 	/**
 	 * @author Matan Uberstein
 	 */
-	public interface IConfigParser 
+	public interface IConfigParser
 	{
 		/**
 		 * Test data to see if it can be parsed.
@@ -23,6 +23,6 @@ package org.assetloader.core
 		 * 
 		 * @see org.assetloader.base.vo.ConfigVO
 		 */
-		function parse(data : String) : Array
+		function parse(assetloader : IAssetLoader, data : String) : void
 	}
 }

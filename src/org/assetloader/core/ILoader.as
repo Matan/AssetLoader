@@ -1,12 +1,12 @@
 package org.assetloader.core 
 {
-	import flash.events.IEventDispatcher;
 
-	[Event(name="progress", type="flash.events.ProgressEvent")]
+	import org.assetloader.signals.ErrorSignal;
+	import org.assetloader.signals.HttpStatusSignal;
+	import org.assetloader.signals.LoaderSignal;
+	import org.assetloader.signals.ProgressSignal;
 
-	[Event(name="complete", type="flash.events.Event")]
-
-	[Event(name="open", type="flash.events.Event")]
+	import flash.net.URLRequest;
 
 	/**
 	 * Instances of ILoader will perform the actual loading of an asset. They only handle one file at a time.
@@ -16,7 +16,7 @@ package org.assetloader.core
 	 * 
 	 * @author Matan Uberstein
 	 */
-	public interface ILoader extends IEventDispatcher
+	public interface ILoader
 	{
 		/**
 		 * Starts/resumes the loading operation.
@@ -30,22 +30,6 @@ package org.assetloader.core
 		 * Removes all listeners and destroys references.
 		 */
 		function destroy() : void
-
-		/**
-		 * Gets the loadUnit.
-		 * @return ILoadUnit
-		 * 
-		 * @see org.assetloader.core.ILoadUnit
-		 */
-		function get unit() : ILoadUnit
-
-		/**
-		 * Sets the loadUnit.
-		 * @param unit ILoadUnit
-		 * 
-		 * @see org.assetloader.core.ILoadUnit
-		 */
-		function set unit(unit : ILoadUnit) : void
 
 		/**
 		 * Gets the parent loader of this loader.
@@ -102,5 +86,103 @@ package org.assetloader.core
 		 * @return Data that was returned after loading operation completed.
 		 */
 		function get data() : *
+		
+		/**
+		 * Checks if ILoadUnit has a param with the passed id.
+		 * 
+		 * @param id String param id.
+		 * @return Boolean
+		 * 
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
+		 */
+		function hasParam(id : String) : Boolean
+
+		/**
+		 * Sets param value.
+		 * 
+		 * @param id String, param id.
+		 * @param value Parameter value.
+		 * 
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
+		 */
+		function setParam(id : String, value : *) : void
+
+		/**
+		 * Gets param value.
+		 * 
+		 * @param id String, param id.
+		 * @return Parameter value.
+		 * 
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
+		 */
+		function getParam(id : String) : *
+
+		/**
+		 * Adds parameter to unit. Same effect as calling setParam.
+		 * 
+		 * @param param IAssetParam
+		 * 
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
+		 */
+		function addParam(param : IParam) : void
+
+		/**
+		 * @return String of asset id.
+		 */
+		function get id() : String
+
+		/**
+		 * @return URLRequest
+		 */
+		function get request() : URLRequest
+
+		/**
+		 * @return String of asset type.
+		 * 
+		 * @see org.assetloader.base.AssetType
+		 */
+		function get type() : String
+
+		/**
+		 * @return Object containing all parameters added to loadUnit.
+		 * 
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
+		 */
+		function get params() : Object
+
+		/**
+		 * Gets the amount of times the loading operation failed and retried.
+		 * @return uint
+		 * 
+		 * @see AssetParam.RETRIES
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
+		 */
+		function get retryTally() : uint
+
+		/**
+		 * Sets the amount of times the loading operation failed and retried.
+		 * @param value uint
+		 * 
+		 * @see AssetParam.RETRIES
+		 * @see org.assetloader.core.IParam
+		 * @see org.assetloader.base.Param
+		 */
+		function set retryTally(value : uint) : void
+		
+		function get onError() : ErrorSignal
+
+		function get onHttpStatus() : HttpStatusSignal
+
+		function get onOpen() : LoaderSignal
+
+		function get onProgress() : ProgressSignal
+
+		function get onComplete() : LoaderSignal
 	}
 }

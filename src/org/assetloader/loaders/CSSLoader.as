@@ -1,5 +1,10 @@
 package org.assetloader.loaders 
 {
+	import org.assetloader.signals.LoaderSignal;
+	import org.assetloader.base.AssetType;
+	import org.assetloader.core.ILoader;
+
+	import flash.net.URLRequest;
 	import flash.text.StyleSheet;
 
 	/**
@@ -7,18 +12,34 @@ package org.assetloader.loaders
 	 */
 	public class CSSLoader extends TextLoader 
 	{
-		public function CSSLoader()
+		protected var _styleSheet : StyleSheet;
+		
+		public function CSSLoader(id : String, request : URLRequest, parent : ILoader = null) 
 		{
+			super(id, request, parent);
+			_type = AssetType.CSS;
 		}
 
+		override protected function initSignals() : void
+		{
+			super.initSignals();
+			_onComplete = new LoaderSignal(this, StyleSheet);
+		}
+		
+		override public function destroy() : void
+		{
+			super.destroy();
+			_styleSheet = null;
+		}
+		
 		override protected function testData(data : String) : String 
 		{
 			var errMsg : String = "";
 			try
 			{
-				var css : StyleSheet = new StyleSheet();
-				css.parseCSS(data);
-				_data = css;
+				_styleSheet = new StyleSheet();
+				_styleSheet.parseCSS(data);
+				_data = _styleSheet;
 			}
 			catch(err : Error)
 			{
@@ -26,6 +47,11 @@ package org.assetloader.loaders
 			}
 			
 			return errMsg;
+		}
+
+		public function get styleSheet() : StyleSheet
+		{
+			return _styleSheet;
 		}
 	}
 }

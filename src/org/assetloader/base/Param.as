@@ -179,6 +179,16 @@ package org.assetloader.base
 		 * @see flash.net.NetStream
 		 */
 		public static const CHECK_POLICY_FILE : String = "CHECK_POLICY_FILE";
+		
+		/**
+		 * Adds <code>NetStream</code> client callback <code>Object</code>.
+		 * 
+		 * <p>Use: Video asset type.</p>
+		 * <p>Type: <code>Object</code></p>
+		 * 
+		 * @see flash.net.NetStream
+		 */
+		public static const CLIENT : String = "CLIENT";
 
 		/**
 		 * @private
