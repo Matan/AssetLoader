@@ -16,6 +16,7 @@ package org.assetloader
 	 */
 	public class AssetLoader extends AssetLoaderBase implements IAssetLoader
 	{
+		protected var _onChildOpen : LoaderSignal;
 		protected var _onChildError : ErrorSignal;
 		protected var _onChildComplete : LoaderSignal;
 
@@ -37,6 +38,7 @@ package org.assetloader
 		override protected function initSignals() : void
 		{
 			super.initSignals();
+			_onChildOpen = new LoaderSignal(this, ILoader);
 			_onChildError = new ErrorSignal(this, ILoader);
 			_onChildComplete = new LoaderSignal(this, ILoader);
 		}
@@ -207,6 +209,13 @@ package org.assetloader
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PROTECTED HANDLERS
 		// --------------------------------------------------------------------------------------------------------------------------------//
+
+		override protected function open_handler(signal : LoaderSignal) : void
+		{
+			_onChildOpen.dispatch(signal.loader);
+			super.open_handler(signal);
+		}
+		
 		override protected function error_handler(signal : ErrorSignal) : void
 		{
 			var loader : ILoader = signal.loader;
@@ -260,14 +269,19 @@ package org.assetloader
 			loader.destroy();
 		}
 
-		public function get onChildComplete() : LoaderSignal
+		public function get onChildOpen() : LoaderSignal
 		{
-			return _onChildComplete;
+			return _onChildOpen;
 		}
 
 		public function get onChildError() : ErrorSignal
 		{
 			return _onChildError;
+		}
+
+		public function get onChildComplete() : LoaderSignal
+		{
+			return _onChildComplete;
 		}
 	}
 }

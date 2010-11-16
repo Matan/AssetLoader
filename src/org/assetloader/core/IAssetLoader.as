@@ -166,6 +166,12 @@ package org.assetloader.core
 		 */
 		function set numConnections(value : int) : void
 
+		function get base() : String
+
+		function set base(base : String) : void
+
+		function get onChildOpen() : LoaderSignal
+
 		function get onChildError() : ErrorSignal
 
 		function get onChildComplete() : LoaderSignal

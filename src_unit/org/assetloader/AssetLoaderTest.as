@@ -35,16 +35,17 @@ package org.assetloader
 			_hadId = false;
 
 			_loader = _assetloader = new AssetLoader();
+			_assetloader.base = _path;
 
-			_assetloader.addLazy("id-01", _path + "testCSS.css");
-			_assetloader.addLazy("id-02", _path + "testIMAGE.png");
-			_assetloader.addLazy("id-03", _path + "testJSON.json");
-			_assetloader.addLazy("id-04", _path + "testSOUND.mp3");
-			_assetloader.addLazy("id-05", _path + "testSWF.swf");
-			_assetloader.addLazy("id-06", _path + "testTXT.txt");
-			_assetloader.addLazy("id-07", _path + "testVIDEO.flv");
-			_assetloader.addLazy("id-08", _path + "testXML.xml");
-			_assetloader.addLazy("id-09", _path + "testZIP.zip");
+			_assetloader.addLazy("id-01", "testCSS.css");
+			_assetloader.addLazy("id-02", "testIMAGE.png");
+			_assetloader.addLazy("id-03", "testJSON.json");
+			_assetloader.addLazy("id-04", "testSOUND.mp3");
+			_assetloader.addLazy("id-05", "testSWF.swf");
+			_assetloader.addLazy("id-06", "testTXT.txt");
+			_assetloader.addLazy("id-07", "testVIDEO.flv");
+			_assetloader.addLazy("id-08", "testXML.xml");
+			_assetloader.addLazy("id-09", "testZIP.zip");
 		}
 
 		[Test]
@@ -85,6 +86,22 @@ package org.assetloader
 
 			var signal : LoaderSignal = values[0];
 
+			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);
+		}
+		
+		[Test (async)]
+		public function onChildOpenSignal() : void
+		{
+			handleSignal(this, _assetloader.onChildOpen, onChildOpen_handler);
+			_loader.start();
+		}
+
+		protected function onChildOpen_handler(event : SignalAsyncEvent, data : Object) : void
+		{
+			var values : Array = event.args;
+			assertTrue("Argument 1 should be LoaderSignal", (values[0] is LoaderSignal));			assertTrue("Argument 2 should be ILoader", (values[1] is ILoader));
+
+			var signal : LoaderSignal = values[0];
 			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);
 		}
 
