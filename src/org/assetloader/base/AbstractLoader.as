@@ -1,5 +1,6 @@
 package org.assetloader.base
 {
+	import org.assetloader.core.IAssetLoader;
 	import org.assetloader.core.ILoadStats;
 	import org.assetloader.core.ILoader;
 	import org.assetloader.core.IParam;
@@ -22,6 +23,9 @@ package org.assetloader.base
 		protected var _onProgress : ProgressSignal;
 		protected var _onComplete : LoaderSignal;
 
+		protected var _onAddedToParent : LoaderSignal;
+		protected var _onRemovedFromParent : LoaderSignal;
+
 		protected var _id : String;
 		protected var _type : String;
 		protected var _parent : ILoader;
@@ -39,12 +43,11 @@ package org.assetloader.base
 
 		protected var _data : *;
 
-		public function AbstractLoader(id : String, type : String, request : URLRequest = null, parent : ILoader = null)
+		public function AbstractLoader(id : String, type : String, request : URLRequest = null)
 		{
 			_id = id;
 			_type = type;
 			_request = request;
-			_parent = parent;
 
 			_stats = new LoaderStats();
 
@@ -56,6 +59,7 @@ package org.assetloader.base
 		{
 			_params = {};
 
+			setParam(Param.PRIORITY, 0);
 			setParam(Param.RETRIES, 3);
 			setParam(Param.ON_DEMAND, false);
 			setParam(Param.PREVENT_CACHE, false);
@@ -70,6 +74,12 @@ package org.assetloader.base
 			_onOpen = new LoaderSignal(this);
 			_onProgress = new ProgressSignal(this);
 			_onComplete = new LoaderSignal(this);
+
+			_onAddedToParent = new LoaderSignal(this, IAssetLoader);
+			_onRemovedFromParent = new LoaderSignal(this, IAssetLoader);
+
+			_onAddedToParent.add(addedToParent_handler);
+			_onRemovedFromParent.add(removedFromParent_handler);
 		}
 
 		/**
@@ -98,11 +108,24 @@ package org.assetloader.base
 			_stats.reset();
 
 			_data = null;
-			
+
 			_invoked = false;
 			_inProgress = false;
 			_stopped = false;
 			_loaded = false;
+		}
+
+		// --------------------------------------------------------------------------------------------------------------------------------//
+		// PROTECTED HANDLERS
+		// --------------------------------------------------------------------------------------------------------------------------------//
+		protected function addedToParent_handler(signal : LoaderSignal, parent : IAssetLoader) : void
+		{
+			_parent = parent;
+		}
+
+		protected function removedFromParent_handler(signal : LoaderSignal, parent : IAssetLoader) : void
+		{
+			_parent = null;
 		}
 
 		// --------------------------------------------------------------------------------------------------------------------------------//
@@ -169,6 +192,8 @@ package org.assetloader.base
 		 */
 		public function hasParam(id : String) : Boolean
 		{
+			if(_parent)
+				return (_params[id] != undefined) || parent.hasParam(id);
 			return (_params[id] != undefined);
 		}
 
@@ -183,7 +208,8 @@ package org.assetloader.base
 			{
 				case Param.PREVENT_CACHE:
 					if(value && _request)
-						_request.url += ((_request.url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;
+						if(_request.url.indexOf("ck") == -1)
+							_request.url += ((_request.url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;
 					break;
 				case Param.HEADERS:
 					if(_request)
@@ -200,6 +226,8 @@ package org.assetloader.base
 		 */
 		public function getParam(id : String) : *
 		{
+			if(_parent && _params[id] == undefined)
+				return parent.getParam(id);
 			return _params[id];
 		}
 
@@ -285,6 +313,16 @@ package org.assetloader.base
 		public function get onComplete() : LoaderSignal
 		{
 			return _onComplete;
+		}
+
+		public function get onAddedToParent() : LoaderSignal
+		{
+			return _onAddedToParent;
+		}
+
+		public function get onRemovedFromParent() : LoaderSignal
+		{
+			return _onRemovedFromParent;
 		}
 	}
 }

@@ -1,8 +1,7 @@
 package org.assetloader.loaders 
 {
-	import org.assetloader.signals.LoaderSignal;
 	import org.assetloader.base.AssetType;
-	import org.assetloader.core.ILoader;
+	import org.assetloader.signals.LoaderSignal;
 
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
@@ -20,9 +19,9 @@ package org.assetloader.loaders
 		
 		protected var _loader : URLStream;
 
-		public function TextLoader(id : String, request : URLRequest, parent : ILoader = null) 
+		public function TextLoader(id : String, request : URLRequest) 
 		{
-			super(id, request, AssetType.TEXT, parent);
+			super(id, request, AssetType.TEXT);
 		}
 		
 		override protected function initSignals() : void

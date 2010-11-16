@@ -1,9 +1,8 @@
 package org.assetloader.loaders 
 {
-	import org.assetloader.signals.LoaderSignal;
 	import org.assetloader.base.AssetType;
 	import org.assetloader.base.Param;
-	import org.assetloader.core.ILoader;
+	import org.assetloader.signals.LoaderSignal;
 
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
@@ -21,9 +20,9 @@ package org.assetloader.loaders
 		
 		protected var _loader : Loader;
 
-		public function DisplayObjectLoader(id : String, request : URLRequest, parent : ILoader = null) 
+		public function DisplayObjectLoader(id : String, request : URLRequest) 
 		{
-			super(id, request, AssetType.DISPLAY_OBJECT, parent);
+			super(id, request, AssetType.DISPLAY_OBJECT);
 		}
 
 		override protected function initParams() : void

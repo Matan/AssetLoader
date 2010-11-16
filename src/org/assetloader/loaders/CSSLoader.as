@@ -1,8 +1,7 @@
 package org.assetloader.loaders 
 {
-	import org.assetloader.signals.LoaderSignal;
 	import org.assetloader.base.AssetType;
-	import org.assetloader.core.ILoader;
+	import org.assetloader.signals.LoaderSignal;
 
 	import flash.net.URLRequest;
 	import flash.text.StyleSheet;
@@ -14,9 +13,9 @@ package org.assetloader.loaders
 	{
 		protected var _styleSheet : StyleSheet;
 		
-		public function CSSLoader(id : String, request : URLRequest, parent : ILoader = null) 
+		public function CSSLoader(id : String, request : URLRequest) 
 		{
-			super(id, request, parent);
+			super(id, request);
 			_type = AssetType.CSS;
 		}
 

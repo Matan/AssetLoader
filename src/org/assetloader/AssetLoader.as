@@ -23,16 +23,10 @@ package org.assetloader
 		protected var _loadedIds : Array;
 		protected var _numLoaded : int;
 
-		public function AssetLoader(id : String = null)
+		public function AssetLoader(id : String = "PrimaryGroup")
 		{
 			super(id);
 			_loadedIds = [];
-		}
-
-		override protected function initParams() : void
-		{
-			super.initParams();
-			setParam(Param.RETRIES, 0);
 		}
 
 		override protected function initSignals() : void
@@ -215,7 +209,7 @@ package org.assetloader
 			_onChildOpen.dispatch(signal.loader);
 			super.open_handler(signal);
 		}
-		
+
 		override protected function error_handler(signal : ErrorSignal) : void
 		{
 			var loader : ILoader = signal.loader;

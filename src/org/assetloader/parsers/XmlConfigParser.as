@@ -78,7 +78,7 @@ package org.assetloader.parsers
 
 		protected function parseGroup(vo : ConfigVO) : IAssetLoader
 		{
-			var loader : IAssetLoader = IAssetLoader(_loaderFactory.produce(vo.id, AssetType.GROUP, null, getParams(vo), _assetloader));
+			var loader : IAssetLoader = IAssetLoader(_loaderFactory.produce(vo.id, AssetType.GROUP, null, getParams(vo)));
 
 			loader.numConnections = vo.connections;
 			loader.addConfig(vo.xml);
@@ -88,7 +88,7 @@ package org.assetloader.parsers
 
 		protected function parseAsset(vo : ConfigVO) : ILoader
 		{
-			return _loaderFactory.produce(vo.id, vo.type, new URLRequest(vo.src), getParams(vo), _assetloader);
+			return _loaderFactory.produce(vo.id, vo.type, new URLRequest(vo.src), getParams(vo));
 		}
 
 		protected function parseVo(xml : XML, inheritFrom : ConfigVO = null) : ConfigVO

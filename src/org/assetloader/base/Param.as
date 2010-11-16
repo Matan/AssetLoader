@@ -34,6 +34,7 @@ package org.assetloader.base
 		 * <p>Default: Automatically determined according to when asset is added. Starts at 0 (zero) and decreases with each add.
 		 * e.g. Adding three assets one after the other will produce priority values of 0, -1, -2.
 		 * This list is then sorted decendingly, thus thus asset's with higher priority are loaded first.</p>
+		 * <p>Children ILoader of IAssetLoader will NOT inherit this param.</p>
 		 */
 		public static const PRIORITY : String = "PRIORITY";
 
@@ -44,6 +45,7 @@ package org.assetloader.base
 		 * <p>Use: All asset types.</p>
 		 * <p>Type: <code>Boolean</code></p>
 		 * <p>Default: false</p>
+		 * <p>Children ILoader of IAssetLoader will NOT inherit this param.</p>
 		 */
 		public static const ON_DEMAND : String = "ON_DEMAND";
 		
@@ -56,6 +58,7 @@ package org.assetloader.base
 		 * <p>Use: All asset types.</p>
 		 * <p>Type: <code>unit</code></p>
 		 * <p>Default: 0</p>
+		 * <p>Children ILoader of IAssetLoader will NOT inherit this param.</p>
 		 */
 		public static const WEIGHT : String = "WEIGHT";
 		

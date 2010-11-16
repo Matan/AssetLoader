@@ -1,8 +1,7 @@
 package org.assetloader.loaders
 {
-	import org.assetloader.signals.LoaderSignal;
 	import org.assetloader.base.AssetType;
-	import org.assetloader.core.ILoader;
+	import org.assetloader.signals.LoaderSignal;
 
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
@@ -19,9 +18,9 @@ package org.assetloader.loaders
 
 		protected var _loader : URLStream;
 
-		public function BinaryLoader(id : String, request : URLRequest, parent : ILoader = null)
+		public function BinaryLoader(id : String, request : URLRequest)
 		{
-			super(id, request, AssetType.BINARY, parent);
+			super(id, request, AssetType.BINARY);
 		}
 
 		override protected function initSignals() : void

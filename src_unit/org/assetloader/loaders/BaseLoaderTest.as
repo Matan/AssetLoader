@@ -1,5 +1,7 @@
 package org.assetloader.loaders
 {
+	import org.assetloader.AssetLoader;
+	import org.assetloader.core.IAssetLoader;
 	import org.assetloader.base.AbstractLoaderTest;
 	import org.assetloader.signals.ErrorSignal;
 	import org.assetloader.signals.HttpStatusSignal;
@@ -152,8 +154,8 @@ package org.assetloader.loaders
 			assertNotNull(_loaderName + "#type should NOT be null after destroy", _loader.type);
 			assertNotNull(_loaderName + "#params should NOT be null after destroy", _loader.params);
 
-			if(_hadId)
-				assertNotNull(_loaderName + "#id should be NOT null after destroy", _loader.id);
+			assertNotNull(_loaderName + "#id should be NOT null after destroy", _loader.id);
+			
 			if(_hadRequest)
 				assertNotNull(_loaderName + "#request should NOT be null after destroy", _loader.request);
 			if(_hadParent)
@@ -226,6 +228,47 @@ package org.assetloader.loaders
 			assertTrue(_loaderName + "#" + _payloadPropertyName + " should be " + _payloadTypeName, (_loader[_payloadPropertyName] is _payloadType));
 
 			assertEquals(_loaderName + "#data should be equal to " + _loaderName + "#" + _payloadPropertyName, _loader.data, _loader[_payloadPropertyName]);
+		}
+
+		[Test (async)]
+		public function onAddedToParentSignal() : void
+		{
+			var assetloader : IAssetLoader = new AssetLoader();
+			handleSignal(this, _loader.onAddedToParent, onAddedToParent_handler);
+			assetloader.addLoader(_loader);
+		}
+
+		protected function onAddedToParent_handler(event : SignalAsyncEvent, data : Object) : void
+		{
+			var values : Array = event.args;
+			assertTrue("Argument 1 should be LoaderSignal", (values[0] is LoaderSignal));
+			assertTrue("Argument 2 should be IAssetLoader", (values[1] is IAssetLoader));
+
+			var signal : LoaderSignal = values[0];
+			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);
+
+			assertNotNull(_loaderName + "#parent should NOT be null", _loader.parent);
+		}
+
+		[Test (async)]
+		public function onRemovedFromParentSignal() : void
+		{
+			var assetloader : IAssetLoader = new AssetLoader();
+			assetloader.addLoader(_loader);
+			handleSignal(this, _loader.onRemovedFromParent, onRemovedFromParent_handler);
+			assetloader.remove(_id);
+		}
+
+		protected function onRemovedFromParent_handler(event : SignalAsyncEvent, data : Object) : void
+		{
+			var values : Array = event.args;
+			assertTrue("Argument 1 should be LoaderSignal", (values[0] is LoaderSignal));
+			assertTrue("Argument 2 should be IAssetLoader", (values[1] is IAssetLoader));
+
+			var signal : LoaderSignal = values[0];
+			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);
+
+			assertNull(_loaderName + "#parent should be null", _loader.parent);
 		}
 
 		[Test (async)]

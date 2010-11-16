@@ -7,7 +7,6 @@ package org.assetloader
 	import org.assetloader.signals.ErrorSignal;
 	import org.assetloader.signals.LoaderSignal;
 	import org.flexunit.asserts.assertNotNull;
-	import org.flexunit.asserts.assertNull;
 	import org.flexunit.asserts.assertTrue;
 	import org.flexunit.asserts.fail;
 	import org.osflash.signals.utils.SignalAsyncEvent;
@@ -31,10 +30,10 @@ package org.assetloader
 			_payloadTypeName = "Dictionary";
 			_payloadPropertyName = "data";
 			_type = AssetType.GROUP;
+			
+			_id = "PrimaryLoaderGroup";
 
-			_hadId = false;
-
-			_loader = _assetloader = new AssetLoader();
+			_loader = _assetloader = new AssetLoader(_id);
 			_assetloader.base = _path;
 
 			_assetloader.addLazy("id-01", "testCSS.css");
@@ -59,16 +58,9 @@ package org.assetloader
 		override public function signalsReadyOnConstruction() : void
 		{
 			super.signalsReadyOnConstruction();
-			assertNotNull(_loaderName + "#onChildComplete be should NOT be null after construction", _assetloader.onChildComplete);
+			assertNotNull(_loaderName + "#onChildOpen be should NOT be null after construction", _assetloader.onChildOpen);			assertNotNull(_loaderName + "#onChildComplete be should NOT be null after construction", _assetloader.onChildComplete);
 			assertNotNull(_loaderName + "#onChildError be should NOT be null after construction", _assetloader.onChildError);
 			assertNotNull(_loaderName + "#onConfigLoaded be should NOT be null after construction", _assetloader.onConfigLoaded);
-		}
-
-		[Test]
-		public function idShouldBeNullIfPrimary() : void
-		{
-			assertNull(_loaderName + "#id should be null, if it's the primary loader", _assetloader.id);
-			assertNull(_loaderName + "#parent should be null, if it's the primary loader", _assetloader.parent);
 		}
 
 		[Test (async)]

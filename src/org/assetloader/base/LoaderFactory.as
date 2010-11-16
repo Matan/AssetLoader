@@ -27,7 +27,7 @@ package org.assetloader.base
 		{
 		}
 
-		public function produce(id : String, type : String = "AUTO", request : URLRequest = null, params : Array = null, parent : ILoader = null) : ILoader
+		public function produce(id : String, type : String = "AUTO", request : URLRequest = null, params : Array = null) : ILoader
 		{
 			if(request)
 			{
@@ -47,7 +47,7 @@ package org.assetloader.base
 			else if(type == AssetType.AUTO)
 				type = AssetType.GROUP;
 
-			constructLoader(type, id, request, parent);
+			constructLoader(type, id, request);
 
 			if(params)
 				processParams(params);
@@ -117,48 +117,48 @@ package org.assetloader.base
 			return false;
 		}
 
-		protected function constructLoader(type : String, id : String, request : URLRequest, parent : ILoader) : void
+		protected function constructLoader(type : String, id : String, request : URLRequest) : void
 		{
 			switch(type)
 			{
 				case AssetType.TEXT:
-					_loader = new TextLoader(id, request, parent);
+					_loader = new TextLoader(id, request);
 					break;
 
 				case AssetType.JSON:
-					_loader = new JSONLoader(id, request, parent);
+					_loader = new JSONLoader(id, request);
 					break;
 
 				case AssetType.XML:
-					_loader = new XMLLoader(id, request, parent);
+					_loader = new XMLLoader(id, request);
 					break;
 
 				case AssetType.CSS:
-					_loader = new CSSLoader(id, request, parent);
+					_loader = new CSSLoader(id, request);
 					break;
 
 				case AssetType.BINARY:
-					_loader = new BinaryLoader(id, request, parent);
+					_loader = new BinaryLoader(id, request);
 					break;
 
 				case AssetType.DISPLAY_OBJECT:
-					_loader = new DisplayObjectLoader(id, request, parent);
+					_loader = new DisplayObjectLoader(id, request);
 					break;
 
 				case AssetType.SWF:
-					_loader = new SWFLoader(id, request, parent);
+					_loader = new SWFLoader(id, request);
 					break;
 
 				case AssetType.IMAGE:
-					_loader = new ImageLoader(id, request, parent);
+					_loader = new ImageLoader(id, request);
 					break;
 
 				case AssetType.SOUND:
-					_loader = new SoundLoader(id, request, parent);
+					_loader = new SoundLoader(id, request);
 					break;
 
 				case AssetType.VIDEO:
-					_loader = new VideoLoader(id, request, parent);
+					_loader = new VideoLoader(id, request);
 					break;
 
 				case AssetType.GROUP:

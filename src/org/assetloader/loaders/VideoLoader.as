@@ -2,7 +2,6 @@ package org.assetloader.loaders
 {
 	import org.assetloader.base.AssetType;
 	import org.assetloader.base.Param;
-	import org.assetloader.core.ILoader;
 	import org.assetloader.signals.LoaderSignal;
 	import org.assetloader.signals.NetStatusSignal;
 
@@ -33,9 +32,9 @@ package org.assetloader.loaders
 		protected var _progressTimer : Timer;
 		protected var _hasDispatchedReady : Boolean;
 
-		public function VideoLoader(id : String, request : URLRequest, parent : ILoader = null)
+		public function VideoLoader(id : String, request : URLRequest)
 		{
-			super(id, request, AssetType.VIDEO, parent);
+			super(id, request, AssetType.VIDEO);
 		}
 
 		override protected function initParams() : void

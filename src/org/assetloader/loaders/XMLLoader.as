@@ -1,9 +1,8 @@
 package org.assetloader.loaders
 {
 
-	import org.assetloader.signals.LoaderSignal;
 	import org.assetloader.base.AssetType;
-	import org.assetloader.core.ILoader;
+	import org.assetloader.signals.LoaderSignal;
 
 	import flash.net.URLRequest;
 
@@ -14,9 +13,9 @@ package org.assetloader.loaders
 	{
 		protected var _xml : XML;
 
-		public function XMLLoader(id : String, request : URLRequest, parent : ILoader = null)
+		public function XMLLoader(id : String, request : URLRequest)
 		{
-			super(id, request, parent);
+			super(id, request);
 			_type = AssetType.XML;
 		}
 

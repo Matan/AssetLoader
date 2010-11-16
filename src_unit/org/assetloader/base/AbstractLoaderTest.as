@@ -10,9 +10,9 @@ package org.assetloader.base
 	{
 		protected var _loaderName : String;
 
-		protected var _id : String = "test-id";		protected var _type : String;
-		
-		protected var _hadId : Boolean = true;
+		protected var _id : String = "test-id";
+		protected var _type : String;
+
 		protected var _hadRequest : Boolean = false;
 
 		protected var _loader : ILoader;
@@ -50,8 +50,7 @@ package org.assetloader.base
 		[Test]
 		public function idAndTypeMatchValuesPassed() : void
 		{
-			if(_hadId)
-				assertEquals(_loaderName + "#id must match the id passed via constructor", _id, _loader.id);
+			assertEquals(_loaderName + "#id must match the id passed via constructor", _id, _loader.id);
 			assertEquals(_loaderName + "#type must match the type passed via constructor", _type, _loader.type);
 		}
 
@@ -63,6 +62,8 @@ package org.assetloader.base
 			assertNotNull(_loaderName + "#onHttpStatus be should NOT be null after construction", _loader.onHttpStatus);
 			assertNotNull(_loaderName + "#onOpen should NOT be null after construction", _loader.onOpen);
 			assertNotNull(_loaderName + "#onProgress should NOT be null after construction", _loader.onProgress);
+			assertNotNull(_loaderName + "#onAddedToParent should NOT be null after construction", _loader.onAddedToParent);
+			assertNotNull(_loaderName + "#onRemovedFromParent should NOT be null after construction", _loader.onRemovedFromParent);
 		}
 
 		[Test]

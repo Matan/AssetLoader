@@ -25,7 +25,8 @@ package org.assetloader.base
 		protected var _configParser : IConfigParser;
 
 		protected var _numLoaders : int;
-		protected var _numConnections : int = 3;		protected var _base : String = "";
+		protected var _numConnections : int = 3;
+		protected var _base : String = "";
 
 		public function AssetLoaderBase(id : String)
 		{
@@ -36,7 +37,7 @@ package org.assetloader.base
 
 			super(id, AssetType.GROUP);
 		}
-
+		
 		override protected function initSignals() : void
 		{
 			super.initSignals();
@@ -56,7 +57,7 @@ package org.assetloader.base
 		 */
 		public function add(id : String, request : URLRequest, type : String = "AUTO", ...params) : ILoader
 		{
-			var loader : ILoader = _loaderFactory.produce(id, type, request, params, this);
+			var loader : ILoader = _loaderFactory.produce(id, type, request, params);
 			addLoader(loader);
 			return loader;
 		}
@@ -71,12 +72,14 @@ package org.assetloader.base
 
 			_numLoaders = _ids.length;
 
-			if(!loader.hasParam(Param.PRIORITY))
+			if(loader.getParam(Param.PRIORITY) == 0)
 				loader.setParam(Param.PRIORITY, -(_numLoaders - 1));
 
 			addListeners(loader);
 
 			updateTotalBytes();
+
+			loader.onAddedToParent.dispatch(this);
 		}
 
 		/**
@@ -97,6 +100,8 @@ package org.assetloader.base
 			}
 
 			updateTotalBytes();
+			
+			loader.onRemovedFromParent.dispatch(this);
 
 			return loader;
 		}
@@ -296,7 +301,7 @@ package org.assetloader.base
 		{
 			return _numLoaders;
 		}
-		
+
 		public function get base() : String
 		{
 			return _base;

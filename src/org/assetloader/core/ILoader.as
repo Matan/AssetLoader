@@ -184,5 +184,9 @@ package org.assetloader.core
 		function get onProgress() : ProgressSignal
 
 		function get onComplete() : LoaderSignal
+		
+		function get onAddedToParent() : LoaderSignal
+
+		function get onRemovedFromParent() : LoaderSignal
 	}
 }

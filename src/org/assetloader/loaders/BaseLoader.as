@@ -19,9 +19,9 @@ package org.assetloader.loaders
 	{
 		protected var _eventDispatcher : IEventDispatcher;
 
-		public function BaseLoader(id : String, request : URLRequest, type : String, parent : ILoader = null)
+		public function BaseLoader(id : String, request : URLRequest, type : String)
 		{
-			super(id, type, request, parent);
+			super(id, type, request);
 		}
 
 		/**

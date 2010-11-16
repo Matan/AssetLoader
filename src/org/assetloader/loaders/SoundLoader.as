@@ -2,7 +2,6 @@ package org.assetloader.loaders
 {
 	import org.assetloader.base.AssetType;
 	import org.assetloader.base.Param;
-	import org.assetloader.core.ILoader;
 	import org.assetloader.signals.LoaderSignal;
 
 	import flash.events.Event;
@@ -19,9 +18,9 @@ package org.assetloader.loaders
 
 		protected var _sound : Sound;
 
-		public function SoundLoader(id : String, request : URLRequest, parent : ILoader = null) 
+		public function SoundLoader(id : String, request : URLRequest) 
 		{
-			super(id, request, AssetType.SOUND, parent);
+			super(id, request, AssetType.SOUND);
 		}
 		
 		override protected function initParams() : void

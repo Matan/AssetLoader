@@ -2,7 +2,6 @@ package org.assetloader.loaders
 {
 	import org.assetloader.base.AssetType;
 	import org.assetloader.base.Param;
-	import org.assetloader.core.ILoader;
 	import org.assetloader.signals.LoaderSignal;
 
 	import flash.display.Bitmap;
@@ -18,9 +17,9 @@ package org.assetloader.loaders
 		protected var _bitmapData : BitmapData;
 		protected var _bitmap : Bitmap;
 
-		public function ImageLoader(id : String, request : URLRequest, parent : ILoader = null)
+		public function ImageLoader(id : String, request : URLRequest)
 		{
-			super(id, request, parent);
+			super(id, request);
 			_type = AssetType.IMAGE;
 		}
 
@@ -36,7 +35,7 @@ package org.assetloader.loaders
 			setParam(Param.SMOOTHING, false);
 			setParam(Param.PIXEL_SNAPPING, "auto");
 		}
-		
+
 		override protected function initSignals() : void
 		{
 			super.initSignals();
@@ -73,7 +72,7 @@ package org.assetloader.loaders
 
 			return errMsg;
 		}
-
+		
 		public function get bitmapData() : BitmapData
 		{
 			return _bitmapData;
