@@ -133,45 +133,45 @@ package org.assetloader.parsers
 			assertEquals("binary type should be BINARY", AssetType.BINARY, binary.type);
 			assertEquals("binary preventCache should be false", false, binary.getParam(Param.PREVENT_CACHE));
 			assertEquals("binary weight should be 3493", 3493, binary.getParam(Param.WEIGHT));
-			assertEquals("binary base should be " + _base, _base, group1.getParam(Param.BASE));
+			assertEquals("binary base should be " + _base, _base, binary.getParam(Param.BASE));
 
 			var sound : ILoader = group1.getLoader('SAMPLE_SOUND');
 			assertEquals("sound id should be SAMPLE_SOUND", 'SAMPLE_SOUND', sound.id);
 			assertEquals("sound type should be SOUND", AssetType.SOUND, sound.type);
 			assertEquals("sound preventCache should be false", false, sound.getParam(Param.PREVENT_CACHE));
 			assertEquals("sound weight should be 213 x 1024", uint(213 * 1024), sound.getParam(Param.WEIGHT));
-			assertEquals("sound base should be " + _base, _base, group1.getParam(Param.BASE));
+			assertEquals("sound base should be " + _base, _base, sound.getParam(Param.BASE));
 
 			var group2 : IAssetLoader = IAssetLoader(group1.getLoader('SAMPLE_GROUP_02'));
 			assertEquals("group2 id should be SAMPLE_GROUP_02", 'SAMPLE_GROUP_02', group2.id);
 			assertEquals("group2 type should be GROUP", AssetType.GROUP, group2.type);
 			assertEquals("group2 preventCache should be false", false, group2.getParam(Param.PREVENT_CACHE));
 			assertEquals("group2 numConnections should be 2", 2, group2.numConnections);
-			assertEquals("group2 base should be " + _base, _base, group1.getParam(Param.BASE));
+			assertEquals("group2 base should be " + _base, _base, group2.getParam(Param.BASE));
 
 			var text : ILoader = group2.getLoader('SAMPLE_TXT');
 			assertEquals("text id should be SAMPLE_TXT", 'SAMPLE_TXT', text.id);
 			assertEquals("text type should be TEXT", AssetType.TEXT, text.type);
 			assertEquals("text preventCache should be false", false, text.getParam(Param.PREVENT_CACHE));
-			assertEquals("text base should be " + _base, _base, group1.getParam(Param.BASE));
+			assertEquals("text base should be " + _base, _base, text.getParam(Param.BASE));
 
 			var json : ILoader = group2.getLoader('SAMPLE_JSON');
 			assertEquals("json id should be SAMPLE_JSON", 'SAMPLE_JSON', json.id);
 			assertEquals("json type should be JSON", AssetType.JSON, json.type);
 			assertEquals("json preventCache should be false", false, json.getParam(Param.PREVENT_CACHE));
-			assertEquals("json base should be " + _base, _base, group1.getParam(Param.BASE));
+			assertEquals("json base should be " + _base, _base, json.getParam(Param.BASE));
 
 			var xml : ILoader = group2.getLoader('SAMPLE_XML');
 			assertEquals("xml id should be SAMPLE_XML", 'SAMPLE_XML', xml.id);
 			assertEquals("xml type should be XML", AssetType.XML, xml.type);
 			assertEquals("xml preventCache should be false", false, xml.getParam(Param.PREVENT_CACHE));
-			assertEquals("xml base should be " + _base, _base, group1.getParam(Param.BASE));
+			assertEquals("xml base should be " + _base, _base, xml.getParam(Param.BASE));
 
 			var css : ILoader = group2.getLoader('SAMPLE_CSS');
 			assertEquals("css id should be SAMPLE_CSS", 'SAMPLE_CSS', css.id);
 			assertEquals("css type should be CSS", AssetType.CSS, css.type);
 			assertEquals("css preventCache should be false", false, css.getParam(Param.PREVENT_CACHE));
-			assertEquals("css base should be " + _base, _base, group1.getParam(Param.BASE));
+			assertEquals("css base should be " + _base, _base, css.getParam(Param.BASE));
 
 			var image : ILoader = _assetloader.getLoader('SAMPLE_IMAGE');
 			assertEquals("image id should be SAMPLE_IMAGE", 'SAMPLE_IMAGE', image.id);
@@ -181,7 +181,7 @@ package org.assetloader.parsers
 			assertEquals("image fillColor should be 0 (Black | 0x000000)", 0x0, image.getParam(Param.FILL_COLOR));
 			assertEquals("image smoothing should be true", true, image.getParam(Param.SMOOTHING));
 			assertEquals("image transparent should be true", true, image.getParam(Param.TRANSPARENT));
-			assertEquals("image base should be " + _base, _base, group1.getParam(Param.BASE));
+			assertEquals("image base should be " + _base, _base, image.getParam(Param.BASE));
 
 			var video : ILoader = _assetloader.getLoader('SAMPLE_VIDEO');
 			assertEquals("video id should be SAMPLE_VIDEO", 'SAMPLE_VIDEO', video.id);
@@ -189,7 +189,7 @@ package org.assetloader.parsers
 			assertEquals("video preventCache should be true", true, video.getParam(Param.PREVENT_CACHE));
 			assertEquals("video weight should be 0.312 x 1024 x 1024", uint(0.312 * 1024 * 1024), video.getParam(Param.WEIGHT));
 			assertEquals("video onDemand should be true", true, video.getParam(Param.ON_DEMAND));
-			assertEquals("video base should be " + _base, _base, group1.getParam(Param.BASE));
+			assertEquals("video base should be " + _base, _base, video.getParam(Param.BASE));
 
 			var swf : ILoader = _assetloader.getLoader('SAMPLE_SWF');
 			assertEquals("swf id should be SAMPLE_SWF", 'SAMPLE_SWF', swf.id);
@@ -197,14 +197,14 @@ package org.assetloader.parsers
 			assertEquals("swf preventCache should be true", true, swf.getParam(Param.PREVENT_CACHE));
 			assertEquals("swf weight should be 526", 526, swf.getParam(Param.WEIGHT));
 			assertEquals("swf priority should be 1", 1, swf.getParam(Param.PRIORITY));
-			assertEquals("swf base should be " + _base, _base, group1.getParam(Param.BASE));
+			assertEquals("swf base should be " + _base, _base, swf.getParam(Param.BASE));
 
 			var error : ILoader = _assetloader.getLoader('SAMPLE_ERROR');
 			assertEquals("error id should be SAMPLE_ERROR", 'SAMPLE_ERROR', error.id);
 			assertEquals("error type should be IMAGE", AssetType.IMAGE, error.type);
 			assertEquals("error preventCache should be false", false, error.getParam(Param.PREVENT_CACHE));
 			assertEquals("error retries should be 5", 5, error.getParam(Param.RETRIES));
-			assertEquals("error base should be " + _base, _base, group1.getParam(Param.BASE));
+			assertEquals("error base should be /", "/", error.getParam(Param.BASE));
 		}
 	}
 }

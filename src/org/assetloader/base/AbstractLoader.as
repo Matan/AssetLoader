@@ -127,7 +127,7 @@ package org.assetloader.base
 				setParam(Param.PREVENT_CACHE, _parent.getParam(Param.PREVENT_CACHE));
 
 			// Inherit base from parent if undefinded
-			if(_params[Param.BASE] == undefined)
+			if(_params[Param.BASE] == undefined || _params[Param.BASE] == null)
 				setParam(Param.BASE, _parent.getParam(Param.BASE));
 		}
 

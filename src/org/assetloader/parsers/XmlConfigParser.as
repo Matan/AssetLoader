@@ -68,7 +68,11 @@ package org.assetloader.parsers
 				var vo : ConfigVO = parseVo(children[i], rootVo);
 
 				if(vo.id != "" && vo.src == "")
-					_assetloader.addLoader(parseGroup(vo));
+				{
+					var group : IAssetLoader = parseGroup(vo);
+					_assetloader.addLoader(group);
+					group.addConfig(vo.xml);
+				}
 				else if(vo.id != "" && vo.src != "")
 					_assetloader.addLoader(parseAsset(vo));
 				else
@@ -79,10 +83,7 @@ package org.assetloader.parsers
 		protected function parseGroup(vo : ConfigVO) : IAssetLoader
 		{
 			var loader : IAssetLoader = IAssetLoader(_loaderFactory.produce(vo.id, AssetType.GROUP, null, getParams(vo)));
-
 			loader.numConnections = vo.connections;
-			loader.addConfig(vo.xml);
-
 			return loader;
 		}
 
@@ -101,7 +102,16 @@ package org.assetloader.parsers
 			child.src = xml.@src || "";
 			child.id = xml.@id || "";
 
+			/*trace('_assetloader.id: ' + (_assetloader.id));
+			trace('inheritFrom.id: ' + (inheritFrom.id));
+			trace('child.id: ' + (child.id));
+			trace('xml.@base: ' + (xml.@base));
+			trace('inheritFrom.base: ' + (inheritFrom.base));*/
+
 			child.base = xml.@base || inheritFrom.base;
+			// trace('child.base: ' + (child.base));
+			// trace("---------------------------------------------");
+
 			child.type = xml.@type || inheritFrom.type;
 			child.weight = convertWeight(xml.@weight);
 			child.connections = xml.@connections || inheritFrom.connections;
@@ -133,8 +143,10 @@ package org.assetloader.parsers
 			if(!isNaN(vo.priority))
 				params.push(new Param(Param.PRIORITY, vo.priority));
 
-			params.push(new Param(Param.BASE, vo.base));
-						params.push(new Param(Param.WEIGHT, vo.weight));
+			if(vo.base && vo.base != "")
+				params.push(new Param(Param.BASE, vo.base));
+
+			params.push(new Param(Param.WEIGHT, vo.weight));
 			params.push(new Param(Param.RETRIES, vo.retries));
 			params.push(new Param(Param.ON_DEMAND, vo.onDemand));
 			params.push(new Param(Param.PREVENT_CACHE, vo.preventCache));
@@ -183,14 +195,14 @@ package org.assetloader.parsers
 
 class ConfigVO
 {
-	//Internal
+	// Internal
 	public var xml : XML;
-	
+
 	// IAssetLoader
 	public var connections : int = 3;
 
 	// Mixed, but mostly for ILoaders
-	public var base : String = "";
+	public var base : String = null;
 	public var id : String;
 	public var src : String;
 	public var type : String = "AUTO";
