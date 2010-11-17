@@ -63,7 +63,6 @@ package org.assetloader.base
 			setParam(Param.PRIORITY, 0);
 			setParam(Param.RETRIES, 3);
 			setParam(Param.ON_DEMAND, false);
-			setParam(Param.PREVENT_CACHE, false);
 			setParam(Param.WEIGHT, 0);
 		}
 
@@ -123,8 +122,9 @@ package org.assetloader.base
 		{
 			_parent = parent;
 
-			// Inherit prevent cache from parent
-			setParam(Param.PREVENT_CACHE, _parent.getParam(Param.PREVENT_CACHE));
+			// Inherit prevent cache from parent if undefinded
+			if(_params[Param.PREVENT_CACHE] == undefined)
+				setParam(Param.PREVENT_CACHE, _parent.getParam(Param.PREVENT_CACHE));
 		}
 
 		protected function removedFromParent_handler(signal : LoaderSignal, parent : IAssetLoader) : void

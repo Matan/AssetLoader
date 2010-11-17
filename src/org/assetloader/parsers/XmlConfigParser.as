@@ -69,7 +69,7 @@ package org.assetloader.parsers
 
 				if(vo.id != "" && vo.src == "")
 					_assetloader.addLoader(parseGroup(vo));
-				else if(vo.src != "")
+				else if(vo.id != "" && vo.src != "")
 					_assetloader.addLoader(parseAsset(vo));
 				else
 					parseXml(children[i], vo);
