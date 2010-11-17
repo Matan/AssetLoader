@@ -20,6 +20,9 @@ package org.assetloader.loaders
 	 */
 	public class BaseLoader extends AbstractLoader implements ILoader
 	{
+		/**
+		 * @private
+		 */
 		protected var _eventDispatcher : IEventDispatcher;
 
 		public function BaseLoader(id : String, request : URLRequest, type : String)
@@ -53,15 +56,24 @@ package org.assetloader.loaders
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function constructLoader() : IEventDispatcher
 		{
 			return null;
 		}
 
+		/**
+		 * @private
+		 */
 		protected function invokeLoading() : void
 		{
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function stop() : void
 		{
 			removeListeners(_eventDispatcher);
@@ -84,6 +96,9 @@ package org.assetloader.loaders
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		// HANDLERS
 		// --------------------------------------------------------------------------------------------------------------------------------//
+		/**
+		 * @private
+		 */
 		protected function error_handler(event : ErrorEvent) : void
 		{
 			if(_retryTally < getParam(Param.RETRIES))
@@ -98,11 +113,17 @@ package org.assetloader.loaders
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function httpStatus_handler(event : HTTPStatusEvent) : void
 		{
 			_onHttpStatus.dispatch(event.status);
 		}
 
+		/**
+		 * @private
+		 */
 		protected function open_handler(event : Event) : void
 		{
 			_stats.open();
@@ -110,12 +131,18 @@ package org.assetloader.loaders
 			_onOpen.dispatch();
 		}
 
+		/**
+		 * @private
+		 */
 		protected function progress_handler(event : ProgressEvent) : void
 		{
 			_stats.update(event.bytesLoaded, event.bytesTotal);
 			_onProgress.dispatch(_stats.latency, _stats.speed, _stats.averageSpeed, _stats.progress, _stats.bytesLoaded, _stats.bytesTotal);
 		}
 
+		/**
+		 * @private
+		 */
 		protected function complete_handler(event : Event) : void
 		{
 			_stats.done();
@@ -131,6 +158,9 @@ package org.assetloader.loaders
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PROTECTED
 		// --------------------------------------------------------------------------------------------------------------------------------//
+		/**
+		 * @private
+		 */
 		protected function addListeners(dispatcher : IEventDispatcher) : void
 		{
 			if(dispatcher)
@@ -146,6 +176,9 @@ package org.assetloader.loaders
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function removeListeners(dispatcher : IEventDispatcher) : void
 		{
 			if(dispatcher)
@@ -161,6 +194,9 @@ package org.assetloader.loaders
 			}
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function setParam(id : String, value : *) : void
 		{
 			var success : Boolean = true;
@@ -177,11 +213,14 @@ package org.assetloader.loaders
 					_request.requestHeaders = value;
 					break;
 			}
-			
+
 			if(success)
 				super.setParam(id, value);
 		}
 
+		/**
+		 * @private
+		 */
 		protected function setBase(value : String) : Boolean
 		{
 			var url : String = _request.url;
@@ -194,10 +233,13 @@ package org.assetloader.loaders
 					_request.url = value + url;
 					return true;
 				}
-			
+
 			return false;
 		}
 
+		/**
+		 * @private
+		 */
 		protected function setPreventCache(value : Boolean) : void
 		{
 			var url : String = _request.url;

@@ -23,13 +23,31 @@ package org.assetloader.loaders
 	 */
 	public class VideoLoader extends BaseLoader
 	{
+		/**
+		 * @private
+		 */
 		protected var _onNetStatus : NetStatusSignal;
+		/**
+		 * @private
+		 */
 		protected var _onReady : LoaderSignal;
 
+		/**
+		 * @private
+		 */
 		protected var _netConnection : NetConnection;
+		/**
+		 * @private
+		 */
 		protected var _netStream : NetStream;
 
+		/**
+		 * @private
+		 */
 		protected var _progressTimer : Timer;
+		/**
+		 * @private
+		 */
 		protected var _hasDispatchedReady : Boolean;
 
 		public function VideoLoader(id : String, request : URLRequest)
@@ -37,6 +55,9 @@ package org.assetloader.loaders
 			super(id, request, AssetType.VIDEO);
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initParams() : void
 		{
 			super.initParams();
@@ -46,6 +67,9 @@ package org.assetloader.loaders
 			}});
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initSignals() : void
 		{
 			super.initSignals();
@@ -54,6 +78,9 @@ package org.assetloader.loaders
 			_onReady = new LoaderSignal(this, NetStream);
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function constructLoader() : IEventDispatcher
 		{
 			_netConnection = new NetConnection();
@@ -70,6 +97,9 @@ package org.assetloader.loaders
 			return _netStream;
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function invokeLoading() : void
 		{
 			try
@@ -84,6 +114,9 @@ package org.assetloader.loaders
 			_progressTimer.start();
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function stop() : void
 		{
 			if(_invoked)
@@ -107,6 +140,9 @@ package org.assetloader.loaders
 			super.stop();
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function destroy() : void
 		{
 			super.destroy();
@@ -119,6 +155,9 @@ package org.assetloader.loaders
 			_netStream = null;
 		}
 
+		/**
+		 * @private
+		 */
 		protected function progressTimer_handler(event : TimerEvent) : void
 		{
 			if(_netStream.bytesLoaded > 4 && !_hasDispatchedReady)
@@ -141,6 +180,9 @@ package org.assetloader.loaders
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function netStatus_handler(event : NetStatusEvent) : void
 		{
 			var code : String = event.info.code;
@@ -163,6 +205,9 @@ package org.assetloader.loaders
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function addListeners(dispatcher : IEventDispatcher) : void
 		{
 			if(dispatcher)
@@ -173,6 +218,9 @@ package org.assetloader.loaders
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function removeListeners(dispatcher : IEventDispatcher) : void
 		{
 			if(dispatcher)
@@ -183,21 +231,56 @@ package org.assetloader.loaders
 			}
 		}
 
+		/**
+		 * Dispatches when the NetStream reports a NetStatus event.
+		 * 
+		 * <p>HANDLER AREGUMENTS: (signal:<strong>NetStatusSignal</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.NetStatusSignal
+		 */
 		public function get onNetStatus() : NetStatusSignal
 		{
 			return _onNetStatus;
 		}
 
+		/**
+		 * Dispatches when the NetStream is ready to be attached to a Video instance.
+		 * 
+		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>, netStream:<strong>NetStream</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>		 *	 <li><strong>netStream</strong> - The NetStream instance.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.LoaderSignal
+		 */
 		public function get onReady() : LoaderSignal
 		{
 			return _onReady;
 		}
 
+		/**
+		 * Gets the NetConnection used with the NetStream.
+		 * <p>Note: this instance will be available as soon as the VideoLoader's
+		 * start method is invoked.</p>
+		 * 
+		 * @return NetConnection
+		 */
 		public function get netConnection() : NetConnection
 		{
 			return _netConnection;
 		}
 
+		/**
+		 * Gets the NetStream.
+		 * 
+		 * <p>Note: this instance will be available as soon as the VideoLoader's
+		 * start method is invoked.</p>
+		 * 
+		 * @return NetStream
+		 */
 		public function get netStream() : NetStream
 		{
 			return _netStream;

@@ -7,6 +7,9 @@ package org.assetloader.signals
 	 */
 	public class NetStatusSignal extends LoaderSignal
 	{
+		/**
+		 * @private
+		 */
 		protected var _info : Object;
 
 		public function NetStatusSignal(loader : ILoader, ...valueClasses)
@@ -15,12 +18,20 @@ package org.assetloader.signals
 			_signalType = NetStatusSignal;
 		}
 
+		/**
+		 * Dispatches Signal.
+		 * 
+		 * @param args1 Object - NetStatus Object
+		 */
 		override public function dispatch(...args) : void
 		{
 			_info = args.shift();
 			super.dispatch.apply(null, args);
 		}
-		
+
+		/**
+		 * @private
+		 */
 		override protected function clone() : LoaderSignal
 		{
 			var clone : NetStatusSignal = new NetStatusSignal(_loader, valueClasses);
@@ -28,6 +39,11 @@ package org.assetloader.signals
 			return clone;
 		}
 
+		/**
+		 * Gets the NetStatus info object.
+		 * 
+		 * @return Object
+		 */
 		public function get info() : Object
 		{
 			return _info;

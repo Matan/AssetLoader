@@ -1,4 +1,4 @@
-package org.assetloader.loaders 
+package org.assetloader.loaders
 {
 	import org.assetloader.base.AssetType;
 	import org.assetloader.base.Param;
@@ -16,75 +16,105 @@ package org.assetloader.loaders
 	 */
 	public class DisplayObjectLoader extends BaseLoader
 	{
+		/**
+		 * @private
+		 */
 		protected var _displayObject : DisplayObject;
-		
+
+		/**
+		 * @private
+		 */
 		protected var _loader : Loader;
 
-		public function DisplayObjectLoader(id : String, request : URLRequest) 
+		public function DisplayObjectLoader(id : String, request : URLRequest)
 		{
 			super(id, request, AssetType.DISPLAY_OBJECT);
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initParams() : void
 		{
 			super.initParams();
 			setParam(Param.LOADER_CONTEXT, null);
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initSignals() : void
 		{
 			super.initSignals();
 			_onComplete = new LoaderSignal(this, DisplayObject);
 		}
-		
-		override protected function constructLoader() : IEventDispatcher 
+
+		/**
+		 * @private
+		 */
+		override protected function constructLoader() : IEventDispatcher
 		{
 			_loader = new Loader();
 			return _loader.contentLoaderInfo;
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function invokeLoading() : void
 		{
 			_loader.load(request, getParam(Param.LOADER_CONTEXT));
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function stop() : void
 		{
 			if(_invoked)
 			{
 				try
 				{
-					_loader.close();	
-				}catch(error : Error)
+					_loader.close();
+				}
+				catch(error : Error)
 				{
 				}
 			}
 			super.stop();
 		}
 
-		override public function destroy() : void 
+		/**
+		 * @inheritDoc
+		 */
+		override public function destroy() : void
 		{
 			super.destroy();
 			_loader = null;
 			_displayObject = null;
 		}
 
-		override protected function complete_handler(event : Event) : void 
+		/**
+		 * @private
+		 */
+		override protected function complete_handler(event : Event) : void
 		{
 			_data = _displayObject = _loader.content;
-			
+
 			var testResult : String = testData(_data);
-			
+
 			if(testResult != "")
 			{
 				_onError.dispatch(ErrorEvent.ERROR, testResult);
 				return;
 			}
-			
+
 			super.complete_handler(event);
 		}
 
 		/**
+		 * @private
+		 * 
 		 * @return Error message, empty String if no error occured.
 		 */
 		protected function testData(data : DisplayObject) : String
@@ -92,6 +122,11 @@ package org.assetloader.loaders
 			return !data ? "Data is not a DisplayObject." : "";
 		}
 
+		/**
+		 * Gets the resulting DisplayObject after loading is complete.
+		 * 
+		 * @return DisplayObject
+		 */
 		public function get displayObject() : DisplayObject
 		{
 			return _displayObject;

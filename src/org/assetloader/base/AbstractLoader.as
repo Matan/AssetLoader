@@ -16,32 +16,92 @@ package org.assetloader.base
 	 */
 	public class AbstractLoader implements ILoader
 	{
+		/**
+		 * @private
+		 */
 		protected var _onError : ErrorSignal;
+		/**
+		 * @private
+		 */
 		protected var _onHttpStatus : HttpStatusSignal;
 
+		/**
+		 * @private
+		 */
 		protected var _onOpen : LoaderSignal;
+		/**
+		 * @private
+		 */
 		protected var _onProgress : ProgressSignal;
+		/**
+		 * @private
+		 */
 		protected var _onComplete : LoaderSignal;
 
+		/**
+		 * @private
+		 */
 		protected var _onAddedToParent : LoaderSignal;
+		/**
+		 * @private
+		 */
 		protected var _onRemovedFromParent : LoaderSignal;
 
+		/**
+		 * @private
+		 */
 		protected var _id : String;
+		/**
+		 * @private
+		 */
 		protected var _type : String;
+		/**
+		 * @private
+		 */
 		protected var _parent : ILoader;
+		/**
+		 * @private
+		 */
 		protected var _request : URLRequest;
 
+		/**
+		 * @private
+		 */
 		protected var _stats : ILoadStats;
 
+		/**
+		 * @private
+		 */
 		protected var _params : Object;
+		/**
+		 * @private
+		 */
 		protected var _retryTally : uint;
 
+		/**
+		 * @private
+		 */
 		protected var _invoked : Boolean;
+		/**
+		 * @private
+		 */
 		protected var _inProgress : Boolean;
+		/**
+		 * @private
+		 */
 		protected var _stopped : Boolean;
+		/**
+		 * @private
+		 */
 		protected var _loaded : Boolean;
+		/**
+		 * @private
+		 */
 		protected var _failed : Boolean;
 
+		/**
+		 * @private
+		 */
 		protected var _data : *;
 
 		public function AbstractLoader(id : String, type : String, request : URLRequest = null)
@@ -56,6 +116,9 @@ package org.assetloader.base
 			initSignals();
 		}
 
+		/**
+		 * @private
+		 */
 		protected function initParams() : void
 		{
 			_params = {};
@@ -66,6 +129,9 @@ package org.assetloader.base
 			setParam(Param.WEIGHT, 0);
 		}
 
+		/**
+		 * @private
+		 */
 		protected function initSignals() : void
 		{
 			_onError = new ErrorSignal(this);
@@ -118,6 +184,9 @@ package org.assetloader.base
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PROTECTED HANDLERS
 		// --------------------------------------------------------------------------------------------------------------------------------//
+		/**
+		 * @private
+		 */
 		protected function addedToParent_handler(signal : LoaderSignal, parent : IAssetLoader) : void
 		{
 			_parent = parent;
@@ -131,6 +200,9 @@ package org.assetloader.base
 				setParam(Param.BASE, _parent.getParam(Param.BASE));
 		}
 
+		/**
+		 * @private
+		 */
 		protected function removedFromParent_handler(signal : LoaderSignal, parent : IAssetLoader) : void
 		{
 			_parent = null;
@@ -289,36 +361,58 @@ package org.assetloader.base
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PUBLIC SIGNALS
 		// --------------------------------------------------------------------------------------------------------------------------------//
+
+		/**
+		 * @inheritDoc
+		 */
 		public function get onError() : ErrorSignal
 		{
 			return _onError;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get onHttpStatus() : HttpStatusSignal
 		{
 			return _onHttpStatus;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get onOpen() : LoaderSignal
 		{
 			return _onOpen;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get onProgress() : ProgressSignal
 		{
 			return _onProgress;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get onComplete() : LoaderSignal
 		{
 			return _onComplete;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get onAddedToParent() : LoaderSignal
 		{
 			return _onAddedToParent;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get onRemovedFromParent() : LoaderSignal
 		{
 			return _onRemovedFromParent;

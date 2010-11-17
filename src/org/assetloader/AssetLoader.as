@@ -16,11 +16,26 @@ package org.assetloader
 	 */
 	public class AssetLoader extends AssetLoaderBase implements IAssetLoader
 	{
+		/**
+		 * @private
+		 */
 		protected var _onChildOpen : LoaderSignal;
+		/**
+		 * @private
+		 */
 		protected var _onChildError : ErrorSignal;
+		/**
+		 * @private
+		 */
 		protected var _onChildComplete : LoaderSignal;
 
+		/**
+		 * @private
+		 */
 		protected var _loadedIds : Array;
+		/**
+		 * @private
+		 */
 		protected var _numLoaded : int;
 
 		public function AssetLoader(id : String = "PrimaryGroup")
@@ -29,6 +44,9 @@ package org.assetloader
 			_loadedIds = [];
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initSignals() : void
 		{
 			super.initSignals();
@@ -134,6 +152,9 @@ package org.assetloader
 			super.stop();
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get loadedIds() : Array
 		{
 			return _loadedIds;
@@ -150,7 +171,9 @@ package org.assetloader
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PROTECTED FUNCTIONS
 		// --------------------------------------------------------------------------------------------------------------------------------//
-
+		/**
+		 * @private
+		 */
 		protected function sortIdsByPriority() : void
 		{
 			var priorities : Array = [];
@@ -169,6 +192,9 @@ package org.assetloader
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function startNextLoader() : void
 		{
 			if(_invoked)
@@ -188,17 +214,22 @@ package org.assetloader
 				}
 			}
 		}
-		
+
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PROTECTED HANDLERS
 		// --------------------------------------------------------------------------------------------------------------------------------//
-
+		/**
+		 * @private
+		 */
 		override protected function open_handler(signal : LoaderSignal) : void
 		{
 			_onChildOpen.dispatch(signal.loader);
 			super.open_handler(signal);
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function error_handler(signal : ErrorSignal) : void
 		{
 			_onChildError.dispatch(signal.type, signal.message, signal.loader);
@@ -206,6 +237,9 @@ package org.assetloader
 			startNextLoader();
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function complete_handler(signal : LoaderSignal, data : * = null) : void
 		{
 			var loader : ILoader = signal.loader;
@@ -224,6 +258,9 @@ package org.assetloader
 				startNextLoader();
 		}
 
+		/**
+		 * @private
+		 */
 		protected function configLoader_complete_handler(signal : LoaderSignal, data : *) : void
 		{
 			var loader : ILoader = signal.loader;
@@ -241,16 +278,25 @@ package org.assetloader
 			loader.destroy();
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get onChildOpen() : LoaderSignal
 		{
 			return _onChildOpen;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get onChildError() : ErrorSignal
 		{
 			return _onChildError;
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		public function get onChildComplete() : LoaderSignal
 		{
 			return _onChildComplete;

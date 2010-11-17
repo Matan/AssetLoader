@@ -2,6 +2,11 @@ package org.assetloader.core
 {
 
 	/**
+	 * Parses and builds loading queues from String data.
+	 * 
+	 * @see org.assetloader.core.ILoader
+	 * @see org.assetloader.core.IAssetLoader
+	 * 
 	 * @author Matan Uberstein
 	 */
 	public interface IConfigParser
@@ -16,9 +21,10 @@ package org.assetloader.core
 		function isValid(data : String) : Boolean;
 
 		/**
-		 * Implematation should convert String into respected type and return
-		 * an Array of ConfigVOs.
+		 * Implematation should convert String into respective type and add the parsed
+		 * assets into their repective parent IAssetLoader
 		 * 
+		 * @param assetloader IAssetLoader instance that will contain the parsed assets.
 		 * @param data String
 		 * 
 		 * @see org.assetloader.base.vo.ConfigVO

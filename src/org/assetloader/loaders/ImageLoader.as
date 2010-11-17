@@ -14,7 +14,13 @@ package org.assetloader.loaders
 	 */
 	public class ImageLoader extends DisplayObjectLoader
 	{
+		/**
+		 * @private
+		 */
 		protected var _bitmapData : BitmapData;
+		/**
+		 * @private
+		 */
 		protected var _bitmap : Bitmap;
 
 		public function ImageLoader(id : String, request : URLRequest)
@@ -23,6 +29,9 @@ package org.assetloader.loaders
 			_type = AssetType.IMAGE;
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initParams() : void
 		{
 			super.initParams();
@@ -36,12 +45,18 @@ package org.assetloader.loaders
 			setParam(Param.PIXEL_SNAPPING, "auto");
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initSignals() : void
 		{
 			super.initSignals();
 			_onComplete = new LoaderSignal(this, Bitmap);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function destroy() : void
 		{
 			super.destroy();
@@ -55,6 +70,11 @@ package org.assetloader.loaders
 			_bitmap = null;
 		}
 
+		/**
+		 * @private
+		 * 
+		 * @inheritDoc
+		 */
 		override protected function testData(data : DisplayObject) : String
 		{
 			var errMsg : String = "";
@@ -72,12 +92,22 @@ package org.assetloader.loaders
 
 			return errMsg;
 		}
-		
+
+		/**
+		 * Gets the resulting BitmapData after loading is complete.
+		 * 
+		 * @return BitmapData
+		 */
 		public function get bitmapData() : BitmapData
 		{
 			return _bitmapData;
 		}
 
+		/**
+		 * Gets the resulting Bitmap after loading is complete.
+		 * 
+		 * @return Bitmap
+		 */
 		public function get bitmap() : Bitmap
 		{
 			return _bitmap;

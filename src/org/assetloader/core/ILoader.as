@@ -1,4 +1,4 @@
-package org.assetloader.core 
+package org.assetloader.core
 {
 
 	import org.assetloader.signals.ErrorSignal;
@@ -10,9 +10,6 @@ package org.assetloader.core
 
 	/**
 	 * Instances of ILoader will perform the actual loading of an asset. They only handle one file at a time.
-	 * <p>It must dispatch at least these events. <code>Event.OPEN | Event.COMPLETE | ProgressEvent.PROGRESS</code></p>	 * <p>Also maintain it's own instance of ILoadStats</p>
-	 * 
-	 * @see org.assetloader.loaders.AbstractLoader
 	 * 
 	 * @author Matan Uberstein
 	 */
@@ -21,11 +18,13 @@ package org.assetloader.core
 		/**
 		 * Starts/resumes the loading operation.
 		 */
-		function start() : void
+		function start() : void
+
 		/**
 		 * Stops/pauses the loading operation.
 		 */
-		function stop() : void
+		function stop() : void
+
 		/**
 		 * Removes all listeners and destroys references.
 		 */
@@ -47,11 +46,9 @@ package org.assetloader.core
 		function get stats() : ILoadStats
 
 		/**
-		 * True if the load operation was started at least once.
-		 * e.g. start is called then stop is called, invoked flag stays true.
+		 * True if the load operation was started. False other wise.
 		 * 
-		 * <p>False before start is called and after destroy is called.</p>
-		 * 
+		 * @default false
 		 * @return Boolean
 		 * 
 		 * @see #inProgress
@@ -60,10 +57,11 @@ package org.assetloader.core
 
 		/**
 		 * True if the load operation has been started.
-		 * e.g. when <code>Event.OPEN</code> fires.
+		 * e.g. when <code>opOpen</code> fires.
 		 * 
 		 * <p>False before start is called and after load operation is complete.</p>
 		 * 
+		 * @default false
 		 * @return Boolean
 		 */
 		function get inProgress() : Boolean
@@ -73,30 +71,34 @@ package org.assetloader.core
 		 * 
 		 * <p>False every other state.</p>
 		 * 
+		 * @default false
 		 * @return Boolean
 		 */
-		function get stopped() : Boolean
+		function get stopped() : Boolean
+
 		/**
 		 * True if the loading has completed. False otherwise.
 		 * 
+		 * @default false
 		 * @return Boolean
 		 */
 		function get loaded() : Boolean
-		
+
 		/**
 		 * True if the loader has failed after the set amount of retries.
 		 * 
 		 * @default false;
 		 * @return Boolean
 		 */
-		function get failed() : Boolean
+		function get failed() : Boolean
+
 		/**
 		 * @return Data that was returned after loading operation completed.
 		 */
 		function get data() : *
-		
+
 		/**
-		 * Checks if ILoadUnit has a param with the passed id.
+		 * Checks if a param with the passed id exists.
 		 * 
 		 * @param id String param id.
 		 * @return Boolean
@@ -129,9 +131,9 @@ package org.assetloader.core
 		function getParam(id : String) : *
 
 		/**
-		 * Adds parameter to unit. Same effect as calling setParam.
+		 * Adds parameter to ILoader. Same effect as calling setParam.
 		 * 
-		 * @param param IAssetParam
+		 * @param param IParam
 		 * 
 		 * @see org.assetloader.core.IParam
 		 * @see org.assetloader.base.Param
@@ -139,7 +141,7 @@ package org.assetloader.core
 		function addParam(param : IParam) : void
 
 		/**
-		 * @return String of asset id.
+		 * @return String of ILoader id.
 		 */
 		function get id() : String
 
@@ -149,14 +151,18 @@ package org.assetloader.core
 		function get request() : URLRequest
 
 		/**
-		 * @return String of asset type.
+		 * @return String of ILoader type.
 		 * 
 		 * @see org.assetloader.base.AssetType
 		 */
 		function get type() : String
 
 		/**
-		 * @return Object containing all parameters added to loadUnit.
+		 * Object containing all parameters added to ILoader.
+		 * Modifying this is not recommended as some params requires some work
+		 * to be done once they are added. 
+		 * 
+		 * @return Object
 		 * 
 		 * @see org.assetloader.core.IParam
 		 * @see org.assetloader.base.Param
@@ -167,24 +173,152 @@ package org.assetloader.core
 		 * Gets the amount of times the loading operation failed and retried.
 		 * @return uint
 		 * 
-		 * @see AssetParam.RETRIES
+		 * @see org.assetloader.base.Param#RETRIES
 		 * @see org.assetloader.core.IParam
 		 * @see org.assetloader.base.Param
 		 */
 		function get retryTally() : uint
-		
+
+		/**
+		 * Dispatches when something goes wrong, could be anything.
+		 * Most common causes would be an incorrect url or security error.
+		 * Keep in mind that all error are consolidated into one place, so if
+		 * load an XML file that has mal formed xml, this Signal will fire.
+		 * 
+		 * <p>HANDLER AREGUMENTS: (signal:<strong>ErrorSignal</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.ErrorSignal
+		 */
 		function get onError() : ErrorSignal
 
+		/**
+		 * Dispatches once the server has return a http status.
+		 * 
+		 * <p>Note: not all implemetations of ILoader dispatches this Signal.
+		 * e.g. AssetLoader, VideoLoader and SoundLoader.</p>
+		 * 
+		 * <p>HANDLER AREGUMENTS: (signal:<strong>HttpStatusSignal</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.HttpStatusSignal
+		 */
 		function get onHttpStatus() : HttpStatusSignal
 
+		/**
+		 * Dispatches when a connection has been opend this means that the
+		 * transfer will start shortly.
+		 * 
+		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.LoaderSignal
+		 */
 		function get onOpen() : LoaderSignal
 
+		/**
+		 * Dispatches when loading progress has been made.
+		 * 
+		 * <p>HANDLER AREGUMENTS: (signal:<strong>ProgressSignal</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.ProgressSignal
+		 */
 		function get onProgress() : ProgressSignal
 
+		/**
+		 * Dispatches when the loading operations has completed.
+		 * 
+		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>, data:<strong>RelatedType</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>		 *	 <li><strong>data</strong> - This will be a strongly typed value of what the ILoader has loaded. See list below.</li>
+		 * </ul>
+		 * 
+		 * <p>This is the list of ILoader implemetations and their strongly typed return.</p>
+		 * <table>
+		 * <tr>
+		 *	 	<th>Implementation:</th>		 * 		<th>Type:</th>		 * </tr>
+		 * <tr>
+		 * 		<td>AssetLoader</td>
+		 * 		<td>Dictionary</td>
+		 * 	</tr>
+		 * 	<tr>
+		 * 		<td>BinaryLoader</td>		 * 		<td>ByteArray</td>
+		 * 	</tr>
+		 * 	<tr>
+		 * 		<td>CSSLoader</td>
+		 * 		<td>StyleSheet</td>
+		 * 	</tr>
+		 * 	<tr>
+		 * 		<td>DisplayObjectLoader</td>
+		 * 		<td>DisplayObject</td>
+		 * 	</tr>
+		 * 	<tr>
+		 * 		<td>ImageLoader</td>
+		 * 		<td>Bitmap</td>
+		 * 	</tr>
+		 * 	<tr>
+		 * 		<td>JSONLoader</td>
+		 * 		<td>Object</td>
+		 * 	</tr>
+		 * 	<tr>
+		 * 		<td>SoundLoader</td>
+		 * 		<td>Sound</td>
+		 * 	</tr>
+		 * 	<tr>
+		 * 		<td>SWFLoader</td>
+		 * 		<td>Sprite</td>
+		 * 	</tr>
+		 * 	<tr>
+		 * 		<td>TextLoader</td>
+		 * 		<td>String</td>
+		 * 	</tr>
+		 * 	<tr>
+		 * 		<td>VideoLoader</td>
+		 * 		<td>NetStream</td>
+		 * 	</tr>
+		 * 	<tr>
+		 * 		<td>XMLLoader</td>
+		 * 		<td>XML</td>
+		 * 	</tr>
+		 * </table>
+		 * 
+		 * @see org.assetloader.signals.LoaderSignal
+		 */
 		function get onComplete() : LoaderSignal
-		
+
+		/**
+		 * Dispatches when an ILoader is added to an IAssetLoader's queue.
+		 * 
+		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>, parent:<strong>IAssetLoader</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>parent</strong> - IAssetLoader in question.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.LoaderSignal
+		 */
 		function get onAddedToParent() : LoaderSignal
 
+		/**
+		 * Dispatches when an ILoader is removed from an IAssetLoader's queue.
+		 * 
+		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>, parent:<strong>IAssetLoader</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>parent</strong> - IAssetLoader in question.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.LoaderSignal
+		 */
 		function get onRemovedFromParent() : LoaderSignal
 	}
 }

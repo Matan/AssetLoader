@@ -6,6 +6,11 @@ package org.assetloader.core
 	import flash.net.URLRequest;
 
 	/**
+	 * Instances of IAssetLoader can contain ILoader. Itself being an ILoader, the IAssetLoader can
+	 * also be contained by other IAssetLoaders.
+	 * 
+	 * @see org.assetloader.core.ILoader
+	 * 
 	 * @author Matan Uberstein
 	 */
 	public interface IAssetLoader extends ILoader
@@ -17,9 +22,9 @@ package org.assetloader.core
 		 * @param id Unique String that identifies asset.
 		 * @param url String URL to load.
 		 * @param type String that defines the type of asset.
-		 * @param assetParams Rest arguments for parameters that are passed to the <code>ILoadUnit</code>. Also accepts an Array of AssetParams.
+		 * @param params Rest arguments for parameters that are passed to the <code>ILoader</code>. Also accepts an Array of Param objects.
 		 * 
-		 * @return ILoader created for this asset.
+		 * @return <code>ILoader</code> created for this asset.
 		 * 
 		 * @see flash.net.URLRequest
 		 * @see org.assetloader.base.AssetType
@@ -27,8 +32,6 @@ package org.assetloader.core
 		 * @see org.assetloader.core.IParam
 		 * @see org.assetloader.core.ILoader
 		 * @see #add()
-		 * 
-		 * @example addLazy(AssetId.SOME_FILE_ID, sample.xml);
 		 */
 		function addLazy(id : String, url : String, type : String = "AUTO", ...params) : ILoader
 
@@ -37,11 +40,11 @@ package org.assetloader.core
 		 * <p>Recommendation: Create a class with static constants of the asset ids.</p>
 		 * 
 		 * @param id Unique String that identifies asset.
-		 * @param request URLRequest to execute.
+		 * @param url URLRequest to load.
 		 * @param type String that defines the type of asset.
-		 * @param assetParams Rest arguments for parameters that are passed to the <code>ILoadUnit</code>. Also accepts an Array of AssetParams.
+		 * @param params Rest arguments for parameters that are passed to the <code>ILoader</code>. Also accepts an Array of Param objects.
 		 * 
-		 * @return ILoader created for this asset.
+		 * @return <code>ILoader</code> created for this asset.
 		 * 
 		 * @see flash.net.URLRequest
 		 * @see org.assetloader.base.AssetType
@@ -52,40 +55,39 @@ package org.assetloader.core
 		function add(id : String, request : URLRequest, type : String = "AUTO", ...params) : ILoader
 
 		/**
-		 * Adds asset to loading queue.
-		 * <p>Recommendation: Create a class with static constants of the asset ids.</p>
+		 * Adds loader to loading queue.
 		 * 
-		 * @param unit ILoadUnit
-		 * 
-		 * @return ILoader created for this asset.
+		 * @param loader ILoader
 		 * 
 		 * @see flash.net.URLRequest
 		 * @see org.assetloader.base.AssetType
 		 * @see org.assetloader.base.Param
 		 * @see org.assetloader.core.IParam
 		 * @see org.assetloader.core.ILoader
+		 * @see #add()		 * @see #addLazy()
 		 */
 		function addLoader(loader : ILoader) : void
 
 		/**
-		 * Adds multiple assets to the loading queue. Once invoked the an implematation of the IConfigParser is constructed.
+		 * Adds multiple assets to the loading queue.
 		 * 
-		 * @param config String, If a url is passed, the file will be loaded first and then IConfigParser will convert string into required type.
+		 * @param config If a url is passed, the file will be loaded first and then IConfigParser will convert string into required type.
 		 * 
-		 * @see #configParserClass
+		 * @see org.assetloader.core.IConfigParser
 		 */
 		function addConfig(data : String) : void
 
 		/**
-		 * Removes asset from queue and destroys it's ILoader instance.
+		 * Removes ILoader from queue.
+		 * <p>Note: Loaders removed in this manner are NOT destroyed. They are merely removed from this IAssetLoader.</p>
 		 * 
-		 * @param id Unique String that identifies asset.
+		 * @param id Unique String that identifies loader.
 		 */
 		function remove(id : String) : ILoader
 
 		/**
-		 * Starts the asset with id passed.
-		 * @param id Asset id.
+		 * Starts the ILoader with id passed.
+		 * @param id loader id.
 		 */
 		function startLoader(id : String) : void
 
@@ -99,18 +101,18 @@ package org.assetloader.core
 		function hasLoader(id : String) : Boolean
 
 		/**
-		 * Gets the ILoader created when adding an asset to the queue.
+		 * Gets the ILoader.
 		 * 
 		 * @param id String id of the asset.
-		 * @return ILoader created on adding of asset.
+		 * @return ILoader
 		 * @see org.assetloader.core.ILoader
 		 */
 		function getLoader(id : String) : ILoader
 
 		/**
-		 * Checks if the loader has return data.
+		 * Checks if the ILoader with given id has returned data.
 		 * 
-		 * @param id String id of the asset.
+		 * @param id String id of the loader.
 		 * @return Boolean
 		 */
 		function hasAsset(id : String) : Boolean
@@ -124,35 +126,35 @@ package org.assetloader.core
 		function getAsset(id : String) : *
 
 		/**
-		 * All the ids of the assets added.
+		 * All the ids of the ILoaders in queue.
 		 * 
 		 * @return Array of Strings
 		 */
 		function get ids() : Array
 
 		/**
-		 * All the ids of the assets that have been loaded.
+		 * All the ids of the ILoaders that have been loaded.
 		 * 
 		 * @return Array of Strings
 		 */
 		function get loadedIds() : Array
 
 		/**
-		 * The amount of assets/load units added.
+		 * The amount of ILoaders in queue.
 		 * 
 		 * @return int
 		 */
 		function get numLoaders() : int
 
 		/**
-		 * The amount of assets loaded.
+		 * The amount of ILoaders loaded.
 		 * 
 		 * @return int
 		 */
 		function get numLoaded() : int
 
 		/**
-		 * Gets the number of connections this group will make.
+		 * Gets the number of connections this IAssetLoader will make.
 		 * <p>Setting numConnections to 0 (zero) will cause the group to start all assets at the same time.</p>
 		 * @return int
 		 * @default 3;
@@ -166,12 +168,56 @@ package org.assetloader.core
 		 */
 		function set numConnections(value : int) : void
 
+		/**
+		 * Dispatches when a child ILoader in the loading queue dispatches <code>onOpen</code>.
+		 * 
+		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>, loader:<strong>ILoader</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>loader</strong> - The child ILoader that dispatched <code>onOpen</code>.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.LoaderSignal
+		 */
 		function get onChildOpen() : LoaderSignal
 
+		/**
+		 * Dispatches when a child ILoader in the loading queue dispatches <code>onError</code>.
+		 * 
+		 * <p>HANDLER AREGUMENTS: (signal:<strong>ErrorSignal</strong>, loader:<strong>ILoader</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>loader</strong> - The child ILoader that dispatched <code>onError</code>.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.LoaderSignal		 * @see org.assetloader.signals.ErrorSignal
+		 */
 		function get onChildError() : ErrorSignal
 
+		/**
+		 * Dispatches when a child ILoader in the loading queue dispatches <code>onComplete</code>.
+		 * 
+		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>, loader:<strong>ILoader</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>loader</strong> - The child ILoader that dispatched <code>onComplete</code>.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.LoaderSignal
+		 */
 		function get onChildComplete() : LoaderSignal
 
+		/**
+		 * Dispatches only if a URL is passed to the <code>addConfig</code> method and the config
+		 * file has finished loading.
+		 * 
+		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.LoaderSignal
+		 */
 		function get onConfigLoaded() : LoaderSignal
 	}
 }

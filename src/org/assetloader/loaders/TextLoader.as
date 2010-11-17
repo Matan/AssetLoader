@@ -1,4 +1,4 @@
-package org.assetloader.loaders 
+package org.assetloader.loaders
 {
 	import org.assetloader.base.AssetType;
 	import org.assetloader.signals.LoaderSignal;
@@ -15,32 +15,50 @@ package org.assetloader.loaders
 	 */
 	public class TextLoader extends BaseLoader
 	{
+		/**
+		 * @private
+		 */
 		protected var _text : String;
-		
+
+		/**
+		 * @private
+		 */
 		protected var _loader : URLStream;
 
-		public function TextLoader(id : String, request : URLRequest) 
+		public function TextLoader(id : String, request : URLRequest)
 		{
 			super(id, request, AssetType.TEXT);
 		}
-		
+
+		/**
+		 * @private
+		 */
 		override protected function initSignals() : void
 		{
 			super.initSignals();
 			_onComplete = new LoaderSignal(this, String);
 		}
 
-		override protected function constructLoader() : IEventDispatcher 
+		/**
+		 * @private
+		 */
+		override protected function constructLoader() : IEventDispatcher
 		{
 			_loader = new URLStream();
 			return _loader;
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function invokeLoading() : void
 		{
 			_loader.load(request);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function stop() : void
 		{
 			if(_invoked)
@@ -48,39 +66,48 @@ package org.assetloader.loaders
 				try
 				{
 					_loader.close();
-				}catch(error : Error)
+				}
+				catch(error : Error)
 				{
 				}
 			}
 			super.stop();
 		}
 
-		override public function destroy() : void 
+		/**
+		 * @inheritDoc
+		 */
+		override public function destroy() : void
 		{
 			super.destroy();
 			_loader = null;
 			_text = null;
 		}
 
-		override protected function complete_handler(event : Event) : void 
+		/**
+		 * @private
+		 */
+		override protected function complete_handler(event : Event) : void
 		{
 			var bytes : ByteArray = new ByteArray();
 			_loader.readBytes(bytes);
-			
+
 			_data = _text = bytes.toString();
-			
+
 			var testResult : String = testData(_data);
-			
+
 			if(testResult != "")
 			{
 				_onError.dispatch(ErrorEvent.ERROR, testResult);
 				return;
 			}
-			
+
 			super.complete_handler(event);
 		}
 
 		/**
+		 * @private
+		 * 
 		 * @return Error message, empty string if no error occured.
 		 */
 		protected function testData(data : String) : String
@@ -88,6 +115,11 @@ package org.assetloader.loaders
 			return data == null ? "Data loaded is null." : "";
 		}
 
+		/**
+		 * Gets the resulting String after loading is complete.
+		 * 
+		 * @return String
+		 */
 		public function get text() : String
 		{
 			return _text;

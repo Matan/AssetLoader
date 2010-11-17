@@ -12,7 +12,6 @@ package org.assetloader.base
 		 * 
 		 * <p>Use: All asset types.</p>
 		 * <p>Type: <code>String</code></p>
-		 * <p>Default: ""</p>
 		 */
 		public static const BASE : String = "BASE";
 		

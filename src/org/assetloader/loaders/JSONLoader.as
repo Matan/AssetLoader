@@ -1,4 +1,4 @@
-package org.assetloader.loaders 
+package org.assetloader.loaders
 {
 	import com.adobe.serialization.json.JSON;
 
@@ -10,29 +10,43 @@ package org.assetloader.loaders
 	/**
 	 * @author Matan Uberstein
 	 */
-	public class JSONLoader extends TextLoader 
+	public class JSONLoader extends TextLoader
 	{
+		/**
+		 * @private
+		 */
 		protected var _jsonObject : Object;
-		
-		public function JSONLoader(id : String, request : URLRequest) 
+
+		public function JSONLoader(id : String, request : URLRequest)
 		{
 			super(id, request);
 			_type = AssetType.JSON;
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initSignals() : void
 		{
 			super.initSignals();
 			_onComplete = new LoaderSignal(this, Object);
 		}
 
+		/**
+		 * @private
+		 */
 		override public function destroy() : void
 		{
 			super.destroy();
 			_jsonObject = null;
 		}
-		
-		override protected function testData(data : String) : String 
+
+		/**
+		 * @private
+		 * 
+		 * @inheritDoc
+		 */
+		override protected function testData(data : String) : String
 		{
 			var errMsg : String = "";
 			try
@@ -43,10 +57,15 @@ package org.assetloader.loaders
 			{
 				errMsg = err.message;
 			}
-			
+
 			return errMsg;
 		}
 
+		/**
+		 * Gets the resulting Json Object after loading and parsing is complete.
+		 * 
+		 * @return Object
+		 */
 		public function get jsonObject() : Object
 		{
 			return _jsonObject;

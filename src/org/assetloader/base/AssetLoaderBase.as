@@ -15,16 +15,40 @@ package org.assetloader.base
 	 */
 	public class AssetLoaderBase extends AbstractLoader
 	{
+		/**
+		 * @private
+		 */
 		protected var _onConfigLoaded : LoaderSignal;
 
+		/**
+		 * @private
+		 */
 		protected var _loaders : Dictionary;
+		/**
+		 * @private
+		 */
 		protected var _assets : Dictionary;
+		/**
+		 * @private
+		 */
 		protected var _ids : Array;
 
+		/**
+		 * @private
+		 */
 		protected var _loaderFactory : LoaderFactory;
+		/**
+		 * @private
+		 */
 		protected var _configParser : IConfigParser;
 
+		/**
+		 * @private
+		 */
 		protected var _numLoaders : int;
+		/**
+		 * @private
+		 */
 		protected var _numConnections : int = 3;
 
 		public function AssetLoaderBase(id : String)
@@ -37,6 +61,9 @@ package org.assetloader.base
 			super(id, AssetType.GROUP);
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initSignals() : void
 		{
 			super.initSignals();
@@ -124,6 +151,9 @@ package org.assetloader.base
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PROTECTED
 		// --------------------------------------------------------------------------------------------------------------------------------//
+		/**
+		 * @private
+		 */
 		protected function updateTotalBytes() : void
 		{
 			var bytesTotal : uint = 0;
@@ -145,6 +175,9 @@ package org.assetloader.base
 			_stats.bytesTotal = bytesTotal;
 		}
 
+		/**
+		 * @private
+		 */
 		protected function get configParser() : IConfigParser
 		{
 			if(_configParser)
@@ -154,6 +187,9 @@ package org.assetloader.base
 			return _configParser;
 		}
 
+		/**
+		 * @private
+		 */
 		protected function addListeners(loader : ILoader) : void
 		{
 			if(loader)
@@ -165,6 +201,9 @@ package org.assetloader.base
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function removeListeners(loader : ILoader) : void
 		{
 			if(loader)
@@ -179,17 +218,26 @@ package org.assetloader.base
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PROTECTED HANDLERS
 		// --------------------------------------------------------------------------------------------------------------------------------//
+		/**
+		 * @private
+		 */
 		protected function error_handler(signal : ErrorSignal) : void
 		{
 			_onError.dispatch(signal.type, signal.message);
 		}
 
+		/**
+		 * @private
+		 */
 		protected function open_handler(signal : LoaderSignal) : void
 		{
 			_stats.open();
 			_onOpen.dispatch();
 		}
 
+		/**
+		 * @private
+		 */
 		protected function progress_handler(signal : LoaderSignal) : void
 		{
 			_inProgress = true;
@@ -214,6 +262,9 @@ package org.assetloader.base
 			_onProgress.dispatch(_stats.latency, _stats.speed, _stats.averageSpeed, _stats.progress, _stats.bytesLoaded, _stats.bytesTotal);
 		}
 
+		/**
+		 * @private
+		 */
 		protected function complete_handler(signal : LoaderSignal, data : * = null) : void
 		{
 			_loaded = true;
@@ -304,6 +355,10 @@ package org.assetloader.base
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PUBLIC SIGNALS
 		// --------------------------------------------------------------------------------------------------------------------------------//
+
+		/**
+		 * @inheritDoc
+		 */
 		public function get onConfigLoaded() : LoaderSignal
 		{
 			return _onConfigLoaded;

@@ -14,8 +14,14 @@ package org.assetloader.loaders
 	 */
 	public class BinaryLoader extends BaseLoader
 	{
+		/**
+		 * @private
+		 */
 		protected var _bytes : ByteArray;
 
+		/**
+		 * @private
+		 */
 		protected var _loader : URLStream;
 
 		public function BinaryLoader(id : String, request : URLRequest)
@@ -23,23 +29,35 @@ package org.assetloader.loaders
 			super(id, request, AssetType.BINARY);
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initSignals() : void
 		{
 			super.initSignals();
 			_onComplete = new LoaderSignal(this, ByteArray);
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function constructLoader() : IEventDispatcher
 		{
 			_loader = new URLStream();
 			return _loader;
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function invokeLoading() : void
 		{
 			_loader.load(request);
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function stop() : void
 		{
 			if(_invoked)
@@ -56,6 +74,9 @@ package org.assetloader.loaders
 			super.stop();
 		}
 
+		/**
+		 * @inheritDoc
+		 */
 		override public function destroy() : void
 		{
 			super.destroy();
@@ -63,6 +84,9 @@ package org.assetloader.loaders
 			_bytes = null;
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function complete_handler(event : Event) : void
 		{
 			_bytes = new ByteArray();
@@ -73,6 +97,11 @@ package org.assetloader.loaders
 			super.complete_handler(event);
 		}
 
+		/**
+		 * Gets the resulting ByteArray after loading is complete.
+		 * 
+		 * @return ByteArray 
+		 */
 		public function get bytes() : ByteArray
 		{
 			return _bytes;

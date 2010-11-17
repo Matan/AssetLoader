@@ -9,20 +9,56 @@ package org.assetloader.base
 	 */
 	public class LoaderStats implements ILoadStats
 	{
+		/**
+		 * @private
+		 */
 		protected var _latency : Number = 0;
+		/**
+		 * @private
+		 */
 		protected var _speed : Number = 0;
+		/**
+		 * @private
+		 */
 		protected var _averageSpeed : Number = 0;
+		/**
+		 * @private
+		 */
 		protected var _progress : Number = 0;
+		/**
+		 * @private
+		 */
 		protected var _totalTime : Number = 0;
 
+		/**
+		 * @private
+		 */
 		protected var _numOpened : int = 0;
+		/**
+		 * @private
+		 */
 		protected var _totalLatency : Number = 0;
 
+		/**
+		 * @private
+		 */
 		protected var _bytesLoaded : uint = 0;
+		/**
+		 * @private
+		 */
 		protected var _bytesTotal : uint = 0;
 
+		/**
+		 * @private
+		 */
 		protected var _startTime : int;
+		/**
+		 * @private
+		 */
 		protected var _openTime : int;
+		/**
+		 * @private
+		 */
 		protected var _updateTime : int;
 
 		public function LoaderStats()

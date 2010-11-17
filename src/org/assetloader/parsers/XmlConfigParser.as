@@ -14,7 +14,13 @@ package org.assetloader.parsers
 	 */
 	public class XmlConfigParser implements IConfigParser
 	{
+		/**
+		 * @private
+		 */
 		protected var _assetloader : IAssetLoader;
+		/**
+		 * @private
+		 */
 		protected var _loaderFactory : LoaderFactory;
 
 		public function XmlConfigParser()
@@ -57,6 +63,9 @@ package org.assetloader.parsers
 			_loaderFactory = null;
 		}
 
+		/**
+		 * @private
+		 */
 		protected function parseXml(xml : XML, inheritFrom : ConfigVO = null) : void
 		{
 			var rootVo : ConfigVO = parseVo(xml, inheritFrom);
@@ -80,6 +89,9 @@ package org.assetloader.parsers
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function parseGroup(vo : ConfigVO) : IAssetLoader
 		{
 			var loader : IAssetLoader = IAssetLoader(_loaderFactory.produce(vo.id, AssetType.GROUP, null, getParams(vo)));
@@ -87,11 +99,17 @@ package org.assetloader.parsers
 			return loader;
 		}
 
+		/**
+		 * @private
+		 */
 		protected function parseAsset(vo : ConfigVO) : ILoader
 		{
 			return _loaderFactory.produce(vo.id, vo.type, new URLRequest(vo.src), getParams(vo));
 		}
 
+		/**
+		 * @private
+		 */
 		protected function parseVo(xml : XML, inheritFrom : ConfigVO = null) : ConfigVO
 		{
 			if(!inheritFrom)
@@ -102,16 +120,7 @@ package org.assetloader.parsers
 			child.src = xml.@src || "";
 			child.id = xml.@id || "";
 
-			/*trace('_assetloader.id: ' + (_assetloader.id));
-			trace('inheritFrom.id: ' + (inheritFrom.id));
-			trace('child.id: ' + (child.id));
-			trace('xml.@base: ' + (xml.@base));
-			trace('inheritFrom.base: ' + (inheritFrom.base));*/
-
 			child.base = xml.@base || inheritFrom.base;
-			// trace('child.base: ' + (child.base));
-			// trace("---------------------------------------------");
-
 			child.type = xml.@type || inheritFrom.type;
 			child.weight = convertWeight(xml.@weight);
 			child.connections = xml.@connections || inheritFrom.connections;
@@ -136,6 +145,9 @@ package org.assetloader.parsers
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		// HELPER FUNCTIONS
 		// --------------------------------------------------------------------------------------------------------------------------------//
+		/**
+		 * @private
+		 */
 		protected function getParams(vo : ConfigVO) : Array
 		{
 			var params : Array = [];
@@ -160,6 +172,9 @@ package org.assetloader.parsers
 			return params;
 		}
 
+		/**
+		 * @private
+		 */
 		protected function convertWeight(str : String) : uint
 		{
 			if(!str)
@@ -178,6 +193,9 @@ package org.assetloader.parsers
 			return Number(str);
 		}
 
+		/**
+		 * @private
+		 */
 		protected function toBoolean(value : String, defaultReturn : Boolean) : Boolean
 		{
 			value = value.toLowerCase();

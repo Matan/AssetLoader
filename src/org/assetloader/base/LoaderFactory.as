@@ -17,16 +17,35 @@ package org.assetloader.base
 	import flash.net.URLRequest;
 
 	/**
+	 * LoaderFactory purly generates ILoader instances.
+	 * 
+	 * @see org.assetloader.core.ILoader
+	 * 
 	 * @author Matan Uberstein
 	 */
 	public class LoaderFactory
 	{
+		/**
+		 * @private
+		 */
 		protected var _loader : AbstractLoader;
 
 		public function LoaderFactory()
 		{
 		}
 
+		/**
+		 * Produces an ILoader instance according to parameters passed.
+		 * 
+		 * @param id Unique Loader id.
+		 * @param type Type of the new ILoader.
+		 * @param request URLRequest to be loaded.
+		 * @param params Rest argument of parameters to be passed to ILoader.
+		 * 
+		 * @return Resulting ILoader.
+		 * 
+		 * @see org.assetloader.base.AssetType		 * @see org.assetloader.base.Param		 * @see org.assetloader.core.ILoader
+		 */
 		public function produce(id : String, type : String = "AUTO", request : URLRequest = null, params : Array = null) : ILoader
 		{
 			if(request)
@@ -55,6 +74,9 @@ package org.assetloader.base
 			return _loader;
 		}
 
+		/**
+		 * @private
+		 */
 		protected function processParams(assetParams : Array) : void
 		{
 			var pL : int = assetParams.length;
@@ -70,6 +92,9 @@ package org.assetloader.base
 			}
 		}
 
+		/**
+		 * @private
+		 */
 		protected function getTypeFromExtension(extension : String) : String
 		{
 			extension = extension.toLowerCase();
@@ -110,6 +135,9 @@ package org.assetloader.base
 			return "";
 		}
 
+		/**
+		 * @private
+		 */
 		protected function testExtenstion(extensions : Array, extension : String) : Boolean
 		{
 			if(extensions.indexOf(extension) != -1)
@@ -117,6 +145,9 @@ package org.assetloader.base
 			return false;
 		}
 
+		/**
+		 * @private
+		 */
 		protected function constructLoader(type : String, id : String, request : URLRequest) : void
 		{
 			switch(type)

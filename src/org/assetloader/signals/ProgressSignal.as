@@ -7,12 +7,30 @@ package org.assetloader.signals
 	 */
 	public class ProgressSignal extends LoaderSignal
 	{
+		/**
+		 * @private
+		 */
 		protected var _latency : Number = 0;
+		/**
+		 * @private
+		 */
 		protected var _speed : Number = 0;
+		/**
+		 * @private
+		 */
 		protected var _averageSpeed : Number = 0;
+		/**
+		 * @private
+		 */
 		protected var _progress : Number = 0;
 
+		/**
+		 * @private
+		 */
 		protected var _bytesLoaded : uint = 0;
+		/**
+		 * @private
+		 */
 		protected var _bytesTotal : uint = 0;
 
 		public function ProgressSignal(loader : ILoader, ...valueClasses)
@@ -22,6 +40,8 @@ package org.assetloader.signals
 		}
 
 		/**
+		 * Dispatches Signal.
+		 * 
 		 * @param args1 Number - Latency		 * @param args2 Number - Speed		 * @param args3 Number - averageSpeed		 * @param args4 Number - progress		 * @param args5 uint - bytesLoaded		 * @param args6 uint - bytesTotal
 		 */
 		override public function dispatch(...args) : void
@@ -34,7 +54,10 @@ package org.assetloader.signals
 			_bytesTotal = args.shift();
 			super.dispatch.apply(null, args);
 		}
-		
+
+		/**
+		 * @private
+		 */
 		override protected function clone() : LoaderSignal
 		{
 			var clone : ProgressSignal = new ProgressSignal(_loader, valueClasses);
@@ -48,7 +71,9 @@ package org.assetloader.signals
 		}
 
 		/**
-		 * @inheritDoc
+		 * Gets the latency in milliseconds.
+		 * 
+		 * @return Number.
 		 */
 		public function get latency() : Number
 		{
@@ -56,7 +81,9 @@ package org.assetloader.signals
 		}
 
 		/**
-		 * @inheritDoc
+		 * Gets speed in kilobytes per second.
+		 * 
+		 * @return Number.
 		 */
 		public function get speed() : Number
 		{
@@ -64,7 +91,7 @@ package org.assetloader.signals
 		}
 
 		/**
-		 * @inheritDoc
+		 * Gets the average speed in kilobytes per second.
 		 */
 		public function get averageSpeed() : Number
 		{
@@ -72,7 +99,9 @@ package org.assetloader.signals
 		}
 
 		/**
-		 * @inheritDoc
+		 * Gets the progress in percentage value.
+		 * 
+		 * @return Number between 0 and 100 
 		 */
 		public function get progress() : Number
 		{
@@ -80,7 +109,9 @@ package org.assetloader.signals
 		}
 
 		/**
-		 * @inheritDoc
+		 * Gets the bytes loaded.
+		 * 
+		 * @return uint
 		 */
 		public function get bytesLoaded() : uint
 		{
@@ -88,7 +119,9 @@ package org.assetloader.signals
 		}
 
 		/**
-		 * @inheritDoc
+		 * Gets the total bytes.
+		 * 
+		 * @return uint
 		 */
 		public function get bytesTotal() : uint
 		{

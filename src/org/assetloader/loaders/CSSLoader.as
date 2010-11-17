@@ -1,4 +1,4 @@
-package org.assetloader.loaders 
+package org.assetloader.loaders
 {
 	import org.assetloader.base.AssetType;
 	import org.assetloader.signals.LoaderSignal;
@@ -9,29 +9,43 @@ package org.assetloader.loaders
 	/**
 	 * @author Matan Uberstein
 	 */
-	public class CSSLoader extends TextLoader 
+	public class CSSLoader extends TextLoader
 	{
+		/**
+		 * @private
+		 */
 		protected var _styleSheet : StyleSheet;
-		
-		public function CSSLoader(id : String, request : URLRequest) 
+
+		public function CSSLoader(id : String, request : URLRequest)
 		{
 			super(id, request);
 			_type = AssetType.CSS;
 		}
 
+		/**
+		 * @private
+		 */
 		override protected function initSignals() : void
 		{
 			super.initSignals();
 			_onComplete = new LoaderSignal(this, StyleSheet);
 		}
-		
+
+		/**
+		 * @inheritDoc
+		 */
 		override public function destroy() : void
 		{
 			super.destroy();
 			_styleSheet = null;
 		}
-		
-		override protected function testData(data : String) : String 
+
+		/**
+		 * @private
+		 * 
+		 * @inheritDoc
+		 */
+		override protected function testData(data : String) : String
 		{
 			var errMsg : String = "";
 			try
@@ -44,10 +58,15 @@ package org.assetloader.loaders
 			{
 				errMsg = err.message;
 			}
-			
+
 			return errMsg;
 		}
 
+		/**
+		 * Gets the resulting StyleSheet after loading is complete.
+		 * 
+		 * @return StyleSheet
+		 */
 		public function get styleSheet() : StyleSheet
 		{
 			return _styleSheet;

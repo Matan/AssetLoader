@@ -2,13 +2,9 @@ package org.assetloader.core
 {
 
 	/**
-	 * Holds parameter data for ILoadUnit instances.
-	 * <p>Some asset types might require special parameters.</p>
+	 * Holds parameter data for ILoader instances.
 	 * 
-	 * @includeExample ../../../sample/AddingAssetParamsSample.as
-	 * 
-	 * @see org.assetloader.core.ILoadUnit
-	 * @see org.assetloader.base.Param
+	 * @see org.assetloader.core.ILoader
 	 * 
 	 * @author Matan Uberstein
 	 */
