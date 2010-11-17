@@ -1,5 +1,7 @@
 package org.assetloader.loaders
 {
+	import flash.net.URLVariables;
+
 	import org.assetloader.base.AbstractLoader;
 	import org.assetloader.base.Param;
 	import org.assetloader.core.ILoader;
@@ -156,6 +158,45 @@ package org.assetloader.loaders
 				dispatcher.removeEventListener(Event.COMPLETE, complete_handler);
 
 				dispatcher.removeEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatus_handler);
+			}
+		}
+
+		override public function setParam(id : String, value : *) : void
+		{
+			super.setParam(id, value);
+
+			switch(id)
+			{
+				case Param.PREVENT_CACHE:
+
+					var url : String = _request.url;
+					if(value)
+					{
+						if(url.indexOf("ck=") == -1)
+							url += ((url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;
+					}
+					else if(url.indexOf("ck=") != -1)
+					{
+						var vrs : URLVariables = new URLVariables(url.slice(url.indexOf("?") + 1));
+						var cleanUrl : String = url = url.slice(0, url.indexOf("?"));
+						var cleanVrs : URLVariables = new URLVariables();
+
+						for(var queryKey : String in vrs)
+						{
+							if(queryKey != "ck")
+								cleanVrs[queryKey] = vrs[queryKey];
+						}
+						
+						var queryString : String = cleanVrs.toString();
+						if(queryString != "")
+							url = cleanUrl + "?" + queryString;
+					}
+					_request.url = url;
+
+					break;
+				case Param.HEADERS:
+					_request.requestHeaders = value;
+					break;
 			}
 		}
 	}

@@ -210,15 +210,6 @@ package org.assetloader.base
 
 			switch(id)
 			{
-				case Param.PREVENT_CACHE:
-					if(value && _request)
-						if(_request.url.indexOf("ck") == -1)
-							_request.url += ((_request.url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;
-					break;
-				case Param.HEADERS:
-					if(_request)
-						_request.requestHeaders = value;
-					break;
 				case Param.WEIGHT:
 					_stats.bytesTotal = value;
 					break;
