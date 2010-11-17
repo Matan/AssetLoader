@@ -39,7 +39,8 @@ package org.assetloader.base
 		protected var _invoked : Boolean;
 		protected var _inProgress : Boolean;
 		protected var _stopped : Boolean;
-		protected var _loaded : Boolean;		protected var _failed : Boolean;
+		protected var _loaded : Boolean;
+		protected var _failed : Boolean;
 
 		protected var _data : *;
 
@@ -121,6 +122,9 @@ package org.assetloader.base
 		protected function addedToParent_handler(signal : LoaderSignal, parent : IAssetLoader) : void
 		{
 			_parent = parent;
+
+			// Inherit prevent cache from parent
+			setParam(Param.PREVENT_CACHE, _parent.getParam(Param.PREVENT_CACHE));
 		}
 
 		protected function removedFromParent_handler(signal : LoaderSignal, parent : IAssetLoader) : void

@@ -134,17 +134,6 @@ package org.assetloader
 			super.stop();
 		}
 
-		/**
-		 * @inheritDoc
-		 */
-		override public function destroy() : void
-		{
-			/*_onChildComplete.removeAll();
-			_onChildError.removeAll();*/
-
-			super.destroy();
-		}
-
 		public function get loadedIds() : Array
 		{
 			return _loadedIds;
@@ -199,7 +188,7 @@ package org.assetloader
 				}
 			}
 		}
-
+		
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PROTECTED HANDLERS
 		// --------------------------------------------------------------------------------------------------------------------------------//
