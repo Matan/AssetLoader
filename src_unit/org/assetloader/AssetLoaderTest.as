@@ -1,6 +1,7 @@
 package org.assetloader
 {
 	import org.assetloader.base.AssetType;
+	import org.assetloader.base.Param;
 	import org.assetloader.core.IAssetLoader;
 	import org.assetloader.core.ILoader;
 	import org.assetloader.loaders.BaseLoaderTest;
@@ -30,11 +31,11 @@ package org.assetloader
 			_payloadTypeName = "Dictionary";
 			_payloadPropertyName = "data";
 			_type = AssetType.GROUP;
-			
+
 			_id = "PrimaryLoaderGroup";
 
 			_loader = _assetloader = new AssetLoader(_id);
-			_assetloader.base = _path;
+			_assetloader.setParam(Param.BASE, _path);
 
 			_assetloader.addLazy("id-01", "testCSS.css");
 			_assetloader.addLazy("id-02", "testIMAGE.png");
@@ -58,7 +59,8 @@ package org.assetloader
 		override public function signalsReadyOnConstruction() : void
 		{
 			super.signalsReadyOnConstruction();
-			assertNotNull(_loaderName + "#onChildOpen be should NOT be null after construction", _assetloader.onChildOpen);			assertNotNull(_loaderName + "#onChildComplete be should NOT be null after construction", _assetloader.onChildComplete);
+			assertNotNull(_loaderName + "#onChildOpen be should NOT be null after construction", _assetloader.onChildOpen);
+			assertNotNull(_loaderName + "#onChildComplete be should NOT be null after construction", _assetloader.onChildComplete);
 			assertNotNull(_loaderName + "#onChildError be should NOT be null after construction", _assetloader.onChildError);
 			assertNotNull(_loaderName + "#onConfigLoaded be should NOT be null after construction", _assetloader.onConfigLoaded);
 		}
@@ -80,7 +82,7 @@ package org.assetloader
 
 			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);
 		}
-		
+
 		[Test (async)]
 		public function onChildOpenSignal() : void
 		{
@@ -91,7 +93,8 @@ package org.assetloader
 		protected function onChildOpen_handler(event : SignalAsyncEvent, data : Object) : void
 		{
 			var values : Array = event.args;
-			assertTrue("Argument 1 should be LoaderSignal", (values[0] is LoaderSignal));			assertTrue("Argument 2 should be ILoader", (values[1] is ILoader));
+			assertTrue("Argument 1 should be LoaderSignal", (values[0] is LoaderSignal));
+			assertTrue("Argument 2 should be ILoader", (values[1] is ILoader));
 
 			var signal : LoaderSignal = values[0];
 			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);

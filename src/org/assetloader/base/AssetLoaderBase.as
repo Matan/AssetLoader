@@ -26,7 +26,6 @@ package org.assetloader.base
 
 		protected var _numLoaders : int;
 		protected var _numConnections : int = 3;
-		protected var _base : String = "";
 
 		public function AssetLoaderBase(id : String)
 		{
@@ -49,7 +48,7 @@ package org.assetloader.base
 		 */
 		public function addLazy(id : String, url : String, type : String = "AUTO", ...params) : ILoader
 		{
-			return add(id, new URLRequest(_base + url), type, params);
+			return add(id, new URLRequest(url), type, params);
 		}
 
 		/**
@@ -300,16 +299,6 @@ package org.assetloader.base
 		public function get numLoaders() : int
 		{
 			return _numLoaders;
-		}
-
-		public function get base() : String
-		{
-			return _base;
-		}
-
-		public function set base(base : String) : void
-		{
-			_base = base;
 		}
 
 		// --------------------------------------------------------------------------------------------------------------------------------//

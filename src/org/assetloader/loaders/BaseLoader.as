@@ -163,41 +163,66 @@ package org.assetloader.loaders
 
 		override public function setParam(id : String, value : *) : void
 		{
-			super.setParam(id, value);
+			var success : Boolean = true;
 
 			switch(id)
 			{
+				case Param.BASE:
+					success = setBase(value);
+					break;
 				case Param.PREVENT_CACHE:
-
-					var url : String = _request.url;
-					if(value)
-					{
-						if(url.indexOf("ck=") == -1)
-							url += ((url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;
-					}
-					else if(url.indexOf("ck=") != -1)
-					{
-						var vrs : URLVariables = new URLVariables(url.slice(url.indexOf("?") + 1));
-						var cleanUrl : String = url = url.slice(0, url.indexOf("?"));
-						var cleanVrs : URLVariables = new URLVariables();
-
-						for(var queryKey : String in vrs)
-						{
-							if(queryKey != "ck")
-								cleanVrs[queryKey] = vrs[queryKey];
-						}
-						
-						var queryString : String = cleanVrs.toString();
-						if(queryString != "")
-							url = cleanUrl + "?" + queryString;
-					}
-					_request.url = url;
-
+					setPreventCache(value);
 					break;
 				case Param.HEADERS:
 					_request.requestHeaders = value;
 					break;
 			}
+			
+			if(success)
+				super.setParam(id, value);
+		}
+
+		protected function setBase(value : String) : Boolean
+		{
+			var url : String = _request.url;
+			var urlPattern : RegExp = /((?P<protocol>[a-zA-Z]+: \/\/)   (?P<host>[^:\/]*) (:(?P<port>\d+))?)?  (?P<path>[^?]*)? ((?P<query>.*))? /x;
+			var urlMatch : * = urlPattern.exec(url);
+
+			if(urlMatch)
+				if(!urlMatch.protocol)
+				{
+					_request.url = value + url;
+					return true;
+				}
+			
+			return false;
+		}
+
+		protected function setPreventCache(value : Boolean) : void
+		{
+			var url : String = _request.url;
+			if(value)
+			{
+				if(url.indexOf("ck=") == -1)
+					url += ((url.indexOf("?") == -1) ? "?" : "&") + "ck=" + new Date().time;
+			}
+			else if(url.indexOf("ck=") != -1)
+			{
+				var vrs : URLVariables = new URLVariables(url.slice(url.indexOf("?") + 1));
+				var cleanUrl : String = url.slice(0, url.indexOf("?"));
+				var cleanVrs : URLVariables = new URLVariables();
+
+				for(var queryKey : String in vrs)
+				{
+					if(queryKey != "ck")
+						cleanVrs[queryKey] = vrs[queryKey];
+				}
+
+				var queryString : String = cleanVrs.toString();
+
+				url = cleanUrl + ((queryString != "") ? "?" + queryString : "");
+			}
+			_request.url = url;
 		}
 	}
 }

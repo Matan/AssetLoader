@@ -125,6 +125,10 @@ package org.assetloader.base
 			// Inherit prevent cache from parent if undefinded
 			if(_params[Param.PREVENT_CACHE] == undefined)
 				setParam(Param.PREVENT_CACHE, _parent.getParam(Param.PREVENT_CACHE));
+
+			// Inherit base from parent if undefinded
+			if(_params[Param.BASE] == undefined)
+				setParam(Param.BASE, _parent.getParam(Param.BASE));
 		}
 
 		protected function removedFromParent_handler(signal : LoaderSignal, parent : IAssetLoader) : void

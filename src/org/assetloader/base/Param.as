@@ -8,9 +8,16 @@ package org.assetloader.base
 	public class Param implements IParam
 	{
 		/**
+		 * Adds a base path to the url. e.g. request.url = base + url;
+		 * 
+		 * <p>Use: All asset types.</p>
+		 * <p>Type: <code>String</code></p>
+		 * <p>Default: ""</p>
+		 */
+		public static const BASE : String = "BASE";
+		
+		/**
 		 * Adds time stamp to url, which makes each call unique.
-		 * <p>PLEASE NOTE: This parameter must occure on adding process via IAssetLoader.
-		 * Adding it afterwards will have no effect.</p>
 		 * 
 		 * <p>Use: All asset types.</p>
 		 * <p>Type: <code>Boolean</code></p>

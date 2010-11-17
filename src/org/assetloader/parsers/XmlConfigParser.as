@@ -133,7 +133,8 @@ package org.assetloader.parsers
 			if(!isNaN(vo.priority))
 				params.push(new Param(Param.PRIORITY, vo.priority));
 
-			params.push(new Param(Param.WEIGHT, vo.weight));
+			params.push(new Param(Param.BASE, vo.base));
+						params.push(new Param(Param.WEIGHT, vo.weight));
 			params.push(new Param(Param.RETRIES, vo.retries));
 			params.push(new Param(Param.ON_DEMAND, vo.onDemand));
 			params.push(new Param(Param.PREVENT_CACHE, vo.preventCache));
@@ -182,14 +183,14 @@ package org.assetloader.parsers
 
 class ConfigVO
 {
-	// Internal use
-	public var base : String = "";
-
+	//Internal
+	public var xml : XML;
+	
 	// IAssetLoader
 	public var connections : int = 3;
-	public var xml : XML;
 
 	// Mixed, but mostly for ILoaders
+	public var base : String = "";
 	public var id : String;
 	public var src : String;
 	public var type : String = "AUTO";
