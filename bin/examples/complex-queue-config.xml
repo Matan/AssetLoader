@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loader connections="3" base="http://www.matanuberstein.co.za/assets/sample/" preventCache="false" >
+	
+	<group id="group-01" connections="1" >
+		
+		<group id="group-02" connections="2" >
+			<asset id="txt-asset" src="sampleTXT.txt" />
+			<asset id="jsn-asset" src="sampleJSON.json" />
+			<asset id="xml-asset" src="sampleXML.xml" />
+			<asset id="css-asset" src="sampleCSS.css" />
+		</group>
+		
+		<asset id="bin-asset" src="sampleZIP.zip" weight="3493" />
+		<asset id="snd-asset" src="sampleSOUND.mp3" weight="213 kb" />
+		
+	</group>
+	
+	<!-- Creating wrapping nodes are a way of passing common params with out having a parent loader -->
+	<assets preventCache="false" >
+		<asset id="img-asset" src="sampleIMAGE.png" fillColor="0x0" smoothing="true" transparent="true" />
+		<asset id="vid-asset" src="sampleVIDEO.flv" weight="312 kb" priority="1" />
+		<asset id="swf-asset" src="sampleSWF.swf" weight="1 mb" priority="1" />
+	</assets>
+	
+	<!-- <asset id="err-asset" base="/" src="fileThatDoesNotExist.php" retries="5" /> -->
+	
+</loader>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loader base="http://www.matanuberstein.co.za/assets/sample/" preventCache="true" >
+	
+	<asset id="txt-asset" src="sampleTXT.txt" />
+	<asset id="jsn-asset" src="sampleJSON.json" />
+	<asset id="xml-asset" src="sampleXML.xml" />
+	<asset id="css-asset" src="sampleCSS.css" />
+		
+	<asset id="bin-asset" src="sampleZIP.zip" />
+	<asset id="snd-asset" src="sampleSOUND.mp3" />
+	
+	<asset id="img-asset" src="sampleIMAGE.png" />
+	<asset id="vid-asset" src="sampleVIDEO.flv" priority="1" preventCache="false" />
+	<asset id="swf-asset" src="sampleSWF.swf" />
+	
+	<!-- <asset id="err-asset" base="/" src="fileThatDoesNotExist.php" /> -->
+	
+</loader>
