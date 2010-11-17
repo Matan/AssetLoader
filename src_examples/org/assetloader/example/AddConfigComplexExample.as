@@ -111,11 +111,11 @@ package org.assetloader.example
 
 		protected function removeListenersFromLoader(loader : IAssetLoader) : void
 		{
-			loader.onChildOpen.add(onChildOpen_handler);
-			loader.onChildError.add(onChildError_handler);
-			loader.onChildComplete.add(onChildComplete_handler);
+			loader.onChildOpen.remove(onChildOpen_handler);
+			loader.onChildError.remove(onChildError_handler);
+			loader.onChildComplete.remove(onChildComplete_handler);
 
-			loader.onComplete.add(onComplete_handler);
+			loader.onComplete.remove(onComplete_handler);
 		}
 
 		// --------------------------------------------------------------------------------------------------------------------------------//
