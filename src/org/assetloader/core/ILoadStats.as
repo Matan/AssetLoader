@@ -57,6 +57,12 @@ package org.assetloader.core
 		 * @return Number between 0 and 100.
 		 */
 		function get progress() : Number
+		
+		/**
+		 * Total time taken.
+		 * @return Number value in milliseconds
+		 */
+		function get totalTime() : Number
 
 		/**
 		 * @return Amount of bytes loaded.

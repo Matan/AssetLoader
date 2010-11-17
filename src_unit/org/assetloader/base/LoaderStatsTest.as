@@ -64,21 +64,31 @@ package org.assetloader.base
 			assertEquals("LoaderStats#bytesLoaded should be equal to 100", _stats.bytesLoaded, 100);
 			assertEquals("LoaderStats#bytesTotal should be equal to 1000", _stats.bytesTotal, 1000);
 			assertEquals("LoaderStats#progress should be equal to 10%", _stats.progress, 10);
+			assertEquals("LoaderStats#totalTime should be equal to 0", _stats.totalTime, 0);
 
 			assertTrue("LoaderStats#speed should be more than 0", (_stats.speed > 0));
 			assertTrue("LoaderStats#averageSpeed should be more than 0", (_stats.averageSpeed > 0));
 		}
 
-		[Test]
-		public function done() : void
+		[Test (async)]
+		public function delayedDone() : void
 		{
 			_stats.start();
 			_stats.open();
 			_stats.update(100, 1000);
+
+			var timer : Timer = new Timer(250, 1);
+			timer.addEventListener(TimerEvent.TIMER_COMPLETE, Async.asyncHandler(this, done, 500), false, 0, true);
+			timer.start();
+		}
+
+		protected function done(event : TimerEvent, data : Object) : void
+		{
 			_stats.done();
 			assertEquals("LoaderStats#bytesLoaded should be equal to 1000", _stats.bytesLoaded, 1000);
 			assertEquals("LoaderStats#bytesTotal should be equal to 1000", _stats.bytesTotal, 1000);
 			assertEquals("LoaderStats#progress should be equal to 100%", _stats.progress, 100);
+			assertTrue("LoaderStats#totalTime should more than 250", _stats.totalTime > 250);
 		}
 
 		[Test]
@@ -95,6 +105,7 @@ package org.assetloader.base
 			assertEquals("LoaderStats#latency should be equal to 0", _stats.latency, 0);
 			assertEquals("LoaderStats#speed should be equal to 0", _stats.speed, 0);
 			assertEquals("LoaderStats#averageSpeed should be equal to 0", _stats.averageSpeed, 0);
+			assertEquals("LoaderStats#totalTime should be equal to 0", _stats.totalTime, 0);
 		}
 	}
 }

@@ -13,6 +13,7 @@ package org.assetloader.base
 		protected var _speed : Number = 0;
 		protected var _averageSpeed : Number = 0;
 		protected var _progress : Number = 0;
+		protected var _totalTime : Number = 0;
 
 		protected var _numOpened : int = 0;
 		protected var _totalLatency : Number = 0;
@@ -39,6 +40,7 @@ package org.assetloader.base
 			_speed = 0;
 			_averageSpeed = 0;
 			_progress = 0;
+			_totalTime = 0;
 		}
 
 		/**
@@ -61,6 +63,8 @@ package org.assetloader.base
 		public function done() : void
 		{
 			update(_bytesTotal, _bytesTotal);
+
+			_totalTime = getTimer() - _startTime;
 		}
 
 		/**
@@ -74,7 +78,7 @@ package org.assetloader.base
 			{
 				var bytesDif : uint = bytesLoaded - _bytesLoaded;
 				_bytesLoaded = bytesLoaded;
-				
+
 				_progress = (_bytesLoaded / _bytesTotal) * 100;
 
 				var currentTime : int = getTimer();
@@ -104,6 +108,7 @@ package org.assetloader.base
 			_speed = 0;
 			_averageSpeed = 0;
 			_progress = 0;
+			_totalTime = 0;
 
 			_bytesLoaded = 0;
 			_bytesTotal = 0;
@@ -142,6 +147,14 @@ package org.assetloader.base
 		public function get progress() : Number
 		{
 			return _progress;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get totalTime() : Number
+		{
+			return _totalTime;
 		}
 
 		/**
