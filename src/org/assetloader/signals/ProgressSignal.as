@@ -35,8 +35,8 @@ package org.assetloader.signals
 
 		public function ProgressSignal(loader : ILoader, ...valueClasses)
 		{
-			super(loader, valueClasses);
 			_signalType = ProgressSignal;
+			super(loader, valueClasses);
 		}
 
 		/**
@@ -60,7 +60,7 @@ package org.assetloader.signals
 		 */
 		override protected function clone() : LoaderSignal
 		{
-			var clone : ProgressSignal = new ProgressSignal(_loader, valueClasses);
+			var clone : ProgressSignal = new ProgressSignal(_loader, _extraValueClasses);
 			clone._latency = _latency;
 			clone._speed = _speed;
 			clone._averageSpeed = _averageSpeed;

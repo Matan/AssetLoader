@@ -140,7 +140,7 @@ package org.assetloader
 			// Change url to force error signal.
 			_assetloader.getLoader("id-01").request.url = _path + "DOES-NOT-EXIST.file";
 
-			handleSignal(this, _assetloader.onChildError, onErrorIntended_handler);
+			handleSignal(this, _assetloader.onChildError, onChildErrorSignalIntended_handler);
 
 			_assetloader.start();
 		}

@@ -14,8 +14,8 @@ package org.assetloader.signals
 
 		public function NetStatusSignal(loader : ILoader, ...valueClasses)
 		{
-			super(loader, valueClasses);
 			_signalType = NetStatusSignal;
+			super(loader, valueClasses);
 		}
 
 		/**
@@ -34,7 +34,7 @@ package org.assetloader.signals
 		 */
 		override protected function clone() : LoaderSignal
 		{
-			var clone : NetStatusSignal = new NetStatusSignal(_loader, valueClasses);
+			var clone : NetStatusSignal = new NetStatusSignal(_loader, _extraValueClasses);
 			clone._info = _info;
 			return clone;
 		}

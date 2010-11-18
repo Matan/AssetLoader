@@ -14,8 +14,8 @@ package org.assetloader.signals
 
 		public function HttpStatusSignal(loader : ILoader, ...valueClasses)
 		{
-			super(loader, valueClasses);
 			_signalType = HttpStatusSignal;
+			super(loader, valueClasses);
 		}
 
 		/**
@@ -34,7 +34,7 @@ package org.assetloader.signals
 		 */
 		override protected function clone() : LoaderSignal
 		{
-			var clone : HttpStatusSignal = new HttpStatusSignal(_loader, valueClasses);
+			var clone : HttpStatusSignal = new HttpStatusSignal(_loader, _extraValueClasses);
 			clone._status = _status;
 			return clone;
 		}

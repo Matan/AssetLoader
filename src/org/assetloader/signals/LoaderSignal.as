@@ -27,7 +27,7 @@ package org.assetloader.signals
 		{
 			super();
 			_loader = loader;
-			_signalType = LoaderSignal;
+			_signalType ||= LoaderSignal;
 
 			if(valueClasses.length == 1 && valueClasses[0] is Array)
 				_extraValueClasses = valueClasses[0];
