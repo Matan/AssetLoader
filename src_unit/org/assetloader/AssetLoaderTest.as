@@ -7,6 +7,7 @@ package org.assetloader
 	import org.assetloader.loaders.BaseLoaderTest;
 	import org.assetloader.signals.ErrorSignal;
 	import org.assetloader.signals.LoaderSignal;
+	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.asserts.assertNotNull;
 	import org.flexunit.asserts.assertTrue;
 	import org.flexunit.asserts.fail;
@@ -63,6 +64,27 @@ package org.assetloader
 			assertNotNull(_loaderName + "#onChildComplete be should NOT be null after construction", _assetloader.onChildComplete);
 			assertNotNull(_loaderName + "#onChildError be should NOT be null after construction", _assetloader.onChildError);
 			assertNotNull(_loaderName + "#onConfigLoaded be should NOT be null after construction", _assetloader.onConfigLoaded);
+		}
+		
+		[Test (async)]
+		override public function booleanStateAfterError() : void
+		{
+			// Change url to force error signal.
+			_assetloader.getLoader("id-01").request.url = _path + "DOES-NOT-EXIST.file";
+			
+			handleSignal(this, _loader.onError, onError_booleanStateAfterError_handler);
+			_loader.start();
+		}
+		
+		override protected function onError_booleanStateAfterError_handler(event : SignalAsyncEvent, data : Object) : void
+		{
+			assertEquals(_loaderName + "#invoked state after loading error", true, _loader.invoked);
+			// inProgress will be true for this IAssetLoader, because it will still continue loader the other assets.
+			assertEquals(_loaderName + "#inProgress state after loading error", true, _loader.inProgress);
+			assertEquals(_loaderName + "#stopped state after loading error", false, _loader.stopped);
+			assertEquals(_loaderName + "#loaded state after loading error", false, _loader.loaded);
+			// although the not all the child loader have failed, failed is flaged is true. Loosing one asset should be seen as failure.
+			assertEquals(_loaderName + "#failed state after loading error", true, _loader.failed);
 		}
 
 		[Test (async)]

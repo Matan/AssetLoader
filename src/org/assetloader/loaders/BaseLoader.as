@@ -101,13 +101,14 @@ package org.assetloader.loaders
 		 */
 		protected function error_handler(event : ErrorEvent) : void
 		{
-			if(_retryTally < getParam(Param.RETRIES))
+			if(_retryTally < getParam(Param.RETRIES) - 1)
 			{
 				_retryTally++;
 				start();
 			}
 			else
 			{
+				_failed = true;
 				removeListeners(_eventDispatcher);
 				_onError.dispatch(event.type, event.text);
 			}

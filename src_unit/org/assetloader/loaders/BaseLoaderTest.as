@@ -57,10 +57,10 @@ package org.assetloader.loaders
 		[Test]
 		public function booleanStateBeforeLoad() : void
 		{
-			assertFalse(_loaderName + "#invoked should be false before loading starts", _loader.invoked);
-			assertFalse(_loaderName + "#inProgress should be false before loading starts", _loader.inProgress);
-			assertFalse(_loaderName + "#stopped should be false before loading starts", _loader.stopped);
-			assertFalse(_loaderName + "#loaded should be false before loading starts", _loader.loaded);
+			assertEquals(_loaderName + "#invoked state before loading starts", false, _loader.invoked);
+			assertEquals(_loaderName + "#inProgress state before loading starts", false, _loader.inProgress);
+			assertEquals(_loaderName + "#stopped state before loading starts", false, _loader.stopped);
+			assertEquals(_loaderName + "#loaded state before loading starts", false, _loader.loaded);			assertEquals(_loaderName + "#failed state before loading starts", false, _loader.failed);
 		}
 
 		[Test (async)]
@@ -72,10 +72,11 @@ package org.assetloader.loaders
 
 		protected function onOpen_booleanStateDuringLoad_handler(event : SignalAsyncEvent, data : Object) : void
 		{
-			assertTrue(_loaderName + "#invoked should be true during loading", _loader.invoked);
-			assertTrue(_loaderName + "#inProgress should be true during loading", _loader.inProgress);
-			assertFalse(_loaderName + "#stopped should be false during loading", _loader.stopped);
-			assertFalse(_loaderName + "#loaded should be false during loading", _loader.loaded);
+			assertEquals(_loaderName + "#invoked state during loading", true, _loader.invoked);
+			assertEquals(_loaderName + "#inProgress state during loading", true, _loader.inProgress);
+			assertEquals(_loaderName + "#stopped state during loading", false, _loader.stopped);
+			assertEquals(_loaderName + "#loaded state during loading", false, _loader.loaded);
+			assertEquals(_loaderName + "#failed state during loading", false, _loader.failed);
 		}
 
 		[Test]
@@ -83,10 +84,11 @@ package org.assetloader.loaders
 		{
 			_loader.start();
 			_loader.stop();
-			assertTrue(_loaderName + "#invoked should be true if loading was invoked", _loader.invoked);
-			assertFalse(_loaderName + "#inProgress should be false after loading stopped", _loader.inProgress);
-			assertTrue(_loaderName + "#stopped should be true after loading stopped", _loader.stopped);
-			assertFalse(_loaderName + "#loaded should be false after loading stopped if the loading never completed", _loader.loaded);
+			assertEquals(_loaderName + "#invoked state after loading stopped", true, _loader.invoked);
+			assertEquals(_loaderName + "#inProgress state after loading stopped", false, _loader.inProgress);
+			assertEquals(_loaderName + "#stopped state after loading stopped", true, _loader.stopped);
+			assertEquals(_loaderName + "#loaded state after loading stopped", false, _loader.loaded);
+			assertEquals(_loaderName + "#failed state after loading stopped", false, _loader.failed);
 		}
 
 		[Test (async)]
@@ -98,10 +100,30 @@ package org.assetloader.loaders
 
 		protected function onComplete_booleanStateAfterLoad_handler(event : SignalAsyncEvent, data : Object) : void
 		{
-			assertTrue(_loaderName + "#invoked should be true after loading", _loader.invoked);
-			assertFalse(_loaderName + "#inProgress should be false after loading", _loader.inProgress);
-			assertFalse(_loaderName + "#stopped should be false after loading", _loader.stopped);
-			assertTrue(_loaderName + "#loaded should be true after loading", _loader.loaded);
+			assertEquals(_loaderName + "#invoked state after loading completed", true, _loader.invoked);
+			assertEquals(_loaderName + "#inProgress state after loading completed", false, _loader.inProgress);
+			assertEquals(_loaderName + "#stopped state after loading completed", false, _loader.stopped);
+			assertEquals(_loaderName + "#loaded state after loading completed", true, _loader.loaded);
+			assertEquals(_loaderName + "#failed state after loading completed", false, _loader.failed);
+		}
+		
+		[Test (async)]
+		public function booleanStateAfterError() : void
+		{
+			// Change url to force error signal.
+			_loader.request.url = _path + "DOES-NOT-EXIST.file";
+			
+			handleSignal(this, _loader.onError, onError_booleanStateAfterError_handler);
+			_loader.start();
+		}
+
+		protected function onError_booleanStateAfterError_handler(event : SignalAsyncEvent, data : Object) : void
+		{
+			assertEquals(_loaderName + "#invoked state after loading error", true, _loader.invoked);
+			assertEquals(_loaderName + "#inProgress state after loading error", false, _loader.inProgress);
+			assertEquals(_loaderName + "#stopped state after loading error", false, _loader.stopped);
+			assertEquals(_loaderName + "#loaded state after loading error", false, _loader.loaded);
+			assertEquals(_loaderName + "#failed state after loading error", true, _loader.failed);
 		}
 
 		// --------------------------------------------------------------------------------------------------------------------------------//

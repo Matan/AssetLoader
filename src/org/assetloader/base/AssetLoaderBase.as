@@ -223,6 +223,7 @@ package org.assetloader.base
 		 */
 		protected function error_handler(signal : ErrorSignal) : void
 		{
+			_failed = true;
 			_onError.dispatch(signal.type, signal.message);
 		}
 
