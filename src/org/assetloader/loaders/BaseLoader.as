@@ -224,6 +224,9 @@ package org.assetloader.loaders
 		 */
 		protected function setBase(value : String) : Boolean
 		{
+			if(!value)
+				return false;
+			
 			var url : String = _request.url;
 			var urlPattern : RegExp = /((?P<protocol>[a-zA-Z]+: \/\/)   (?P<host>[^:\/]*) (:(?P<port>\d+))?)?  (?P<path>[^?]*)? ((?P<query>.*))? /x;
 			var urlMatch : * = urlPattern.exec(url);

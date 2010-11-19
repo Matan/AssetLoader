@@ -1,8 +1,9 @@
 package org.assetloader.loaders
 {
 	import org.assetloader.AssetLoader;
-	import org.assetloader.core.IAssetLoader;
 	import org.assetloader.base.AbstractLoaderTest;
+	import org.assetloader.base.Param;
+	import org.assetloader.core.IAssetLoader;
 	import org.assetloader.signals.ErrorSignal;
 	import org.assetloader.signals.HttpStatusSignal;
 	import org.assetloader.signals.LoaderSignal;
@@ -60,7 +61,8 @@ package org.assetloader.loaders
 			assertEquals(_loaderName + "#invoked state before loading starts", false, _loader.invoked);
 			assertEquals(_loaderName + "#inProgress state before loading starts", false, _loader.inProgress);
 			assertEquals(_loaderName + "#stopped state before loading starts", false, _loader.stopped);
-			assertEquals(_loaderName + "#loaded state before loading starts", false, _loader.loaded);			assertEquals(_loaderName + "#failed state before loading starts", false, _loader.failed);
+			assertEquals(_loaderName + "#loaded state before loading starts", false, _loader.loaded);
+			assertEquals(_loaderName + "#failed state before loading starts", false, _loader.failed);
 		}
 
 		[Test (async)]
@@ -106,13 +108,13 @@ package org.assetloader.loaders
 			assertEquals(_loaderName + "#loaded state after loading completed", true, _loader.loaded);
 			assertEquals(_loaderName + "#failed state after loading completed", false, _loader.failed);
 		}
-		
+
 		[Test (async)]
 		public function booleanStateAfterError() : void
 		{
 			// Change url to force error signal.
 			_loader.request.url = _path + "DOES-NOT-EXIST.file";
-			
+
 			handleSignal(this, _loader.onError, onError_booleanStateAfterError_handler);
 			_loader.start();
 		}
@@ -124,6 +126,53 @@ package org.assetloader.loaders
 			assertEquals(_loaderName + "#stopped state after loading error", false, _loader.stopped);
 			assertEquals(_loaderName + "#loaded state after loading error", false, _loader.loaded);
 			assertEquals(_loaderName + "#failed state after loading error", true, _loader.failed);
+		}
+
+		// --------------------------------------------------------------------------------------------------------------------------------//
+		// SPECIAL PARAMS
+		// --------------------------------------------------------------------------------------------------------------------------------//
+		[Test]
+		public function baseParamAdd() : void
+		{
+			var base : String = "http://www.matanuberstein.co.za/";
+			_loader.setParam(Param.BASE, base);
+
+			if(_hadRequest)
+				assertEquals(_loaderName + "#request#url should be equal to BASE + _path", base + _path, _loader.request.url);
+
+			assertEquals(_loaderName + " should retain the BASE value", base, _loader.getParam(Param.BASE));
+		}
+
+		[Test]
+		public function preventCacheParamAdd() : void
+		{
+			_loader.setParam(Param.PREVENT_CACHE, true);
+
+			if(_hadRequest)
+				assertTrue(_loaderName + "#request#url should have the 'ck' url var added.", (_loader.request.url.indexOf("ck=") != -1));
+
+			assertEquals(_loaderName + " should retain the PREVENT_CACHE value", true, _loader.getParam(Param.PREVENT_CACHE));
+		}
+
+		[Test]
+		public function preventCacheParamRemove() : void
+		{
+			_loader.setParam(Param.PREVENT_CACHE, true);
+			_loader.setParam(Param.PREVENT_CACHE, false);
+
+			if(_hadRequest)
+				assertEquals(_loaderName + "#request#url should equal to the original url", _path, _loader.request.url);
+
+			assertEquals(_loaderName + " should retain the PREVENT_CACHE value", false, _loader.getParam(Param.PREVENT_CACHE));
+		}
+
+		[Test]
+		public function weightParamAdd() : void
+		{
+			_loader.setParam(Param.WEIGHT, 1024);
+
+			assertEquals(_loaderName + "#stats#bytesTotal should be equal to param value.", 1024, _loader.stats.bytesTotal);
+			assertEquals(_loaderName + " should retain the WEIGHT value", 1024, _loader.getParam(Param.WEIGHT));
 		}
 
 		// --------------------------------------------------------------------------------------------------------------------------------//
@@ -177,7 +226,7 @@ package org.assetloader.loaders
 			assertNotNull(_loaderName + "#params should NOT be null after destroy", _loader.params);
 
 			assertNotNull(_loaderName + "#id should be NOT null after destroy", _loader.id);
-			
+
 			if(_hadRequest)
 				assertNotNull(_loaderName + "#request should NOT be null after destroy", _loader.request);
 			if(_hadParent)
