@@ -243,7 +243,7 @@ package org.assetloader.core
 		 * </ul>
 		 * 
 		 * <p>This is the list of ILoader implemetations and their strongly typed return.</p>
-		 * <table>
+		 * <table class="innertable" width="100%">
 		 * <tr>
 		 *	 	<th>Implementation:</th>		 * 		<th>Type:</th>		 * </tr>
 		 * <tr>
