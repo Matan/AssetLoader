@@ -78,7 +78,7 @@ package org.assetloader.parsers
 				return;
 			}
 
-			var urlExp : RegExp = /^(?:(?P<scheme>\w+):\/\/)?(?:(?P<login>\w+):(?P<pass>\w+)@)?(?P<host>(?:(?P<subdomain>[\w\.]+)\.)?(?P<domain>\w+\.(?P<extension>\w+)))?(?::(?P<port>\d+))?(?P<path>[\w\/%]*\/(?P<file>\w+(?:\.\w+)?)?)?(?:\?(?P<arg>[\w=&]+))?(?:#(?P<anchor>\w+))?/;
+			var urlExp : RegExp = /^(?:(?P<scheme>\w+):\/\/)?(?:(?P<login>\w+):(?P<pass>\w+)@)?(?P<host>(?:(?P<subdomain>[\w\.]+)\.)?(?P<domain>\w+\.(?P<extension>\w+)))?(?::(?P<port>\d+))?(?P<path>[\w\W]*\/(?P<file>[\w\W]+(?:\.\w+)?)?)?(?:\?(?P<arg>[\w=&]+))?(?:#(?P<anchor>\w+))?/;
 			var match : * = urlExp.exec(url);
 
 			if(match)
@@ -101,7 +101,7 @@ package org.assetloader.parsers
 
 				if(!_protocol && _url.indexOf("/") == -1)
 				{
-					_path = _host;
+					_path = _host || _url;
 					_fileName = _path.slice(-_path.lastIndexOf("/") - 1);
 					_host = null;
 				}

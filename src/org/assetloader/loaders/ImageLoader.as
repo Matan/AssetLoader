@@ -36,7 +36,7 @@ package org.assetloader.loaders
 		{
 			super.initParams();
 			setParam(Param.TRANSPARENT, true);
-			setParam(Param.FILL_COLOR, 4.294967295E9);
+			setParam(Param.FILL_COLOR, 0x0);
 			setParam(Param.MATRIX, null);
 			setParam(Param.COLOR_TRANSFROM, null);
 			setParam(Param.BLEND_MODE, null);
