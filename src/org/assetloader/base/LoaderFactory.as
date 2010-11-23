@@ -1,5 +1,6 @@
 package org.assetloader.base
 {
+	import org.assetloader.parsers.URLParser;
 	import org.assetloader.AssetLoader;
 	import org.assetloader.core.ILoader;
 	import org.assetloader.core.IParam;
@@ -50,18 +51,15 @@ package org.assetloader.base
 		{
 			if(request)
 			{
-				var urlPattern : RegExp = /((?P<protocol>[a-zA-Z]+: \/\/)   (?P<host>[^:\/]*) (:(?P<port>\d+))?)?  (?P<path>[^?]*)? ((?P<query>.*))? /x;
-				var urlMatch : * = urlPattern.exec(request.url);
-				if(urlMatch)
+				var urlParser : URLParser = new URLParser(request.url);
+				if(urlParser.isValid)
 				{
-					var path : String = urlMatch.path;
-					var fileExtension : String = path.slice(path.lastIndexOf(".") + 1);
+					if(type == AssetType.AUTO)
+						type = getTypeFromExtension(urlParser.fileExtension);
 				}
 				else
 					throw new AssetLoaderError(AssetLoaderError.INVALID_URL);
 
-				if(type == AssetType.AUTO)
-					type = getTypeFromExtension(fileExtension);
 			}
 			else if(type == AssetType.AUTO)
 				type = AssetType.GROUP;
@@ -97,6 +95,9 @@ package org.assetloader.base
 		 */
 		protected function getTypeFromExtension(extension : String) : String
 		{
+			if(!extension)
+				extension = "";
+
 			extension = extension.toLowerCase();
 
 			var textExt : Array = ["txt", "js", "html", "htm", "php", "asp", "aspx", "jsp", "cfm"];

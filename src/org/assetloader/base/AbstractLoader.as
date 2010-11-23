@@ -189,6 +189,9 @@ package org.assetloader.base
 		 */
 		protected function addedToParent_handler(signal : LoaderSignal, parent : IAssetLoader) : void
 		{
+			if(_parent)
+				throw new AssetLoaderError(AssetLoaderError.ALREADY_CONTAINED_BY_OTHER(_id, _parent.id));
+				
 			_parent = parent;
 
 			// Inherit prevent cache from parent if undefinded

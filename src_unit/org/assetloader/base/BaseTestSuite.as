@@ -6,6 +6,7 @@ package org.assetloader.base
 	{
 		public var abstractLoaderTest : AbstractLoaderTest;
 				public var assetLoaderQueueTest : AssetLoaderQueueTest;
+				public var assetLoaderErrorTest : AssetLoaderErrorTest;
 				public var loaderFactoryTest : LoaderFactoryTest;
 				public var loaderStatsTest : LoaderStatsTest;
 				public var paramTest : ParamTest;	}

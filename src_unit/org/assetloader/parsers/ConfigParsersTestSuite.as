@@ -5,6 +5,6 @@ package org.assetloader.parsers
 	[RunWith("org.flexunit.runners.Suite")]
 	public class ConfigParsersTestSuite
 	{
-		public var xmlConfigParserTest : XmlConfigParserTest;
+		public var xmlConfigParserTest : XmlConfigParserTest;		public var urlParserTest : URLParserTest;
 	}
 }

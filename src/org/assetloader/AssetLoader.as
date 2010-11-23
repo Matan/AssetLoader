@@ -1,15 +1,16 @@
 package org.assetloader
 {
-	import flash.net.URLRequest;
-
 	import org.assetloader.base.AssetLoaderBase;
 	import org.assetloader.base.AssetLoaderError;
 	import org.assetloader.base.AssetType;
 	import org.assetloader.base.Param;
 	import org.assetloader.core.IAssetLoader;
 	import org.assetloader.core.ILoader;
+	import org.assetloader.parsers.URLParser;
 	import org.assetloader.signals.ErrorSignal;
 	import org.assetloader.signals.LoaderSignal;
+
+	import flash.net.URLRequest;
 
 	/**
 	 * @author Matan Uberstein
@@ -60,7 +61,8 @@ package org.assetloader
 		 */
 		public function addConfig(config : String) : void
 		{
-			if(!configParser.isValid(config))
+			var urlParser : URLParser = new URLParser(config);
+			if(urlParser.isValid)
 			{
 				var loader : ILoader = _loaderFactory.produce("config", AssetType.TEXT, new URLRequest(config));
 				loader.setParam(Param.PREVENT_CACHE, true);
@@ -77,7 +79,7 @@ package org.assetloader
 				}
 				catch(error : Error)
 				{
-					throw new AssetLoaderError(AssetLoaderError.COULD_NOT_PARSE_CONFIG + error.message, error.errorID);
+					throw new AssetLoaderError(AssetLoaderError.COULD_NOT_PARSE_CONFIG(_id, error.message), error.errorID);
 				}
 			}
 		}
@@ -268,7 +270,7 @@ package org.assetloader
 			loader.onError.remove(error_handler);
 
 			if(!configParser.isValid(loader.data))
-				throw new AssetLoaderError(AssetLoaderError.COULD_NOT_VALIDATE_CONFIG);
+				_onError.dispatch("config-error", "Could not parse config after it has been loaded.");
 			else
 			{
 				addConfig(loader.data);

@@ -1,5 +1,7 @@
 package org.assetloader.loaders
 {
+	import org.assetloader.parsers.URLParser;
+
 	import flash.net.URLVariables;
 
 	import org.assetloader.base.AbstractLoader;
@@ -226,17 +228,14 @@ package org.assetloader.loaders
 		{
 			if(!value)
 				return false;
-			
-			var url : String = _request.url;
-			var urlPattern : RegExp = /((?P<protocol>[a-zA-Z]+: \/\/)   (?P<host>[^:\/]*) (:(?P<port>\d+))?)?  (?P<path>[^?]*)? ((?P<query>.*))? /x;
-			var urlMatch : * = urlPattern.exec(url);
 
-			if(urlMatch)
-				if(!urlMatch.protocol)
-				{
-					_request.url = value + url;
-					return true;
-				}
+			var urlParser : URLParser = new URLParser(_request.url);
+
+			if(!urlParser.host)
+			{
+				_request.url = value + urlParser.url;
+				return true;
+			}
 
 			return false;
 		}

@@ -1,5 +1,6 @@
 package org.assetloader.base
 {
+	import org.assetloader.core.IAssetLoader;
 	import org.assetloader.core.IConfigParser;
 	import org.assetloader.core.ILoadStats;
 	import org.assetloader.core.ILoader;
@@ -93,6 +94,9 @@ package org.assetloader.base
 		 */
 		public function addLoader(loader : ILoader) : void
 		{
+			if(hasLoader(loader.id))
+				throw new AssetLoaderError(AssetLoaderError.ALREADY_CONTAINS_LOADER_WITH_ID(_id, loader.id));
+
 			_loaders[loader.id] = loader;
 			_ids.push(loader.id);
 
@@ -215,9 +219,37 @@ package org.assetloader.base
 			}
 		}
 
+		/**
+		 * @private
+		 */
+		protected function hasCircularReference(id : String) : Boolean
+		{
+			for each(var loader : ILoader in _loaders)
+			{
+				if(loader is AssetLoaderBase)
+				{
+					var assetloader : AssetLoaderBase = AssetLoaderBase(loader);
+					if(assetloader.hasLoader(id) || assetloader.hasCircularReference(id))
+						return true;
+				}
+			}
+			return false;
+		}
+
 		// --------------------------------------------------------------------------------------------------------------------------------//
 		// PROTECTED HANDLERS
 		// --------------------------------------------------------------------------------------------------------------------------------//
+		/**
+		 * @private
+		 */
+		override protected function addedToParent_handler(signal : LoaderSignal, parent : IAssetLoader) : void
+		{
+			if(hasCircularReference(_id))
+				throw new AssetLoaderError(AssetLoaderError.CIRCULAR_REFERENCE_FOUND(_id));
+
+			super.addedToParent_handler(signal, parent);
+		}
+
 		/**
 		 * @private
 		 */
@@ -326,7 +358,7 @@ package org.assetloader.base
 		 */
 		public function hasLoader(id : String) : Boolean
 		{
-			return (_loaders[id] != undefined);
+			return _loaders.hasOwnProperty(id);
 		}
 
 		/**
@@ -334,7 +366,7 @@ package org.assetloader.base
 		 */
 		public function hasAsset(id : String) : Boolean
 		{
-			return (_assets[id] != undefined);
+			return _assets.hasOwnProperty(id);
 		}
 
 		/**
