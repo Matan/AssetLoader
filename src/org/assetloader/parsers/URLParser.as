@@ -78,7 +78,7 @@ package org.assetloader.parsers
 				return;
 			}
 
-			var urlExp : RegExp = /^(?:(?P<scheme>\w+):\/\/)?(?:(?P<login>\w+):(?P<pass>\w+)@)?(?P<host>(?:(?P<subdomain>[\w\.]+)\.)?(?P<domain>\w+\.(?P<extension>\w+)))?(?::(?P<port>\d+))?(?P<path>[\w\W]*\/(?P<file>[\w\W]+(?:\.\w+)?)?)?(?:\?(?P<arg>[\w=&]+))?(?:#(?P<anchor>\w+))?/;
+			var urlExp : RegExp = /^(?:(?P<scheme>\w+):\/\/)?(?:(?P<login>\w+):(?P<pass>\w+)@)?(?P<host>(?:(?P<subdomain>[\w\.]+)\.)?(?P<domain>\w+\.(?P<extension>\w+)))?(?::(?P<port>\d+))?(?P<path>[\w\W]*\/(?P<file>[^?]+(?:\.\w+)?)?)?(?:\?(?P<arg>[\w=&]+))?(?:#(?P<anchor>\w+))?/;
 			var match : * = urlExp.exec(url);
 
 			if(match)
@@ -119,7 +119,11 @@ package org.assetloader.parsers
 					_fileName = match.file || null;
 
 				if(_fileName)
-					_fileExtension = _fileName.slice(_fileName.lastIndexOf(".") + 1);
+					if(_fileName.indexOf(".") != -1)
+						_fileExtension = _fileName.slice(_fileName.lastIndexOf(".") + 1);
+
+				if(!_fileExtension && _path.charAt(_path.length - 1) != "/")
+					_isValid = false;
 			}
 			else
 				_isValid = false;

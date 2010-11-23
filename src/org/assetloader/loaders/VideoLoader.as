@@ -61,7 +61,6 @@ package org.assetloader.loaders
 		override protected function initParams() : void
 		{
 			super.initParams();
-			setParam(Param.CHECK_POLICY_FILE, true);
 			setParam(Param.CLIENT, {onMetaData:function() : void
 			{
 			}});
@@ -104,7 +103,7 @@ package org.assetloader.loaders
 		{
 			try
 			{
-				_netStream.play(request.url, getParam(Param.CHECK_POLICY_FILE));
+				_netStream.play(request.url, getParam(Param.CHECK_POLICY_FILE) || true);
 			}
 			catch(error : SecurityError)
 			{

@@ -34,15 +34,6 @@ package org.assetloader.loaders
 		/**
 		 * @private
 		 */
-		override protected function initParams() : void
-		{
-			super.initParams();
-			setParam(Param.LOADER_CONTEXT, null);
-		}
-
-		/**
-		 * @private
-		 */
 		override protected function initSignals() : void
 		{
 			super.initSignals();

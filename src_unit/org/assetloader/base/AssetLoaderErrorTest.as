@@ -104,23 +104,6 @@ package org.assetloader.base
 		}
 
 		[Test]
-		public function assetAutoTypeNotFound_NoExtension() : void
-		{
-			var factory : LoaderFactory = new LoaderFactory();
-			try
-			{
-				factory.produce("test-id", AssetType.AUTO, new URLRequest("path/someFileWithoutExtension"));
-			}
-			catch(error : AssetLoaderError)
-			{
-				assertTrue("error is AssetLoaderError", (error is AssetLoaderError));
-				assertEquals("error message", new AssetLoaderError(AssetLoaderError.ASSET_AUTO_TYPE_NOT_FOUND).message, error.message);
-				return;
-			}
-			fail("Error was NOT catched.");
-		}
-
-		[Test]
 		public function couldNotParseConfig() : void
 		{
 			var assetloader : IAssetLoader = new AssetLoader();
