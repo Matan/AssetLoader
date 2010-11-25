@@ -141,9 +141,10 @@ package org.assetloader.base
 		 */
 		override public function destroy() : void
 		{
+			var idsCopy : Array = _ids.concat();
 			var loader : ILoader;
 
-			for each(var id : String in _ids)
+			for each(var id : String in idsCopy)
 			{
 				loader = remove(id);
 				loader.destroy();
