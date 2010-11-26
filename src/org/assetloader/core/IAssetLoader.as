@@ -24,14 +24,15 @@ package org.assetloader.core
 		 * @param type String that defines the type of asset.
 		 * @param params Rest arguments for parameters that are passed to the <code>ILoader</code>. Also accepts an Array of Param objects.
 		 * 
+		 * @throws org.assetloader.base.AssetLoaderError INVALID_URL		 * @throws org.assetloader.base.AssetLoaderError ASSET_TYPE_NOT_RECOGNIZED		 * @throws org.assetloader.base.AssetLoaderError ASSET_AUTO_TYPE_NOT_FOUND
+		 * @throws org.assetloader.base.AssetLoaderError ALREADY_CONTAINS_LOADER_WITH_ID		 * 
 		 * @return <code>ILoader</code> created for this asset.
 		 * 
-		 * @see flash.net.URLRequest
 		 * @see org.assetloader.base.AssetType
 		 * @see org.assetloader.base.Param
 		 * @see org.assetloader.core.IParam
 		 * @see org.assetloader.core.ILoader
-		 * @see #add()
+		 * @see #add()		 * @see #addLoader()
 		 */
 		function addLazy(id : String, url : String, type : String = "AUTO", ...params) : ILoader
 
@@ -44,13 +45,19 @@ package org.assetloader.core
 		 * @param type String that defines the type of asset.
 		 * @param params Rest arguments for parameters that are passed to the <code>ILoader</code>. Also accepts an Array of Param objects.
 		 * 
+		 * @throws org.assetloader.base.AssetLoaderError INVALID_URL
+		 * @throws org.assetloader.base.AssetLoaderError ASSET_TYPE_NOT_RECOGNIZED
+		 * @throws org.assetloader.base.AssetLoaderError ASSET_AUTO_TYPE_NOT_FOUND
+		 * @throws org.assetloader.base.AssetLoaderError ALREADY_CONTAINS_LOADER_WITH_ID
+		 * 
 		 * @return <code>ILoader</code> created for this asset.
 		 * 
-		 * @see flash.net.URLRequest
 		 * @see org.assetloader.base.AssetType
 		 * @see org.assetloader.base.Param
 		 * @see org.assetloader.core.IParam
 		 * @see org.assetloader.core.ILoader
+		 * @see #addLazy()
+		 * @see #addLoader()
 		 */
 		function add(id : String, request : URLRequest, type : String = "AUTO", ...params) : ILoader
 
@@ -59,7 +66,10 @@ package org.assetloader.core
 		 * 
 		 * @param loader ILoader
 		 * 
-		 * @see flash.net.URLRequest
+		 * @throws org.assetloader.base.AssetLoaderError ALREADY_CONTAINS_LOADER_WITH_ID
+		 * @throws org.assetloader.base.AssetLoaderError ALREADY_CONTAINED_BY_OTHER
+		 * @throws org.assetloader.base.AssetLoaderError CIRCULAR_REFERENCE_FOUND
+		 * 
 		 * @see org.assetloader.base.AssetType
 		 * @see org.assetloader.base.Param
 		 * @see org.assetloader.core.IParam
@@ -73,7 +83,11 @@ package org.assetloader.core
 		 * 
 		 * @param config If a url is passed, the file will be loaded first and then IConfigParser will convert string into required type.
 		 * 
+		 * @throws org.assetloader.base.AssetLoaderError COULD_NOT_PARSE_CONFIG
+		 * 
 		 * @see org.assetloader.core.IConfigParser
+		 * @see #add()		 * @see #addLazy()
+		 * @see #addLoader()
 		 */
 		function addConfig(data : String) : void
 

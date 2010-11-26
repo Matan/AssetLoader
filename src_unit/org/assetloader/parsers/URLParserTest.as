@@ -83,6 +83,24 @@ package org.assetloader.parsers
 			assertEquals("URLParser#anchor", "comments", parser.anchor);
 			assertTrue("URLParser#isValid should be true", parser.isValid);
 		}
+		
+		[Test]
+		public function simpleServerURL() : void
+		{
+			var parser : URLParser = new URLParser("http://www.matanuberstein.co.za/assets/sample");
+
+			assertEquals("URLParser#url", "http://www.matanuberstein.co.za/assets/sample", parser.url);
+			assertEquals("URLParser#protocol", "http", parser.protocol);
+			assertNull("URLParser#login", parser.login);
+			assertNull("URLParser#password", parser.password);
+			assertEquals("URLParser#host", "www.matanuberstein.co.za", parser.host);
+			assertEquals("URLParser#path", "/assets/sample", parser.path);
+			assertEquals("URLParser#fileName", "sample", parser.fileName);
+			assertNull("URLParser#fileExtension", parser.fileExtension);
+			assertNull("URLParser#urlVariables", parser.urlVariables);
+			assertNull("URLParser#anchor", parser.anchor);
+			assertTrue("URLParser#isValid should be true", parser.isValid);
+		}
 
 		[Test]
 		public function simpleServerPath() : void
@@ -118,6 +136,42 @@ package org.assetloader.parsers
 			assertNull("URLParser#urlVariables", parser.urlVariables);
 			assertNull("URLParser#anchor", parser.anchor);
 			assertFalse("URLParser#isValid should be false", parser.isValid);
+		}
+		
+		[Test]
+		public function tooSimpleServerPath() : void
+		{
+			var parser : URLParser = new URLParser("samples");
+
+			assertEquals("URLParser#url", "samples", parser.url);
+			assertNull("URLParser#protocol", parser.protocol);
+			assertNull("URLParser#login", parser.login);
+			assertNull("URLParser#password", parser.password);
+			assertNull("URLParser#host", parser.host);
+			assertEquals("URLParser#path", "/samples", parser.path);
+			assertEquals("URLParser#fileName", "samples", parser.fileName);
+			assertNull("URLParser#fileExtension", parser.fileExtension);
+			assertNull("URLParser#urlVariables", parser.urlVariables);
+			assertNull("URLParser#anchor", parser.anchor);
+			assertFalse("URLParser#isValid should be false", parser.isValid);
+		}
+		
+		[Test]
+		public function correctSimpleServerPath() : void
+		{
+			var parser : URLParser = new URLParser("samples/");
+
+			assertEquals("URLParser#url", "samples/", parser.url);
+			assertNull("URLParser#protocol", parser.protocol);
+			assertNull("URLParser#login", parser.login);
+			assertNull("URLParser#password", parser.password);
+			assertNull("URLParser#host", parser.host);
+			assertEquals("URLParser#path", "/samples/", parser.path);
+			assertNull("URLParser#fileName", parser.fileName);
+			assertNull("URLParser#fileExtension", parser.fileExtension);
+			assertNull("URLParser#urlVariables", parser.urlVariables);
+			assertNull("URLParser#anchor", parser.anchor);
+			assertTrue("URLParser#isValid should be true", parser.isValid);
 		}
 
 		[Test]
@@ -230,7 +284,7 @@ package org.assetloader.parsers
 			assertNull("URLParser#anchor", parser.anchor);
 			assertTrue("URLParser#isValid should be true", parser.isValid);
 		}
-
+		
 		[Test]
 		public function invalid_00() : void
 		{

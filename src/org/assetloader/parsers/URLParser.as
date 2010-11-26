@@ -3,6 +3,26 @@ package org.assetloader.parsers
 	import flash.net.URLVariables;
 
 	/**
+	 * The URLParser is used to check whether URLs are valid or not, also it extracts useful information from the given url.
+	 * 
+	 * <p>URLs are parsed according to three groups; Absolute, Relative and Server.</p>
+	 * <ul>
+	 *	 <li><strong>Absolute</strong></li>
+	 *	 <ul>
+	 *	 	<li>Recognized by having a protocol. E.g. starts with "http://"</li>	 *	 	<li>Looks for a file extension. E.g. somefile.jpg</li>
+	 *	 </ul>
+	 *	 <li><strong>Relative</strong></li>
+	 *	 <ul>
+	 *	 	<li>Recognized by NOT having a protocol. E.g. doesn't start with "http://"</li>
+	 *	 	<li>Looks for a file extension. E.g. somefile.jpg</li>
+	 *	 </ul>
+	 *	 <li><strong>Server</strong></li>
+	 *	 <ul>
+	 *	 	<li>Recognized by NOT having a file extension.</li>
+	 *	 	<li>Can be Absolute or Relative.</li>	 *	 	<li>If Absolute no trailing slash required. E.g. http://www.matan.co.za/getGalleryXML</li>	 *	 	<li>If Relative trailing slash IS required. E.g. getGalleryXML/</li>	 *	 	<li>Note: if relative with multiple pathings the trailing slash isn't required. E.g. scripts/getGalleryXML</li>
+	 *	 </ul>
+	 * </ul>
+	 * 
 	 * @author Matan Uberstein
 	 */
 	public class URLParser
@@ -57,10 +77,8 @@ package org.assetloader.parsers
 		protected var _isValid : Boolean = true;
 
 		/**
-		 * Parses rawUrl and breaks is down into properties.
-		 * @param rawUrl String
-		 * 
-		 * @throws ArgumentError Parameter rawUrl is not a valid url.
+		 * Parses url and breaks is down into properties and check whether the url is valid.
+		 * @param url String
 		 */
 		public function URLParser(url : String)
 		{
@@ -122,7 +140,7 @@ package org.assetloader.parsers
 					if(_fileName.indexOf(".") != -1)
 						_fileExtension = _fileName.slice(_fileName.lastIndexOf(".") + 1);
 
-				if(!_fileExtension && _path.charAt(_path.length - 1) != "/")
+				if(!_fileExtension && !_protocol && _path.charAt(_path.length - 1) != "/")
 					_isValid = false;
 			}
 			else
