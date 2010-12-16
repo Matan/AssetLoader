@@ -47,20 +47,20 @@ package org.assetloader.loaders
 		 */
 		override protected function testData(data : String) : String
 		{
-			var errMsg : String = "";
 			try
 			{
 				_data = _xml = new XML(data);
 			}
 			catch(err : Error)
 			{
-				errMsg = err.message;
+				return err.message;
 			}
 
-			if(xml.nodeKind() != "element")
-				errMsg = "Not valid XML.";
-
-			return errMsg;
+			if(xml)
+				if(xml.nodeKind() != "element")
+					return "Not valid XML.";
+			
+			return "";
 		}
 
 		/**
