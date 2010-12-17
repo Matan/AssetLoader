@@ -122,6 +122,24 @@ package org.assetloader.core
 		 * @see org.assetloader.core.ILoader
 		 */
 		function getLoader(id : String) : ILoader
+		
+		/**
+		 * Checks if IAssetLoader with id exists.
+		 * 
+		 * @param id String id of the asset.
+		 * @return Boolean
+		 * @see org.assetloader.core.IAssetLoader
+		 */
+		function hasAssetLoader(id : String) : Boolean
+
+		/**
+		 * Gets the ILoader.
+		 * 
+		 * @param id String id of the asset.
+		 * @return ILoader
+		 * @see org.assetloader.core.IAssetLoader
+		 */
+		function getAssetLoader(id : String) : IAssetLoader
 
 		/**
 		 * Checks if the ILoader with given id has returned data.

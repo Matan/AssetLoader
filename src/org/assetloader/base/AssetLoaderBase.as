@@ -340,6 +340,17 @@ package org.assetloader.base
 		/**
 		 * @inheritDoc
 		 */
+		public function getAssetLoader(id : String) : IAssetLoader
+		{
+			if(hasLoader(id))
+				if(_loaders[id] is IAssetLoader)
+					return _loaders[id];
+			return null;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
 		public function getAsset(id : String) : *
 		{
 			return _assets[id];
@@ -360,6 +371,14 @@ package org.assetloader.base
 		public function hasLoader(id : String) : Boolean
 		{
 			return _loaders.hasOwnProperty(id);
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function hasAssetLoader(id : String) : Boolean
+		{
+			return (_loaders.hasOwnProperty(id) && _loaders[id] is IAssetLoader);
 		}
 
 		/**
