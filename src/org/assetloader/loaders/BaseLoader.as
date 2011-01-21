@@ -149,7 +149,7 @@ package org.assetloader.loaders
 		protected function complete_handler(event : Event) : void
 		{
 			_stats.done();
-			_onProgress.dispatch();
+			_onProgress.dispatch(_stats.latency, _stats.speed, _stats.averageSpeed, _stats.progress, _stats.bytesLoaded, _stats.bytesTotal);
 
 			removeListeners(_eventDispatcher);
 
