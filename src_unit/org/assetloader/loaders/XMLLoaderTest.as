@@ -18,7 +18,7 @@ package org.assetloader.loaders
 			_path += "testXML.xml";
 			_type = AssetType.XML;
 
-			_loader = new XMLLoader(_id, new URLRequest(_path));
+			_loader = new XMLLoader(new URLRequest(_path), _id);
 		}
 	}
 }

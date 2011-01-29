@@ -28,7 +28,7 @@ package org.assetloader.loaders
 			_path += "testVIDEO.flv";
 			_type = AssetType.VIDEO;
 
-			_loader = new VideoLoader(_id, new URLRequest(_path));
+			_loader = new VideoLoader(new URLRequest(_path), _id);
 		}
 
 		// NON - STANDARD - LOADER - TESTS -------------------------------------------------------------------------------------------//

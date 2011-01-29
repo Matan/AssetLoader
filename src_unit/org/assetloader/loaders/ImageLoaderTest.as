@@ -19,7 +19,7 @@ package org.assetloader.loaders
 			_path += "testIMAGE.png";
 			_type = AssetType.IMAGE;
 
-			_loader = new ImageLoader(_id, new URLRequest(_path));
+			_loader = new ImageLoader(new URLRequest(_path), _id);
 		}
 	}
 }

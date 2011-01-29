@@ -18,7 +18,7 @@ package org.assetloader.loaders
 			_path += "testZIP.zip";
 			_type = AssetType.BINARY;
 
-			_loader = new BinaryLoader(_id, new URLRequest(_path));
+			_loader = new BinaryLoader(new URLRequest(_path), _id);
 		}
 	}
 }

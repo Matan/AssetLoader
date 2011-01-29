@@ -20,7 +20,7 @@ package org.assetloader.loaders
 			_path += "testCSS.css";
 			_type = AssetType.CSS;
 
-			_loader = new CSSLoader(_id, new URLRequest(_path));
+			_loader = new CSSLoader(new URLRequest(_path), _id);
 		}
 	}
 }

@@ -203,7 +203,7 @@ package org.assetloader.base
 		{
 			var g1 : IAssetLoader = new AssetLoader("g1");
 			var g2 : IAssetLoader = new AssetLoader("g2");
-			var l1 : ILoader = new TextLoader("test-id", new URLRequest("sampleTXT.txt"));
+			var l1 : ILoader = new TextLoader(new URLRequest("sampleTXT.txt"));
 
 			g1.addLoader(l1);
 			

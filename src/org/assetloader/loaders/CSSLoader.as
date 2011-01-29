@@ -16,9 +16,9 @@ package org.assetloader.loaders
 		 */
 		protected var _styleSheet : StyleSheet;
 
-		public function CSSLoader(id : String, request : URLRequest)
+		public function CSSLoader(request : URLRequest, id : String = null)
 		{
-			super(id, request);
+			super(request, id);
 			_type = AssetType.CSS;
 		}
 

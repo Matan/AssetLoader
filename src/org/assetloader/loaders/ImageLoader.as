@@ -23,9 +23,9 @@ package org.assetloader.loaders
 		 */
 		protected var _bitmap : Bitmap;
 
-		public function ImageLoader(id : String, request : URLRequest)
+		public function ImageLoader(request : URLRequest, id : String = null)
 		{
-			super(id, request);
+			super(request, id);
 			_type = AssetType.IMAGE;
 		}
 

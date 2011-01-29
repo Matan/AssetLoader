@@ -19,7 +19,7 @@ package org.assetloader.loaders
 			_path += "testSWF.swf";
 			_type = AssetType.DISPLAY_OBJECT;
 
-			_loader = new DisplayObjectLoader(_id, new URLRequest(_path));
+			_loader = new DisplayObjectLoader(new URLRequest(_path), _id);
 		}
 	}
 }

@@ -24,9 +24,9 @@ package org.assetloader.loaders
 		 */
 		protected var _sound : Sound;
 
-		public function SoundLoader(id : String, request : URLRequest)
+		public function SoundLoader(request : URLRequest, id : String = null)
 		{
-			super(id, request, AssetType.SOUND);
+			super(request, AssetType.SOUND, id);
 		}
 
 		/**

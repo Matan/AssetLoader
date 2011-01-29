@@ -17,9 +17,9 @@ package org.assetloader.loaders
 		 */
 		protected var _swf : Sprite;
 
-		public function SWFLoader(id : String, request : URLRequest)
+		public function SWFLoader(request : URLRequest, id : String = null)
 		{
-			super(id, request);
+			super(request, id);
 			_type = AssetType.SWF;
 		}
 

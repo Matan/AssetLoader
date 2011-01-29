@@ -154,43 +154,43 @@ package org.assetloader.base
 			switch(type)
 			{
 				case AssetType.TEXT:
-					_loader = new TextLoader(id, request);
+					_loader = new TextLoader(request, id);
 					break;
 
 				case AssetType.JSON:
-					_loader = new JSONLoader(id, request);
+					_loader = new JSONLoader(request, id);
 					break;
 
 				case AssetType.XML:
-					_loader = new XMLLoader(id, request);
+					_loader = new XMLLoader(request, id);
 					break;
 
 				case AssetType.CSS:
-					_loader = new CSSLoader(id, request);
+					_loader = new CSSLoader(request, id);
 					break;
 
 				case AssetType.BINARY:
-					_loader = new BinaryLoader(id, request);
+					_loader = new BinaryLoader(request, id);
 					break;
 
 				case AssetType.DISPLAY_OBJECT:
-					_loader = new DisplayObjectLoader(id, request);
+					_loader = new DisplayObjectLoader(request, id);
 					break;
 
 				case AssetType.SWF:
-					_loader = new SWFLoader(id, request);
+					_loader = new SWFLoader(request, id);
 					break;
 
 				case AssetType.IMAGE:
-					_loader = new ImageLoader(id, request);
+					_loader = new ImageLoader(request, id);
 					break;
 
 				case AssetType.SOUND:
-					_loader = new SoundLoader(id, request);
+					_loader = new SoundLoader(request, id);
 					break;
 
 				case AssetType.VIDEO:
-					_loader = new VideoLoader(id, request);
+					_loader = new VideoLoader(request, id);
 					break;
 
 				case AssetType.GROUP:

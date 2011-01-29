@@ -26,9 +26,9 @@ package org.assetloader.loaders
 		 */
 		protected var _loader : Loader;
 
-		public function DisplayObjectLoader(id : String, request : URLRequest)
+		public function DisplayObjectLoader(request : URLRequest, id : String = null)
 		{
-			super(id, request, AssetType.DISPLAY_OBJECT);
+			super(request, AssetType.DISPLAY_OBJECT, id);
 		}
 
 		/**

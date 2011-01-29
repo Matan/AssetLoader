@@ -25,9 +25,9 @@ package org.assetloader.loaders
 		 */
 		protected var _loader : URLStream;
 
-		public function TextLoader(id : String, request : URLRequest)
+		public function TextLoader(request : URLRequest, id : String = null)
 		{
-			super(id, request, AssetType.TEXT);
+			super(request, AssetType.TEXT, id);
 		}
 
 		/**

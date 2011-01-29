@@ -18,7 +18,7 @@ package org.assetloader.loaders
 			_path += "testTXT.txt";
 			_type = AssetType.TEXT;
 
-			_loader = new TextLoader(_id, new URLRequest(_path));
+			_loader = new TextLoader(new URLRequest(_path), _id);
 		}
 	}
 }

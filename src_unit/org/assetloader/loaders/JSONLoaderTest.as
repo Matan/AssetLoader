@@ -18,7 +18,7 @@ package org.assetloader.loaders
 			_path += "testJSON.json";
 			_type = AssetType.JSON;
 
-			_loader = new JSONLoader(_id, new URLRequest(_path));
+			_loader = new JSONLoader(new URLRequest(_path), _id);
 		}
 	}
 }

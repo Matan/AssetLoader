@@ -26,7 +26,7 @@ package org.assetloader.loaders
 			_path += "testSOUND.mp3";
 			_type = AssetType.SOUND;
 
-			_loader = new SoundLoader(_id, new URLRequest(_path));
+			_loader = new SoundLoader(new URLRequest(_path), _id);
 		}
 
 		// NON - STANDARD - LOADER - TESTS -------------------------------------------------------------------------------------------//

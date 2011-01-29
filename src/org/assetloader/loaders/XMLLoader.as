@@ -16,9 +16,9 @@ package org.assetloader.loaders
 		 */
 		protected var _xml : XML;
 
-		public function XMLLoader(id : String, request : URLRequest)
+		public function XMLLoader(request : URLRequest, id : String = null)
 		{
-			super(id, request);
+			super(request, id);
 			_type = AssetType.XML;
 		}
 

@@ -24,9 +24,9 @@ package org.assetloader.loaders
 		 */
 		protected var _loader : URLStream;
 
-		public function BinaryLoader(id : String, request : URLRequest)
+		public function BinaryLoader(request : URLRequest, id : String = null)
 		{
-			super(id, request, AssetType.BINARY);
+			super(request, AssetType.BINARY, id);
 		}
 
 		/**

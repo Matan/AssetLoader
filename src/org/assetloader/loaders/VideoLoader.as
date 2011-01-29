@@ -50,9 +50,9 @@ package org.assetloader.loaders
 		 */
 		protected var _hasDispatchedReady : Boolean;
 
-		public function VideoLoader(id : String, request : URLRequest)
+		public function VideoLoader(request : URLRequest, id : String = null)
 		{
-			super(id, request, AssetType.VIDEO);
+			super(request, AssetType.VIDEO, id);
 		}
 
 		/**

@@ -42,7 +42,7 @@ package org.assetloader.base
 		[Test]
 		public function addingToQueue() : void
 		{
-			_assetloader.addLoader(new TextLoader(_id + 1, new URLRequest(_path)));
+			_assetloader.addLoader(new TextLoader(new URLRequest(_path), _id + 1));
 
 			assertNotNull("AssetLoader#add should return the ILoader produced", _assetloader.add(_id + 2, new URLRequest(_path)));
 
@@ -99,7 +99,7 @@ package org.assetloader.base
 		
 		protected function buildQueue() : void
 		{
-			_assetloader.addLoader(new TextLoader(_id + 1, new URLRequest(_path)));
+			_assetloader.addLoader(new TextLoader(new URLRequest(_path), _id + 1));
 			_assetloader.add(_id + 2, new URLRequest(_path));
 			_assetloader.addLazy(_id + 3, _path);
 		}

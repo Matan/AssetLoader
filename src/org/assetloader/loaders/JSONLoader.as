@@ -17,9 +17,9 @@ package org.assetloader.loaders
 		 */
 		protected var _jsonObject : Object;
 
-		public function JSONLoader(id : String, request : URLRequest)
+		public function JSONLoader(request : URLRequest, id : String = null)
 		{
-			super(id, request);
+			super(request, id);
 			_type = AssetType.JSON;
 		}
 
