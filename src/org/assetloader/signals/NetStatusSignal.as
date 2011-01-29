@@ -30,16 +30,6 @@ package org.assetloader.signals
 		}
 
 		/**
-		 * @private
-		 */
-		override protected function clone() : LoaderSignal
-		{
-			var clone : NetStatusSignal = new NetStatusSignal(_loader, _extraValueClasses);
-			clone._info = _info;
-			return clone;
-		}
-
-		/**
 		 * Gets the NetStatus info object.
 		 * 
 		 * @return Object

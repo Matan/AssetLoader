@@ -42,15 +42,7 @@ package org.assetloader.signals
 		 */
 		override public function dispatch(...args) : void
 		{
-			super.dispatch.apply(null, [clone()].concat.apply(null, args));
-		}
-
-		/**
-		 * @private
-		 */
-		protected function clone() : LoaderSignal
-		{
-			return new LoaderSignal(_loader, LoaderSignal, _extraValueClasses);
+			super.dispatch.apply(null, [this].concat.apply(null, args));
 		}
 
 		/**

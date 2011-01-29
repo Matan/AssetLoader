@@ -56,21 +56,6 @@ package org.assetloader.signals
 		}
 
 		/**
-		 * @private
-		 */
-		override protected function clone() : LoaderSignal
-		{
-			var clone : ProgressSignal = new ProgressSignal(_loader, _extraValueClasses);
-			clone._latency = _latency;
-			clone._speed = _speed;
-			clone._averageSpeed = _averageSpeed;
-			clone._progress = _progress;
-			clone._bytesLoaded = _bytesLoaded;
-			clone._bytesTotal = _bytesTotal;
-			return clone;
-		}
-
-		/**
 		 * Gets the latency in milliseconds.
 		 * 
 		 * @return Number.

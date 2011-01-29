@@ -36,17 +36,6 @@ package org.assetloader.signals
 		}
 
 		/**
-		 * @private
-		 */
-		override protected function clone() : LoaderSignal
-		{
-			var clone : ErrorSignal = new ErrorSignal(_loader, _extraValueClasses);
-			clone._type = _type;
-			clone._message = _message;
-			return clone;
-		}
-
-		/**
 		 * Gets the error type.
 		 * 
 		 * @return String

@@ -30,16 +30,6 @@ package org.assetloader.signals
 		}
 
 		/**
-		 * @private
-		 */
-		override protected function clone() : LoaderSignal
-		{
-			var clone : HttpStatusSignal = new HttpStatusSignal(_loader, _extraValueClasses);
-			clone._status = _status;
-			return clone;
-		}
-
-		/**
 		 * Gets the http status code.
 		 * 
 		 * @return int
