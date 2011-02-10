@@ -185,9 +185,9 @@ package org.assetloader.core
 		 * Keep in mind that all error are consolidated into one place, so if
 		 * load an XML file that has mal formed xml, this Signal will fire.
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>ErrorSignal</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>ErrorSignal</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
 		 * </ul>
 		 * 
 		 * @see org.assetloader.signals.ErrorSignal
@@ -200,9 +200,9 @@ package org.assetloader.core
 		 * <p>Note: not all implemetations of ILoader dispatches this Signal.
 		 * e.g. AssetLoader, VideoLoader and SoundLoader.</p>
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>HttpStatusSignal</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>HttpStatusSignal</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
 		 * </ul>
 		 * 
 		 * @see org.assetloader.signals.HttpStatusSignal
@@ -210,12 +210,12 @@ package org.assetloader.core
 		function get onHttpStatus() : HttpStatusSignal
 
 		/**
-		 * Dispatches when a connection has been opend this means that the
+		 * Dispatches when a connection has been opened this means that the
 		 * transfer will start shortly.
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
 		 * </ul>
 		 * 
 		 * @see org.assetloader.signals.LoaderSignal
@@ -225,9 +225,9 @@ package org.assetloader.core
 		/**
 		 * Dispatches when loading progress has been made.
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>ProgressSignal</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>ProgressSignal</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
 		 * </ul>
 		 * 
 		 * @see org.assetloader.signals.ProgressSignal
@@ -237,9 +237,9 @@ package org.assetloader.core
 		/**
 		 * Dispatches when the loading operations has completed.
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>, data:<strong>RelatedType</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>, data:<strong>RelatedType</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>		 *	 <li><strong>data</strong> - This will be a strongly typed value of what the ILoader has loaded. See list below.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>		 *	 <li><strong>data</strong> - This will be a strongly typed value of what the ILoader has loaded. See list below.</li>
 		 * </ul>
 		 * 
 		 * <p>This is the list of ILoader implemetations and their strongly typed return.</p>
@@ -298,9 +298,9 @@ package org.assetloader.core
 		/**
 		 * Dispatches when an ILoader is added to an IAssetLoader's queue.
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>, parent:<strong>IAssetLoader</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>, parent:<strong>IAssetLoader</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
 		 *	 <li><strong>parent</strong> - IAssetLoader in question.</li>
 		 * </ul>
 		 * 
@@ -311,14 +311,39 @@ package org.assetloader.core
 		/**
 		 * Dispatches when an ILoader is removed from an IAssetLoader's queue.
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>, parent:<strong>IAssetLoader</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>, parent:<strong>IAssetLoader</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
 		 *	 <li><strong>parent</strong> - IAssetLoader in question.</li>
 		 * </ul>
 		 * 
 		 * @see org.assetloader.signals.LoaderSignal
 		 */
 		function get onRemovedFromParent() : LoaderSignal
+		
+		/**
+		 * Dispatches when an ILoader's start method is called. NOTE: This is dispatched just BEFORE
+		 * the actual loading operation starts.
+		 * 
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.LoaderSignal
+		 */
+		function get onStart() : LoaderSignal
+
+		/**
+		 * Dispatches when an ILoader's stop method is called.
+		 * 
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.LoaderSignal
+		 */
+		function get onStop() : LoaderSignal
 	}
 }

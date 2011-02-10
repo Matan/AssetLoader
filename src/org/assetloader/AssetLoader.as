@@ -51,9 +51,9 @@ package org.assetloader
 		override protected function initSignals() : void
 		{
 			super.initSignals();
-			_onChildOpen = new LoaderSignal(this, ILoader);
-			_onChildError = new ErrorSignal(this, ILoader);
-			_onChildComplete = new LoaderSignal(this, ILoader);
+			_onChildOpen = new LoaderSignal(ILoader);
+			_onChildError = new ErrorSignal(ILoader);
+			_onChildComplete = new LoaderSignal(ILoader);
 		}
 
 		/**
@@ -109,15 +109,14 @@ package org.assetloader
 			_data = _assets;
 			_invoked = true;
 			_stopped = false;
-			_inProgress = true;
 
 			sortIdsByPriority();
 
-			_stats.start();
-
 			if(numConnections == 0)
 				numConnections = _numLoaders;
-
+				
+			super.start();
+			
 			for(var k : int = 0;k < numConnections;k++)
 			{
 				startNextLoader();
@@ -201,11 +200,13 @@ package org.assetloader
 		{
 			if(_invoked)
 			{
+				var loader : ILoader;
+				var ON_DEMAND : String = Param.ON_DEMAND;
 				for(var i : int = 0;i < _numLoaders;i++)
 				{
-					var loader : ILoader = getLoader(_ids[i]);
+					loader = getLoader(_ids[i]);
 
-					if(!loader.loaded && !loader.failed && !loader.getParam(Param.ON_DEMAND))
+					if(!loader.loaded && !loader.failed && !loader.getParam(ON_DEMAND))
 					{
 						if(!loader.invoked || (loader.invoked && loader.stopped))
 						{
@@ -225,7 +226,8 @@ package org.assetloader
 		 */
 		override protected function open_handler(signal : LoaderSignal) : void
 		{
-			_onChildOpen.dispatch(signal.loader);
+			_inProgress = true;
+			_onChildOpen.dispatch(this, signal.loader);
 			super.open_handler(signal);
 		}
 
@@ -234,7 +236,7 @@ package org.assetloader
 		 */
 		override protected function error_handler(signal : ErrorSignal) : void
 		{
-			_onChildError.dispatch(signal.type, signal.message, signal.loader);
+			_onChildError.dispatch(this, signal.type, signal.message, signal.loader);
 			super.error_handler(signal);
 			startNextLoader();
 		}
@@ -252,7 +254,7 @@ package org.assetloader
 			_loadedIds.push(loader.id);
 			_numLoaded = _loadedIds.length;
 
-			_onChildComplete.dispatch(signal.loader);
+			_onChildComplete.dispatch(this, signal.loader);
 
 			if(_numLoaded == _numLoaders)
 				super.complete_handler(signal, _assets);
@@ -270,11 +272,11 @@ package org.assetloader
 			loader.onError.remove(error_handler);
 
 			if(!configParser.isValid(loader.data))
-				_onError.dispatch("config-error", "Could not parse config after it has been loaded.");
+				_onError.dispatch(this, "config-error", "Could not parse config after it has been loaded.");
 			else
 			{
 				addConfig(loader.data);
-				_onConfigLoaded.dispatch();
+				_onConfigLoaded.dispatch(this);
 			}
 
 			loader.destroy();

@@ -42,11 +42,11 @@ package org.assetloader.loaders
 				_invoked = true;
 				_stopped = false;
 
-				_stats.start();
-
 				_eventDispatcher = constructLoader();
 
 				addListeners(_eventDispatcher);
+				
+				super.start();
 
 				invokeLoading();
 			}
@@ -112,7 +112,7 @@ package org.assetloader.loaders
 			{
 				_failed = true;
 				removeListeners(_eventDispatcher);
-				_onError.dispatch(event.type, event.text);
+				_onError.dispatch(this, event.type, event.text);
 			}
 		}
 
@@ -121,7 +121,7 @@ package org.assetloader.loaders
 		 */
 		protected function httpStatus_handler(event : HTTPStatusEvent) : void
 		{
-			_onHttpStatus.dispatch(event.status);
+			_onHttpStatus.dispatch(this, event.status);
 		}
 
 		/**
@@ -131,7 +131,7 @@ package org.assetloader.loaders
 		{
 			_stats.open();
 			_inProgress = true;
-			_onOpen.dispatch();
+			_onOpen.dispatch(this);
 		}
 
 		/**
@@ -140,7 +140,7 @@ package org.assetloader.loaders
 		protected function progress_handler(event : ProgressEvent) : void
 		{
 			_stats.update(event.bytesLoaded, event.bytesTotal);
-			_onProgress.dispatch(_stats.latency, _stats.speed, _stats.averageSpeed, _stats.progress, _stats.bytesLoaded, _stats.bytesTotal);
+			_onProgress.dispatch(this, _stats.latency, _stats.speed, _stats.averageSpeed, _stats.progress, _stats.bytesLoaded, _stats.bytesTotal);
 		}
 
 		/**
@@ -149,13 +149,13 @@ package org.assetloader.loaders
 		protected function complete_handler(event : Event) : void
 		{
 			_stats.done();
-			_onProgress.dispatch(_stats.latency, _stats.speed, _stats.averageSpeed, _stats.progress, _stats.bytesLoaded, _stats.bytesTotal);
+			_onProgress.dispatch(this, _stats.latency, _stats.speed, _stats.averageSpeed, _stats.progress, _stats.bytesLoaded, _stats.bytesTotal);
 
 			removeListeners(_eventDispatcher);
 
 			_inProgress = false;
 			_loaded = true;
-			_onComplete.dispatch(_data);
+			_onComplete.dispatch(this, _data);
 		}
 
 		// --------------------------------------------------------------------------------------------------------------------------------//

@@ -133,10 +133,10 @@ package org.assetloader.core
 		function hasAssetLoader(id : String) : Boolean
 
 		/**
-		 * Gets the ILoader.
+		 * Gets the IAssetLoader.
 		 * 
 		 * @param id String id of the asset.
-		 * @return ILoader
+		 * @return IAssetLoader
 		 * @see org.assetloader.core.IAssetLoader
 		 */
 		function getAssetLoader(id : String) : IAssetLoader
@@ -203,9 +203,9 @@ package org.assetloader.core
 		/**
 		 * Dispatches when a child ILoader in the loading queue dispatches <code>onOpen</code>.
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>, loader:<strong>ILoader</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>, loader:<strong>ILoader</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
 		 *	 <li><strong>loader</strong> - The child ILoader that dispatched <code>onOpen</code>.</li>
 		 * </ul>
 		 * 
@@ -216,9 +216,9 @@ package org.assetloader.core
 		/**
 		 * Dispatches when a child ILoader in the loading queue dispatches <code>onError</code>.
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>ErrorSignal</strong>, loader:<strong>ILoader</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>ErrorSignal</strong>, loader:<strong>ILoader</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
 		 *	 <li><strong>loader</strong> - The child ILoader that dispatched <code>onError</code>.</li>
 		 * </ul>
 		 * 
@@ -229,9 +229,9 @@ package org.assetloader.core
 		/**
 		 * Dispatches when a child ILoader in the loading queue dispatches <code>onComplete</code>.
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>, loader:<strong>ILoader</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>, loader:<strong>ILoader</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
 		 *	 <li><strong>loader</strong> - The child ILoader that dispatched <code>onComplete</code>.</li>
 		 * </ul>
 		 * 
@@ -243,9 +243,9 @@ package org.assetloader.core
 		 * Dispatches only if a URL is passed to the <code>addConfig</code> method and the config
 		 * file has finished loading.
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
 		 * </ul>
 		 * 
 		 * @see org.assetloader.signals.LoaderSignal

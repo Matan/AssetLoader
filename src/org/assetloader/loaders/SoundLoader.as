@@ -35,8 +35,8 @@ package org.assetloader.loaders
 		override protected function initSignals() : void
 		{
 			super.initSignals();
-			_onComplete = new LoaderSignal(this, Sound);
-			_onId3 = new LoaderSignal(this);
+			_onComplete = new LoaderSignal(Sound);
+			_onId3 = new LoaderSignal();
 		}
 
 		/**
@@ -59,7 +59,7 @@ package org.assetloader.loaders
 			}
 			catch(error : SecurityError)
 			{
-				_onError.dispatch(error.name, error.message);
+				_onError.dispatch(this, error.name, error.message);
 			}
 		}
 
@@ -115,7 +115,7 @@ package org.assetloader.loaders
 		 */
 		protected function id3_handler(event : Event) : void
 		{
-			_onId3.dispatch();
+			_onId3.dispatch(this);
 		}
 
 		/**
@@ -124,9 +124,9 @@ package org.assetloader.loaders
 		 * <p>Note: Not all sound files have ID3 properties, thus this Signal will
 		 * only dispatch if such data exists.</p>
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
 		 * </ul>
 		 * 
 		 * @see org.assetloader.signals.LoaderSignal

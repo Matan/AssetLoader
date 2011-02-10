@@ -1,6 +1,5 @@
 package org.assetloader.signals
 {
-	import org.assetloader.core.ILoader;
 
 	/**
 	 * @author Matan Uberstein
@@ -12,20 +11,21 @@ package org.assetloader.signals
 		 */
 		protected var _info : Object;
 
-		public function NetStatusSignal(loader : ILoader, ...valueClasses)
+		public function NetStatusSignal(...valueClasses)
 		{
 			_signalType = NetStatusSignal;
-			super(loader, valueClasses);
+			super(valueClasses);
 		}
 
 		/**
 		 * Dispatches Signal.
 		 * 
-		 * @param args1 Object - NetStatus Object
+		 * @param args1 ILoader - ILoader to which the signal belongs.
+		 * @param args2 Object - NetStatus Info Object
 		 */
 		override public function dispatch(...args) : void
 		{
-			_info = args.shift();
+			_info = args.splice(1, 1)[0];
 			super.dispatch.apply(null, args);
 		}
 

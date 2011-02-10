@@ -1,6 +1,5 @@
 package org.assetloader.signals
 {
-	import org.assetloader.core.ILoader;
 
 	/**
 	 * @author Matan Uberstein
@@ -33,25 +32,29 @@ package org.assetloader.signals
 		 */
 		protected var _bytesTotal : uint = 0;
 
-		public function ProgressSignal(loader : ILoader, ...valueClasses)
+		public function ProgressSignal(...valueClasses)
 		{
 			_signalType = ProgressSignal;
-			super(loader, valueClasses);
+			super(valueClasses);
 		}
 
 		/**
 		 * Dispatches Signal.
 		 * 
-		 * @param args1 Number - Latency		 * @param args2 Number - Speed		 * @param args3 Number - averageSpeed		 * @param args4 Number - progress		 * @param args5 uint - bytesLoaded		 * @param args6 uint - bytesTotal
+		 * @param args1 ILoader - ILoader to which the signal belongs.
+		 * @param args2 Number - Latency		 * @param args3 Number - Speed		 * @param args4 Number - averageSpeed		 * @param args5 Number - progress		 * @param args6 uint - bytesLoaded		 * @param args7 uint - bytesTotal
 		 */
 		override public function dispatch(...args) : void
 		{
-			_latency = args.shift();
-			_speed = args.shift();
-			_averageSpeed = args.shift();
-			_progress = args.shift();
-			_bytesLoaded = args.shift();
-			_bytesTotal = args.shift();
+			_latency = args[1];
+			_speed = args[2];
+			_averageSpeed = args[3];
+			_progress = args[4];
+			_bytesLoaded = args[5];
+			_bytesTotal = args[6];
+			
+			args.splice(1, 6);
+			
 			super.dispatch.apply(null, args);
 		}
 

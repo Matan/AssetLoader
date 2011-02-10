@@ -35,7 +35,7 @@ package org.assetloader.loaders
 		override protected function initSignals() : void
 		{
 			super.initSignals();
-			_onComplete = new LoaderSignal(this, Bitmap);
+			_onComplete = new LoaderSignal(Bitmap);
 		}
 
 		/**

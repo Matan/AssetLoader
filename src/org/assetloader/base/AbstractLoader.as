@@ -50,6 +50,15 @@ package org.assetloader.base
 		/**
 		 * @private
 		 */
+		protected var _onStart : LoaderSignal;
+		/**
+		 * @private
+		 */
+		protected var _onStop : LoaderSignal;
+
+		/**
+		 * @private
+		 */
 		protected var _id : String;
 		/**
 		 * @private
@@ -134,18 +143,21 @@ package org.assetloader.base
 		 */
 		protected function initSignals() : void
 		{
-			_onError = new ErrorSignal(this);
-			_onHttpStatus = new HttpStatusSignal(this);
+			_onError = new ErrorSignal();
+			_onHttpStatus = new HttpStatusSignal();
 
-			_onOpen = new LoaderSignal(this);
-			_onProgress = new ProgressSignal(this);
-			_onComplete = new LoaderSignal(this);
+			_onOpen = new LoaderSignal();
+			_onProgress = new ProgressSignal();
+			_onComplete = new LoaderSignal();
 
-			_onAddedToParent = new LoaderSignal(this, IAssetLoader);
-			_onRemovedFromParent = new LoaderSignal(this, IAssetLoader);
+			_onAddedToParent = new LoaderSignal(IAssetLoader);
+			_onRemovedFromParent = new LoaderSignal(IAssetLoader);
 
 			_onAddedToParent.add(addedToParent_handler);
 			_onRemovedFromParent.add(removedFromParent_handler);
+
+			_onStart = new LoaderSignal();
+			_onStop = new LoaderSignal();
 		}
 
 		/**
@@ -153,6 +165,8 @@ package org.assetloader.base
 		 */
 		public function start() : void
 		{
+			_stats.start();
+			_onStart.dispatch(this);
 		}
 
 		/**
@@ -162,6 +176,7 @@ package org.assetloader.base
 		{
 			_stopped = true;
 			_inProgress = false;
+			_onStop.dispatch(this);
 		}
 
 		/**
@@ -191,7 +206,7 @@ package org.assetloader.base
 		{
 			if(_parent)
 				throw new AssetLoaderError(AssetLoaderError.ALREADY_CONTAINED_BY_OTHER(_id, _parent.id));
-				
+
 			_parent = parent;
 
 			// Inherit prevent cache from parent if undefinded
@@ -419,6 +434,22 @@ package org.assetloader.base
 		public function get onRemovedFromParent() : LoaderSignal
 		{
 			return _onRemovedFromParent;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get onStart() : LoaderSignal
+		{
+			return _onStart;
+		}
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get onStop() : LoaderSignal
+		{
+			return _onStop;
 		}
 	}
 }

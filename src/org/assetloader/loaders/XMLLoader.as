@@ -28,7 +28,7 @@ package org.assetloader.loaders
 		override protected function initSignals() : void
 		{
 			super.initSignals();
-			_onComplete = new LoaderSignal(this, XML);
+			_onComplete = new LoaderSignal(XML);
 		}
 
 		/**

@@ -64,6 +64,8 @@ package org.assetloader.base
 			assertNotNull(_loaderName + "#onProgress should NOT be null after construction", _loader.onProgress);
 			assertNotNull(_loaderName + "#onAddedToParent should NOT be null after construction", _loader.onAddedToParent);
 			assertNotNull(_loaderName + "#onRemovedFromParent should NOT be null after construction", _loader.onRemovedFromParent);
+			assertNotNull(_loaderName + "#onStart should NOT be null after construction", _loader.onStart);
+			assertNotNull(_loaderName + "#onStop should NOT be null after construction", _loader.onStop);
 		}
 
 		[Test]

@@ -2,7 +2,6 @@ package org.assetloader.base
 {
 	import org.assetloader.core.IAssetLoader;
 	import org.assetloader.core.IConfigParser;
-	import org.assetloader.core.ILoadStats;
 	import org.assetloader.core.ILoader;
 	import org.assetloader.parsers.XmlConfigParser;
 	import org.assetloader.signals.ErrorSignal;
@@ -68,7 +67,7 @@ package org.assetloader.base
 		override protected function initSignals() : void
 		{
 			super.initSignals();
-			_onConfigLoaded = new LoaderSignal(this);
+			_onConfigLoaded = new LoaderSignal();
 		}
 
 		/**
@@ -105,11 +104,11 @@ package org.assetloader.base
 			if(loader.getParam(Param.PRIORITY) == 0)
 				loader.setParam(Param.PRIORITY, -(_numLoaders - 1));
 
-			addListeners(loader);
+			loader.onStart.add(start_handler);
 
 			updateTotalBytes();
 
-			loader.onAddedToParent.dispatch(this);
+			loader.onAddedToParent.dispatch(loader, this);
 		}
 
 		/**
@@ -124,6 +123,7 @@ package org.assetloader.base
 				delete _loaders[id];
 				delete _assets[id];
 
+				loader.onStart.remove(start_handler);
 				removeListeners(loader);
 
 				_numLoaders = _ids.length;
@@ -131,7 +131,7 @@ package org.assetloader.base
 
 			updateTotalBytes();
 
-			loader.onRemovedFromParent.dispatch(this);
+			loader.onRemovedFromParent.dispatch(loader, this);
 
 			return loader;
 		}
@@ -163,18 +163,10 @@ package org.assetloader.base
 		{
 			var bytesTotal : uint = 0;
 
-			var loader : ILoader;
-			var stats : ILoadStats;
-
-			for(var i : int = 0;i < _numLoaders;i++)
+			for each(var loader : ILoader in _loaders)
 			{
-				loader = getLoader(_ids[i]);
-
 				if(!loader.getParam(Param.ON_DEMAND))
-				{
-					stats = loader.stats;
-					bytesTotal += stats.bytesTotal;
-				}
+					bytesTotal += loader.stats.bytesTotal;
 			}
 
 			_stats.bytesTotal = bytesTotal;
@@ -251,13 +243,33 @@ package org.assetloader.base
 			super.addedToParent_handler(signal, parent);
 		}
 
+		protected function start_handler(signal : LoaderSignal) : void
+		{
+			var loader : ILoader = signal.loader;
+
+			loader.onStart.remove(start_handler);
+			loader.onStop.add(stop_handler);
+
+			addListeners(loader);
+		}
+
+		protected function stop_handler(signal : LoaderSignal) : void
+		{
+			var loader : ILoader = signal.loader;
+
+			loader.onStart.add(start_handler);
+			loader.onStop.remove(stop_handler);
+
+			removeListeners(loader);
+		}
+
 		/**
 		 * @private
 		 */
 		protected function error_handler(signal : ErrorSignal) : void
 		{
 			_failed = true;
-			_onError.dispatch(signal.type, signal.message);
+			_onError.dispatch(this, signal.type, signal.message);
 		}
 
 		/**
@@ -266,7 +278,7 @@ package org.assetloader.base
 		protected function open_handler(signal : LoaderSignal) : void
 		{
 			_stats.open();
-			_onOpen.dispatch();
+			_onOpen.dispatch(this);
 		}
 
 		/**
@@ -279,21 +291,15 @@ package org.assetloader.base
 			var bytesLoaded : uint = 0;
 			var bytesTotal : uint = 0;
 
-			var loader : ILoader;
-			var stats : ILoadStats;
-
-			for(var i : int = 0;i < _numLoaders;i++)
+			for each(var loader : ILoader in _loaders)
 			{
-				loader = getLoader(_ids[i]);
-				stats = loader.stats;
-
-				bytesLoaded += stats.bytesLoaded;
-				bytesTotal += stats.bytesTotal;
+				bytesLoaded += loader.stats.bytesLoaded;
+				bytesTotal += loader.stats.bytesTotal;
 			}
 
 			_stats.update(bytesLoaded, bytesTotal);
 
-			_onProgress.dispatch(_stats.latency, _stats.speed, _stats.averageSpeed, _stats.progress, _stats.bytesLoaded, _stats.bytesTotal);
+			_onProgress.dispatch(this, _stats.latency, _stats.speed, _stats.averageSpeed, _stats.progress, _stats.bytesLoaded, _stats.bytesTotal);
 		}
 
 		/**
@@ -305,7 +311,7 @@ package org.assetloader.base
 			_inProgress = false;
 			_stats.done();
 
-			_onComplete.dispatch(data);
+			_onComplete.dispatch(this, data);
 		}
 
 		// --------------------------------------------------------------------------------------------------------------------------------//
@@ -342,9 +348,8 @@ package org.assetloader.base
 		 */
 		public function getAssetLoader(id : String) : IAssetLoader
 		{
-			if(hasLoader(id))
-				if(_loaders[id] is IAssetLoader)
-					return _loaders[id];
+			if(hasAssetLoader(id))
+				return _loaders[id];
 			return null;
 		}
 
@@ -372,7 +377,7 @@ package org.assetloader.base
 		{
 			return _loaders.hasOwnProperty(id);
 		}
-		
+
 		/**
 		 * @inheritDoc
 		 */

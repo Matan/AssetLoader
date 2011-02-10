@@ -36,7 +36,7 @@ package org.assetloader.loaders
 		override protected function initSignals() : void
 		{
 			super.initSignals();
-			_onComplete = new LoaderSignal(this, String);
+			_onComplete = new LoaderSignal(String);
 		}
 
 		/**
@@ -98,7 +98,7 @@ package org.assetloader.loaders
 
 			if(testResult != "")
 			{
-				_onError.dispatch(ErrorEvent.ERROR, testResult);
+				_onError.dispatch(this, ErrorEvent.ERROR, testResult);
 				return;
 			}
 

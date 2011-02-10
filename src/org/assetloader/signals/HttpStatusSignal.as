@@ -1,6 +1,5 @@
 package org.assetloader.signals
 {
-	import org.assetloader.core.ILoader;
 
 	/**
 	 * @author Matan Uberstein
@@ -12,20 +11,21 @@ package org.assetloader.signals
 		 */
 		protected var _status : int;
 
-		public function HttpStatusSignal(loader : ILoader, ...valueClasses)
+		public function HttpStatusSignal(...valueClasses)
 		{
 			_signalType = HttpStatusSignal;
-			super(loader, valueClasses);
+			super(valueClasses);
 		}
 
 		/**
 		 * Dispatches Signal.
 		 * 
-		 * @param args1 int - Status code
+		 * @param args1 ILoader - ILoader to which the signal belongs.
+		 * @param args2 int - Status code
 		 */
 		override public function dispatch(...args) : void
 		{
-			_status = args.shift();
+			_status = args.splice(1, 1)[0];
 			super.dispatch.apply(null, args);
 		}
 

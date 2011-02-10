@@ -72,9 +72,9 @@ package org.assetloader.loaders
 		override protected function initSignals() : void
 		{
 			super.initSignals();
-			_onComplete = new LoaderSignal(this, NetStream);
-			_onNetStatus = new NetStatusSignal(this);
-			_onReady = new LoaderSignal(this, NetStream);
+			_onComplete = new LoaderSignal(NetStream);
+			_onNetStatus = new NetStatusSignal();
+			_onReady = new LoaderSignal(NetStream);
 		}
 
 		/**
@@ -107,7 +107,7 @@ package org.assetloader.loaders
 			}
 			catch(error : SecurityError)
 			{
-				_onError.dispatch(error.name, error.message);
+				_onError.dispatch(this, error.name, error.message);
 			}
 
 			_progressTimer.start();
@@ -166,7 +166,7 @@ package org.assetloader.loaders
 
 				open_handler(new Event(Event.OPEN));
 
-				_onReady.dispatch(_netStream);
+				_onReady.dispatch(this, _netStream);
 
 				_hasDispatchedReady = true;
 			}
@@ -199,7 +199,7 @@ package org.assetloader.loaders
 					break;
 
 				default:
-					_onNetStatus.dispatch(event.info);
+					_onNetStatus.dispatch(this, event.info);
 					break;
 			}
 		}
@@ -233,9 +233,9 @@ package org.assetloader.loaders
 		/**
 		 * Dispatches when the NetStream reports a NetStatus event.
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>NetStatusSignal</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>NetStatusSignal</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
 		 * </ul>
 		 * 
 		 * @see org.assetloader.signals.NetStatusSignal
@@ -248,9 +248,9 @@ package org.assetloader.loaders
 		/**
 		 * Dispatches when the NetStream is ready to be attached to a Video instance.
 		 * 
-		 * <p>HANDLER AREGUMENTS: (signal:<strong>LoaderSignal</strong>, netStream:<strong>NetStream</strong>)</p>
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>, netStream:<strong>NetStream</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - A clone of the signal that dispatched.</li>		 *	 <li><strong>netStream</strong> - The NetStream instance.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>		 *	 <li><strong>netStream</strong> - The NetStream instance.</li>
 		 * </ul>
 		 * 
 		 * @see org.assetloader.signals.LoaderSignal

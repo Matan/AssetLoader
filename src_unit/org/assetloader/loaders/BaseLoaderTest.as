@@ -300,6 +300,51 @@ package org.assetloader.loaders
 
 			assertEquals(_loaderName + "#data should be equal to " + _loaderName + "#" + _payloadPropertyName, _loader.data, _loader[_payloadPropertyName]);
 		}
+		
+		[Test (async)]
+		public function onStartSignal() : void
+		{
+			handleSignal(this, _loader.onStart, onStart_handler);
+			_loader.start();
+		}
+
+		protected function onStart_handler(event : SignalAsyncEvent, data : Object) : void
+		{
+			var values : Array = event.args;
+			assertTrue("Argument 1 should be LoaderSignal", (values[0] is LoaderSignal));
+
+			var signal : LoaderSignal = values[0];
+			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);
+			
+			assertEquals(_loaderName + "#invoked state within onStart handler", true, _loader.invoked);
+			assertEquals(_loaderName + "#inProgress state within onStart handler", false, _loader.inProgress);
+			assertEquals(_loaderName + "#stopped state within onStart handler", false, _loader.stopped);
+			assertEquals(_loaderName + "#loaded state within onStart handler", false, _loader.loaded);
+			assertEquals(_loaderName + "#failed state within onStart handler", false, _loader.failed);
+		}
+		
+		[Test (async)]
+		public function onStoptSignal() : void
+		{
+			handleSignal(this, _loader.onStop, onStop_handler);
+			_loader.start();
+			_loader.stop();
+		}
+
+		protected function onStop_handler(event : SignalAsyncEvent, data : Object) : void
+		{
+			var values : Array = event.args;
+			assertTrue("Argument 1 should be LoaderSignal", (values[0] is LoaderSignal));
+
+			var signal : LoaderSignal = values[0];
+			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);
+			
+			assertEquals(_loaderName + "#invoked state within onStop handler", true, _loader.invoked);
+			assertEquals(_loaderName + "#inProgress state within onStop handler", false, _loader.inProgress);
+			assertEquals(_loaderName + "#stopped state within onStop handler", true, _loader.stopped);
+			assertEquals(_loaderName + "#loaded state within onStop handler", false, _loader.loaded);
+			assertEquals(_loaderName + "#failed state within onStop handler", false, _loader.failed);
+		}
 
 		[Test (async)]
 		public function onAddedToParentSignal() : void

@@ -29,7 +29,7 @@ package org.assetloader.loaders
 		override protected function initSignals() : void
 		{
 			super.initSignals();
-			_onComplete = new LoaderSignal(this, Object);
+			_onComplete = new LoaderSignal(Object);
 		}
 
 		/**

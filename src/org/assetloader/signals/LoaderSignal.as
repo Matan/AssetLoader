@@ -18,30 +18,24 @@ package org.assetloader.signals
 		 */
 		protected var _signalType : Class;
 
-		/**
-		 * @private
-		 */
-		protected var _extraValueClasses : Array;
-
-		public function LoaderSignal(loader : ILoader, ...valueClasses)
+		public function LoaderSignal(...valueClasses)
 		{
 			super();
-			_loader = loader;
 			_signalType ||= LoaderSignal;
 
 			if(valueClasses.length == 1 && valueClasses[0] is Array)
-				_extraValueClasses = valueClasses[0];
-			else
-				_extraValueClasses = valueClasses;
+				valueClasses = valueClasses[0];
 
-			this.valueClasses = [_signalType].concat.apply(null, _extraValueClasses);
+			this.valueClasses = [_signalType].concat.apply(null, valueClasses);
 		}
 
 		/**
-		 * @inheritDoc
+		 * First argument must be the loader to which this signal belongs.
 		 */
 		override public function dispatch(...args) : void
 		{
+			_loader = args.shift();
+			
 			super.dispatch.apply(null, [this].concat.apply(null, args));
 		}
 
