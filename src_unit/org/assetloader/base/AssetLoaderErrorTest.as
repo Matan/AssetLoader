@@ -3,6 +3,7 @@ package org.assetloader.base
 	import org.assetloader.AssetLoader;
 	import org.assetloader.core.IAssetLoader;
 	import org.assetloader.core.ILoader;
+	import org.assetloader.loaders.ImageLoader;
 	import org.assetloader.loaders.TextLoader;
 	import org.flexunit.asserts.assertEquals;
 	import org.flexunit.asserts.assertTrue;
@@ -137,7 +138,7 @@ package org.assetloader.base
 			}
 			fail("Error was NOT catched.");
 		}
-		
+
 		[Test]
 		public function circularReferenceFound_00() : void
 		{
@@ -163,7 +164,7 @@ package org.assetloader.base
 			var g2 : IAssetLoader = new AssetLoader("g2");
 
 			g1.addLoader(g2);
-			
+
 			try
 			{
 				g2.addLoader(g1);
@@ -176,15 +177,17 @@ package org.assetloader.base
 			}
 			fail("Error was NOT catched.");
 		}
-		
+
 		[Test]
 		public function circularReferenceFound_02() : void
 		{
 			var g1 : IAssetLoader = new AssetLoader("g1");
-			var g2 : IAssetLoader = new AssetLoader("g2");			var g3 : IAssetLoader = new AssetLoader("g3");
+			var g2 : IAssetLoader = new AssetLoader("g2");
+			var g3 : IAssetLoader = new AssetLoader("g3");
 
-			g1.addLoader(g2);			g2.addLoader(g3);
-			
+			g1.addLoader(g2);
+			g2.addLoader(g3);
+
 			try
 			{
 				g3.addLoader(g1);
@@ -197,7 +200,7 @@ package org.assetloader.base
 			}
 			fail("Error was NOT catched.");
 		}
-		
+
 		[Test]
 		public function alreadyContainedByOther() : void
 		{
@@ -206,7 +209,7 @@ package org.assetloader.base
 			var l1 : ILoader = new TextLoader(new URLRequest("sampleTXT.txt"));
 
 			g1.addLoader(l1);
-			
+
 			try
 			{
 				g2.addLoader(l1);
@@ -215,6 +218,50 @@ package org.assetloader.base
 			{
 				assertTrue("error is AssetLoaderError", (error is AssetLoaderError));
 				assertEquals("error message", new AssetLoaderError(AssetLoaderError.ALREADY_CONTAINED_BY_OTHER(l1.id, g1.id)).message, error.message);
+				return;
+			}
+			fail("Error was NOT catched.");
+		}
+
+		[Test]
+		public function alreadyContainsLoader() : void
+		{
+			var monitor : StatsMonitor = new StatsMonitor();
+			var l1 : ILoader = new TextLoader(new URLRequest("assets/test/testTXT.txt"));
+			var l2 : ILoader = new ImageLoader(new URLRequest("assets/test/testIMAGE.png"));
+			try
+			{
+				monitor.add(l1);
+				monitor.add(l2);
+				// Adding l2 twice to produce error.
+				monitor.add(l2);
+			}
+			catch(error : AssetLoaderError)
+			{
+				assertTrue("error is AssetLoaderError", (error is AssetLoaderError));
+				assertEquals("error message", new AssetLoaderError(AssetLoaderError.ALREADY_CONTAINS_LOADER).message, error.message);
+				return;
+			}
+			fail("Error was NOT catched.");
+		}
+
+		[Test]
+		public function doesNotContainLoader() : void
+		{
+			var monitor : StatsMonitor = new StatsMonitor();
+			var l1 : ILoader = new TextLoader(new URLRequest("assets/test/testTXT.txt"));
+			var l2 : ILoader = new ImageLoader(new URLRequest("assets/test/testIMAGE.png"));
+			
+			monitor.add(l1);
+			try
+			{
+				//Remove l2 which was never added.
+				monitor.remove(l2);
+			}
+			catch(error : AssetLoaderError)
+			{
+				assertTrue("error is AssetLoaderError", (error is AssetLoaderError));
+				assertEquals("error message", new AssetLoaderError(AssetLoaderError.DOESNT_CONTAIN_LOADER).message, error.message);
 				return;
 			}
 			fail("Error was NOT catched.");

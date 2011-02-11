@@ -203,7 +203,7 @@ package org.assetloader.base
 		 * Allows you to attach any object/instance to an ILoader.
 		 * 
 		 * <p>Use: All asset types.</p>
-		 * <p>Type: <code>*</code></p>
+		 * <p>Type: <code>Any Type</code></p>
 		 */
 		public static const USER_DATA : String = "USER_DATA";
 
