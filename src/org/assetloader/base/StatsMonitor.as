@@ -12,14 +12,35 @@ package org.assetloader.base
 	 */
 	public class StatsMonitor
 	{
+		/**
+		 * @private
+		 */
 		protected var _loaders : Array;
+		/**
+		 * @private
+		 */
 		protected var _stats : ILoadStats;
 
+		/**
+		 * @private
+		 */
 		protected var _numLoaders : int;
+		/**
+		 * @private
+		 */
 		protected var _numComplete : int;
 
+		/**
+		 * @private
+		 */
 		protected var _onOpen : LoaderSignal;
+		/**
+		 * @private
+		 */
 		protected var _onProgress : ProgressSignal;
+		/**
+		 * @private
+		 */
 		protected var _onComplete : LoaderSignal;
 
 		public function StatsMonitor()
