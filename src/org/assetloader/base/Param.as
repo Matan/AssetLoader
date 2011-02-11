@@ -198,6 +198,14 @@ package org.assetloader.base
 		 * @see flash.net.NetStream
 		 */
 		public static const CLIENT : String = "CLIENT";
+		
+		/**
+		 * Allows you to attach any object/instance to an ILoader.
+		 * 
+		 * <p>Use: All asset types.</p>
+		 * <p>Type: <code>*</code></p>
+		 */
+		public static const USER_DATA : String = "USER_DATA";
 
 		/**
 		 * @private
