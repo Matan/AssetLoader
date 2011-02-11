@@ -57,9 +57,9 @@ package org.assetloader.base
 		[Test]
 		public function signalsReadyOnConstruction() : void
 		{
-			assertNotNull(_loaderName + "#onComplete be should NOT be null after construction", _loader.onComplete);
-			assertNotNull(_loaderName + "#onError be should NOT be null after construction", _loader.onError);
-			assertNotNull(_loaderName + "#onHttpStatus be should NOT be null after construction", _loader.onHttpStatus);
+			assertNotNull(_loaderName + "#onComplete should NOT be null after construction", _loader.onComplete);
+			assertNotNull(_loaderName + "#onError should NOT be null after construction", _loader.onError);
+			assertNotNull(_loaderName + "#onHttpStatus should NOT be null after construction", _loader.onHttpStatus);
 			assertNotNull(_loaderName + "#onOpen should NOT be null after construction", _loader.onOpen);
 			assertNotNull(_loaderName + "#onProgress should NOT be null after construction", _loader.onProgress);
 			assertNotNull(_loaderName + "#onAddedToParent should NOT be null after construction", _loader.onAddedToParent);

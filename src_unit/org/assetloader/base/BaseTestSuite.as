@@ -9,5 +9,7 @@ package org.assetloader.base
 				public var assetLoaderErrorTest : AssetLoaderErrorTest;
 				public var loaderFactoryTest : LoaderFactoryTest;
 				public var loaderStatsTest : LoaderStatsTest;
+		
+		public var statsMonitorTest : StatsMonitorTest;
 				public var paramTest : ParamTest;	}
 }

@@ -167,7 +167,7 @@ package org.assetloader.base
 			if(_numComplete == _numLoaders)
 			{
 				_stats.done();
-				_onComplete.dispatch(signal.loader, _stats);
+				_onComplete.dispatch(null, _stats);
 			}
 		}
 
@@ -225,6 +225,26 @@ package org.assetloader.base
 		public function get onComplete() : LoaderSignal
 		{
 			return _onComplete;
+		}
+
+		/**
+		 * Gets the amount of loaders added to the monitoring queue.
+		 * 
+		 * @return int
+		 */
+		public function get numLoaders() : int
+		{
+			return _numLoaders;
+		}
+
+		/**
+		 * Gets the amount of loaders that have finished loading.
+		 * 
+		 * @return int
+		 */
+		public function get numComplete() : int
+		{
+			return _numComplete;
 		}
 	}
 }
