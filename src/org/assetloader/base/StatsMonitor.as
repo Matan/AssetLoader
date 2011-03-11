@@ -64,7 +64,7 @@ package org.assetloader.base
 		{
 			if(_loaders.indexOf(loader) == -1)
 			{
-				addListener(loader);
+				loader.onStart.add(start_handler);
 
 				_loaders.push(loader);
 				_numLoaders = _loaders.length;
@@ -85,7 +85,8 @@ package org.assetloader.base
 			var index : int = _loaders.indexOf(loader);
 			if(index != -1)
 			{
-				removeListener(loader);
+				loader.onStart.remove(start_handler);
+				removeListeners(loader);
 
 				if(loader.loaded)
 					_numComplete--;
@@ -107,7 +108,8 @@ package org.assetloader.base
 		{
 			for each(var loader : ILoader in _loaders)
 			{
-				removeListener(loader);
+				loader.onStart.remove(start_handler);
+				removeListeners(loader);
 			}
 
 			_loaders = [];
@@ -122,9 +124,8 @@ package org.assetloader.base
 		/**
 		 * @private
 		 */
-		protected function addListener(loader : ILoader) : void
+		protected function addListeners(loader : ILoader) : void
 		{
-			loader.onStart.add(start_handler);
 			loader.onOpen.add(open_handler);
 			loader.onProgress.add(progress_handler);
 			loader.onComplete.add(complete_handler);
@@ -133,9 +134,8 @@ package org.assetloader.base
 		/**
 		 * @private
 		 */
-		protected function removeListener(loader : ILoader) : void
+		protected function removeListeners(loader : ILoader) : void
 		{
-			loader.onStart.remove(start_handler);
 			loader.onOpen.remove(open_handler);
 			loader.onProgress.remove(progress_handler);
 			loader.onComplete.remove(complete_handler);
@@ -149,6 +149,7 @@ package org.assetloader.base
 			for each(var loader : ILoader in _loaders)
 			{
 				loader.onStart.remove(start_handler);
+				addListeners(loader);
 			}
 			_stats.start();
 		}

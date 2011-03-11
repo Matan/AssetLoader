@@ -2,6 +2,7 @@ package org.assetloader.example
 {
 	import flash.display.BlendMode;
 	import flash.text.TextFieldAutoSize;
+
 	import org.assetloader.AssetLoader;
 	import org.assetloader.base.Param;
 	import org.assetloader.base.StatsMonitor;
@@ -29,9 +30,9 @@ package org.assetloader.example
 	public class StatsMonitorExample extends Sprite
 	{
 		protected var _monitor : StatsMonitor;
-		
+
 		protected var _field : TextField;
-		
+
 		protected var _progressField : TextField;
 		protected var _progressBar : Sprite;
 
@@ -140,8 +141,8 @@ package org.assetloader.example
 		protected function monitor_onProgress_handler(signal : ProgressSignal) : void
 		{
 			_progressBar.width = (signal.progress * stage.stageWidth) / 100;
-			
-			_progressField.text = Math.ceil(signal.progress) + "% | " + Math.ceil(signal.bytesLoaded / 1024 /1024) + " mb of " + Math.ceil(signal.bytesTotal / 1024 /1024) + " mb";
+
+			_progressField.text = Math.ceil(signal.progress) + "% | " + Math.ceil(signal.bytesLoaded / 1024 / 1024) + " mb of " + Math.ceil(signal.bytesTotal / 1024 / 1024) + " mb";
 		}
 
 		protected function monitor_onComplete_handler(signal : LoaderSignal, stats : ILoadStats) : void
@@ -161,8 +162,9 @@ package org.assetloader.example
 				group.onChildError.add(onChildError_handler);
 				group.onChildComplete.add(onChildComplete_handler);
 			}
+			else
+				loader.onOpen.add(onOpen_handler);
 
-			loader.onOpen.add(onOpen_handler);
 			loader.onComplete.add(onComplete_handler);
 			loader.onError.add(onError_handler);
 		}
@@ -176,8 +178,9 @@ package org.assetloader.example
 				group.onChildError.remove(onChildError_handler);
 				group.onChildComplete.remove(onChildComplete_handler);
 			}
-
-			loader.onOpen.remove(onOpen_handler);
+			else
+				loader.onOpen.remove(onOpen_handler);
+				
 			loader.onComplete.remove(onComplete_handler);
 			loader.onError.remove(onError_handler);
 		}
@@ -199,14 +202,14 @@ package org.assetloader.example
 			stage.addEventListener(Event.RESIZE, resize_handler);
 
 			addChild(_field);
-			
+
 			_progressBar = new Sprite();
 			_progressBar.graphics.beginFill(0x000000);
 			_progressBar.graphics.drawRect(0, 0, 20, 20);
 			_progressBar.width = 0;
-			
+
 			addChild(_progressBar);
-			
+
 			_progressField = new TextField();
 			_progressField.defaultTextFormat = new TextFormat("Courier New", 12, 0xFFFFFF);
 			_progressField.autoSize = TextFieldAutoSize.LEFT;
@@ -214,7 +217,7 @@ package org.assetloader.example
 			_progressField.selectable = true;
 			_progressField.wordWrap = false;
 			_progressField.blendMode = BlendMode.INVERT;
-			
+
 			addChild(_progressField);
 		}
 
