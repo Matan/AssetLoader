@@ -29,6 +29,10 @@ package org.assetloader.base
 		 * @private
 		 */
 		protected var _numComplete : int;
+		/**
+		 * @private
+		 */
+		protected var _ids : Array = [];
 
 		/**
 		 * @private
@@ -67,7 +71,10 @@ package org.assetloader.base
 				loader.onStart.add(start_handler);
 
 				_loaders.push(loader);
+				_ids.push(loader.id);
 				_numLoaders = _loaders.length;
+				if(loader.loaded)
+					_numComplete++;
 			}
 			else
 				throw new AssetLoaderError(AssetLoaderError.ALREADY_CONTAINS_LOADER);
@@ -92,6 +99,7 @@ package org.assetloader.base
 					_numComplete--;
 
 				_loaders.splice(index, 1);
+				_ids.splice(index, 1);
 				_numLoaders = _loaders.length;
 			}
 			else
@@ -191,6 +199,42 @@ package org.assetloader.base
 				_stats.done();
 				_onComplete.dispatch(null, _stats);
 			}
+		}
+
+		/**
+		 * Checks whether the StatsMonitor contains an ILoader with id passed.
+		 * 
+		 * @param id Id for the ILoader.
+		 * 
+		 * @return Boolean
+		 */
+		public function hasLoader(id : String) : Boolean
+		{
+			return (_ids.indexOf(id) != -1);
+		}
+
+		/**
+		 * Gets the load with id passed.
+		 * 
+		 * @param id Id for the ILoader.
+		 * 
+		 * @return ILoader.
+		 */
+		public function getLoader(id : String) : ILoader
+		{
+			if(hasLoader(id))
+				return _loaders[_ids.indexOf(id)];
+			return null;
+		}
+
+		/**
+		 * All the ids of the ILoaders added to this StatsMonitor.
+		 * 
+		 * @return Array of Strings
+		 */
+		public function get ids() : Array
+		{
+			return _ids;
 		}
 
 		/**
