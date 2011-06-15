@@ -10,7 +10,7 @@
 	<fx:Script>
 		<![CDATA[
 			import org.flexunit.listeners.CIListener;
-			import org.assetloader.AssetLoaderTestSuit;
+			import org.assetloader.AssetLoaderTestSuite;
 			import org.flexunit.listeners.UIListener;
 			import org.flexunit.runner.FlexUnitCore;
 
@@ -19,7 +19,7 @@
 			public function runMe():void {
 				core = new FlexUnitCore();
 				core.addListener(new CIListener());				core.addListener(new UIListener(uiListener));
-				core.run(AssetLoaderTestSuit);
+				core.run(AssetLoaderTestSuite);
 			}
 	]]>
 	</fx:Script>
