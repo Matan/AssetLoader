@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<loader connections="3" base="http://www.matanuberstein.co.za/assets/sample/" preventCache="false" >
+<loader connections="3" base="http://www.matanuberstein.co.za/assets/sample/" preventCache="true" >
 	
 	<group id="group-01" connections="1" >
 		

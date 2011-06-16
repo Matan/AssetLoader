@@ -48,12 +48,12 @@ package org.assetloader.example
 			// Do your clean up!
 			_assetloader.onConfigLoaded.remove(onConfigLoaded_handler);
 
-			// Before we start, lets add the listener to the child group loaders.
-			var group1 : IAssetLoader = IAssetLoader(_assetloader.getLoader('group-01'));
+			// Before we start, lets add the listeners to the child group loaders.
+			var group1 : IAssetLoader = _assetloader.getAssetLoader('group-01');
 			addListenersToLoader(group1);
 
 			// group-02 is nested inside group1.
-			var group2 : IAssetLoader = IAssetLoader(group1.getLoader('group-02'));
+			var group2 : IAssetLoader = group1.getAssetLoader('group-02');
 			addListenersToLoader(group2);
 
 			// Add Listener to our Primary Loader

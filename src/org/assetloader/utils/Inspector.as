@@ -10,6 +10,11 @@ package org.assetloader.utils
 	import flash.text.Font;
 
 	/**
+	 * The Incpector class allows you to easily extract assets from a display object's application domain. E.g.
+	 * you've just loaded in a swf that contains serveral assets/classes you'd like to use in your application.
+	 * By constructing an Inspector instance and passing you loaded swf, you are able to "extact" those assets
+	 * just by calling the related api while passing the package/class name.
+	 * 
 	 * @author Matan Uberstein + Karl Freeman
 	 */
 	public class Inspector
@@ -54,11 +59,13 @@ package org.assetloader.utils
 		 * <strong>Note:</strong> If you have specified a basePackage and you pass a "full name" of the class you'd like,
 		 * the basePackge is STILL appended to the "full name". This is done for performance reasons, there is no need to
 		 * do complex String handling. In a case like that, simply set the "overrideBasePackage" to an empty string.
-		 * <code>inspector.basePackage = "org.assetloader.assets";</code>
-		 * <code>inspector.getClass("MyAsset1"); // Returns the class for "org.assetloader.assets.MyAsset1"</code>
-		 * <code>inspector.getClass("com.domain.assets.MyAsset2", ""); // Returns the class for "com.domain.assets.MyAsset2"</code>
-		 * <code>inspector.getClass("com.domain.assets.MyAsset2"); // Returns the class for "org.assetloader.assets.com.domain.assets.MyAsset2" - which is null</code>
 		 * </p>
+		 * <ul>
+		 * <li><code>inspector.basePackage = "org.assetloader.assets";</code></li>
+		 * <li><code>inspector.getClass("MyAsset1"); // Returns the class for "org.assetloader.assets.MyAsset1"</code></li>
+		 * <li><code>inspector.getClass("com.domain.assets.MyAsset2", ""); // Returns the class for "com.domain.assets.MyAsset2"</code></li>
+		 * <li><code>inspector.getClass("com.domain.assets.MyAsset2"); // Returns the class for "org.assetloader.assets.com.domain.assets.MyAsset2" - which is null</code></li>
+		 * </ul>
 		 * 
 		 * @param classNameOrFullName A straight up class name or full name of a class.
 		 * @param overrideBasePackage Override the basePackage, just for this call.
