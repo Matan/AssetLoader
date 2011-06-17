@@ -201,5 +201,36 @@ package org.assetloader
 			var signal : LoaderSignal = values[0];
 			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);
 		}
+		
+		[Test (async)]
+		public function onCompleteSignalWithError() : void
+		{
+			// Change url to force error signal.
+			_assetloader.getLoader("id-01").request.url = _path + "DOES-NOT-EXIST.file";
+			
+			// onComplete must dispatch regardless of child error
+			handleSignal(this, _loader.onComplete, onComplete_handler);
+			_loader.start();
+		}
+
+		protected function onCompleteWithError_handler(event : SignalAsyncEvent, data : Object) : void
+		{
+			super.onComplete_handler(event, data);
+			assertEquals(_loaderName + "#loaded state after loading complete with error", true, _loader.loaded);
+			assertEquals(_loaderName + "#failed state after loading complete with error", true, _loader.failed);
+		}
+		
+		[Test (async)]
+		public function onCompleteSignalWithErrorAndFailOnErrorSetToTrue() : void
+		{
+			// Change url to force error signal.
+			_assetloader.getLoader("id-01").request.url = _path + "DOES-NOT-EXIST.file";
+			
+			_assetloader.failOnError = true;
+			
+			// onComplete must NOT dispatch, because flag is set to true.
+			failOnSignal(this, _loader.onComplete);
+			_loader.start();
+		}
 	}
 }

@@ -54,9 +54,12 @@ package org.assetloader.example
 			var videoLoader : ILoader = _assetloader.addLazy('vid-asset', "sampleVIDEO.flv");
 			videoLoader.setParam(Param.PREVENT_CACHE, false);
 			videoLoader.setParam(Param.PRIORITY, 1);
+			
+			// Fail on error flag.
+			//_assetloader.failOnError = true;
 
-			// This is a sample error, the AssetLoader's onComplete won't fire if you uncomment this.
-			// _assetloader.addLazy('err-asset', "fileThatDoesNotExist.php");
+			// This is a sample error, the AssetLoader's onComplete will still fire.
+			_assetloader.addLazy('err-asset', "fileThatDoesNotExist.php");
 
 			// Add listeners
 			addListenersToLoader(_assetloader);

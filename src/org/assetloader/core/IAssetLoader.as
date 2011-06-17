@@ -122,7 +122,7 @@ package org.assetloader.core
 		 * @see org.assetloader.core.ILoader
 		 */
 		function getLoader(id : String) : ILoader
-		
+
 		/**
 		 * Checks if IAssetLoader with id exists.
 		 * 
@@ -172,6 +172,13 @@ package org.assetloader.core
 		function get loadedIds() : Array
 
 		/**
+		 * All the ids of the ILoaders that have failed.
+		 * 
+		 * @return Array of Strings
+		 */
+		function get failedIds() : Array
+
+		/**
 		 * The amount of ILoaders in queue.
 		 * 
 		 * @return int
@@ -184,6 +191,31 @@ package org.assetloader.core
 		 * @return int
 		 */
 		function get numLoaded() : int
+
+		/**
+		 * The amount of ILoaders that have failed.
+		 * 
+		 * @return int
+		 */
+		function get numFailed() : int
+
+		/**
+		 * Gets the failOnError flag. If true the IAssetLoader will not dispatch
+		 * onComplete if one or more of the child loaders have failed/errored. If
+		 * false, the onComplete signal will dispatch regardless of child failures.
+		 * 
+		 * @default false
+		 */
+		function get failOnError() : Boolean
+
+		/**
+		 * Sets the failOnError flag. If true the IAssetLoader will not dispatch
+		 * onComplete if one or more of the child loaders have failed/errored. If
+		 * false, the onComplete signal will dispatch regardless of child failures.
+		 * 
+		 * @default false
+		 */
+		function set failOnError(value : Boolean) : void
 
 		/**
 		 * Gets the number of connections this IAssetLoader will make.
