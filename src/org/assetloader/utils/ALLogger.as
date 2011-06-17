@@ -126,6 +126,7 @@ package org.assetloader.utils
 				str += tbs + "[ILOADER | id=" + loader.id + " | type=" + loader.type + "]\n";
 				if(verbosity >= 1)
 				{
+					str += tbs + " [request.url = " + loader.request.url + "]\n";
 					if(loader.parent)
 						str += tbs + " [parent.id = " + loader.parent.id + "]\n";
 					str += tbs + " [invoked = " + loader.invoked + "]\n";
