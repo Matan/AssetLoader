@@ -113,6 +113,12 @@ package org.assetloader.utils
 					str += tbs + " [numLoaders = " + assetloader.numLoaders + "]\n";
 					str += tbs + " [numLoaded = " + assetloader.numLoaded + "]\n";
 					str += tbs + " [numConnections = " + assetloader.numConnections + "]\n";
+					str += tbs + " [failOnError = " + assetloader.failOnError + "]\n";
+				}
+				if(verbosity >= 3)
+				{
+					str += tbs + " [numFailed = " + assetloader.numFailed + "]\n";
+					str += tbs + " [failedIds = " + assetloader.failedIds + "]\n";
 				}
 			}
 			else
@@ -186,7 +192,7 @@ package org.assetloader.utils
 		public function explodeStats(loader : ILoader, recurse : int = -1) : void
 		{
 			var str : String;
-			
+
 			var indentBy : int = 0;
 			var parent : ILoader = loader.parent;
 			while(parent)
@@ -195,7 +201,7 @@ package org.assetloader.utils
 				parent = parent.parent;
 			}
 			var tbs : String = rptStr(indentChar, indentBy);
-			
+
 			if(loader is IAssetLoader)
 				str = tbs + "[IASSETLOADER";
 			else
