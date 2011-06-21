@@ -208,6 +208,8 @@ package org.assetloader
 			// Change url to force error signal.
 			_assetloader.getLoader("id-01").request.url = _path + "DOES-NOT-EXIST.file";
 			
+			_assetloader.failOnError = false;
+			
 			// onComplete must dispatch regardless of child error
 			handleSignal(this, _loader.onComplete, onComplete_handler);
 			_loader.start();

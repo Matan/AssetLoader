@@ -204,7 +204,7 @@ package org.assetloader.core
 		 * onComplete if one or more of the child loaders have failed/errored. If
 		 * false, the onComplete signal will dispatch regardless of child failures.
 		 * 
-		 * @default false
+		 * @default true
 		 */
 		function get failOnError() : Boolean
 
@@ -213,7 +213,7 @@ package org.assetloader.core
 		 * onComplete if one or more of the child loaders have failed/errored. If
 		 * false, the onComplete signal will dispatch regardless of child failures.
 		 * 
-		 * @default false
+		 * @default true
 		 */
 		function set failOnError(value : Boolean) : void
 
