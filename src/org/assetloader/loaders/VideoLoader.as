@@ -190,6 +190,27 @@ package org.assetloader.loaders
 
 			switch(code)
 			{
+				case "NetConnection.Call.BadVersion" :
+				case "NetConnection.Call.Failed" :
+				case "NetConnection.Call.Prohibited" :
+				case "NetConnection.Connect.AppShutdown" :
+				case "NetConnection.Connect.Failed" :
+				case "NetConnection.Connect.InvalidApp" :
+				case "NetConnection.Connect.Rejected" :
+				case "NetGroup.Connect.Failed" :
+				case "NetGroup.Connect.Rejected" :
+				case "NetGroup.Replication.Fetch.Failed" :
+				case "NetStream.Connect.Failed" :
+				case "NetStream.Connect.Rejected" :
+				case "NetStream.Failed" :
+				case "NetStream.Play.FileStructureInvalid" :
+					
+					errorEvent = new ErrorEvent(ErrorEvent.ERROR);
+					errorEvent.text = code;
+					error_handler(errorEvent);
+					
+					break;
+
 				case "NetStream.Play.StreamNotFound":
 
 					errorEvent = new IOErrorEvent(IOErrorEvent.IO_ERROR);
