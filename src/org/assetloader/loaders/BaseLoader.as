@@ -110,6 +110,7 @@ package org.assetloader.loaders
 			}
 			else
 			{
+				_inProgress = false;
 				_failed = true;
 				removeListeners(_eventDispatcher);
 				_onError.dispatch(this, event.type, event.text);
@@ -154,6 +155,7 @@ package org.assetloader.loaders
 			removeListeners(_eventDispatcher);
 
 			_inProgress = false;
+			_failed = false;
 			_loaded = true;
 			_onComplete.dispatch(this, _data);
 		}
