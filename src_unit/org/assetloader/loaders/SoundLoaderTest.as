@@ -34,7 +34,8 @@ package org.assetloader.loaders
 		override public function signalsReadyOnConstruction() : void
 		{
 			super.signalsReadyOnConstruction();
-			assertNotNull(_loaderName + "#onId3 should NOT be null after construction", SoundLoader(_loader).onId3);
+			assertNotNull(_loaderName + "#onReady should NOT be null after construction", SoundLoader(_loader).onId3);
+			assertNotNull(_loaderName + "#onId3 should NOT be null after construction", SoundLoader(_loader).onReady );
 		}
 
 		[Test (async)]
@@ -54,6 +55,22 @@ package org.assetloader.loaders
 			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);
 		}
 
+		[Test (async)]
+		public function onReadySignal() : void
+		{
+			handleSignal(this, SoundLoader(_loader).onReady, onReady_handler);
+			_loader.start();
+		}
+
+		protected function onReady_handler(event : SignalAsyncEvent, data : Object) : void
+		{
+			var values : Array = event.args;
+			assertTrue("Argument 1 should be LoaderSignal", (values[0] is LoaderSignal));
+			assertTrue("Argument 2 should be Sound", (values[1] is Sound));
+
+			var signal : LoaderSignal = values[0];
+			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);
+		}
 
 		override protected function assertPostDestroy() : void
 		{
