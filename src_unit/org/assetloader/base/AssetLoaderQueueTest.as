@@ -87,13 +87,13 @@ package org.assetloader.base
 			
 			_assetloader.destroy();
 			
-			assertFalse("AssetLoader#hasLoader should be true", (_assetloader.hasLoader(_id + 1)));
+			assertFalse("AssetLoader#hasLoader should be false", (_assetloader.hasLoader(_id + 1)));
 			assertNull("AssetLoader#getLoader should be null", (_assetloader.getLoader(_id + 1)));
 			
-			assertFalse("AssetLoader#hasLoader should be true", (_assetloader.hasLoader(_id + 1)));
+			assertFalse("AssetLoader#hasLoader should be false", (_assetloader.hasLoader(_id + 1)));
 			assertNull("AssetLoader#getLoader should be null", (_assetloader.getLoader(_id + 1)));
 			
-			assertFalse("AssetLoader#hasLoader should be true", (_assetloader.hasLoader(_id + 3)));
+			assertFalse("AssetLoader#hasLoader should be false", (_assetloader.hasLoader(_id + 3)));
 			assertNull("AssetLoader#getLoader should be null", (_assetloader.getLoader(_id + 3)));
 		}
 		

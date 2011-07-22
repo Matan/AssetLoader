@@ -30,34 +30,9 @@ package org.assetloader
 		 */
 		protected var _onChildComplete : LoaderSignal;
 
-		/**
-		 * @private
-		 */
-		protected var _loadedIds : Array;
-		/**
-		 * @private
-		 */
-		protected var _numLoaded : int;
-
-		/**
-		 * @private
-		 */
-		protected var _failedIds : Array;
-		/**
-		 * @private
-		 */
-		protected var _numFailed : int;
-
-		/**
-		 * @private
-		 */
-		protected var _failOnError : Boolean = true;
-
 		public function AssetLoader(id : String = "PrimaryGroup")
 		{
 			super(id);
-			_loadedIds = [];
-			_failedIds = [];
 		}
 
 		/**
@@ -97,26 +72,6 @@ package org.assetloader
 					throw new AssetLoaderError(AssetLoaderError.COULD_NOT_PARSE_CONFIG(_id, error.message), error.errorID);
 				}
 			}
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		override public function remove(id : String) : ILoader
-		{
-			var loader : ILoader = super.remove(id);
-			if(loader)
-			{
-				if(loader.loaded)
-					_loadedIds.splice(_loadedIds.indexOf(id), 1);
-				_numLoaded = _loadedIds.length;
-
-				if(loader.failed)
-					_failedIds.splice(_failedIds.indexOf(id), 1);
-				_numFailed = _failedIds.length;
-			}
-
-			return loader;
 		}
 
 		/**
@@ -169,54 +124,6 @@ package org.assetloader
 			}
 
 			super.stop();
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get loadedIds() : Array
-		{
-			return _loadedIds;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get numLoaded() : int
-		{
-			return _numLoaded;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get failedIds() : Array
-		{
-			return _failedIds;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get numFailed() : int
-		{
-			return _numFailed;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function get failOnError() : Boolean
-		{
-			return _failOnError;
-		}
-
-		/**
-		 * @inheritDoc
-		 */
-		public function set failOnError(value : Boolean) : void
-		{
-			_failOnError = value;
 		}
 
 		// --------------------------------------------------------------------------------------------------------------------------------//
@@ -308,6 +215,8 @@ package org.assetloader
 
 			if(!_failOnError)
 				checkForComplete(signal);
+			else
+				startNextLoader();
 		}
 
 		/**
