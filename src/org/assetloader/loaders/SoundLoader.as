@@ -143,14 +143,19 @@ package org.assetloader.loaders
 		 */
 		override protected function complete_handler(event : Event) : void
 		{
-			readyTimer_handler();
+			if(!_hasDispatchedReady)
+			{
+				_onReady.dispatch(this, _sound);
+				_hasDispatchedReady = true;
+				_readyTimer.stop();
+			}
 			super.complete_handler(event);
 		}
 
 		/**
 		 * @private
 		 */
-		protected function readyTimer_handler(event : TimerEvent = null) : void
+		protected function readyTimer_handler(event : TimerEvent) : void
 		{
 			if(!_hasDispatchedReady && !_sound.isBuffering)
 			{
