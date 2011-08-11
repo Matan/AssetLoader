@@ -37,6 +37,7 @@ package org.assetloader.loaders
 		{
 			assertNotNull(_loaderName + "#onNetStatus should NOT be null after construction", VideoLoader(_loader).onNetStatus);
 			assertNotNull(_loaderName + "#onReady should NOT be null after construction", VideoLoader(_loader).onReady);
+			assertNotNull(_loaderName + "#onMetaData should NOT be null after construction", VideoLoader(_loader).onMetaData);
 		}
 
 		[Test (async)]
@@ -67,9 +68,31 @@ package org.assetloader.loaders
 		{
 			var values : Array = event.args;
 			assertTrue("Argument 1 should be LoaderSignal", (values[0] is LoaderSignal));
+			assertTrue("Argument 2 should be NetStream", values[1] is NetStream);
 
 			var signal : LoaderSignal = values[0];
 			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);
+			
+			
+			assertTrue(_loaderName + "#isReady should be true", VideoLoader(_loader).isReady);
+		}
+		
+		[Test (async)]
+		public function onMetaDataSignal() : void
+		{
+			handleSignal(this, VideoLoader(_loader).onMetaData, onMetaData_handler);
+			_loader.start();
+		}
+
+		protected function onMetaData_handler(event : SignalAsyncEvent, data : Object) : void
+		{
+			var values : Array = event.args;
+			assertTrue("Argument 1 should be LoaderSignal", (values[0] is LoaderSignal));
+			assertTrue("Argument 2 should be Object", values[1] is Object);
+
+			var signal : LoaderSignal = values[0];
+			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);
+			
 		}
 
 		override protected function assertPostDestroy() : void

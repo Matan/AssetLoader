@@ -70,6 +70,8 @@ package org.assetloader.loaders
 
 			var signal : LoaderSignal = values[0];
 			assertNotNull("LoaderSignal#loader should NOT be null", signal.loader);
+			
+			assertTrue(_loaderName + "#isReady should be true", SoundLoader(_loader).isReady);
 		}
 
 		override protected function assertPostDestroy() : void

@@ -38,7 +38,7 @@ package org.assetloader.loaders
 		/**
 		 * @private
 		 */
-		protected var _hasDispatchedReady : Boolean;
+		protected var _isReady : Boolean;
 
 		public function SoundLoader(request : URLRequest, id : String = null)
 		{
@@ -116,6 +116,7 @@ package org.assetloader.loaders
 
 			_sound = null;
 			_readyTimer = null;
+			_isReady = false;
 		}
 
 		/**
@@ -143,10 +144,10 @@ package org.assetloader.loaders
 		 */
 		override protected function complete_handler(event : Event) : void
 		{
-			if(!_hasDispatchedReady)
+			if(!_isReady)
 			{
+				_isReady = true;
 				_onReady.dispatch(this, _sound);
-				_hasDispatchedReady = true;
 				_readyTimer.stop();
 			}
 			super.complete_handler(event);
@@ -157,11 +158,10 @@ package org.assetloader.loaders
 		 */
 		protected function readyTimer_handler(event : TimerEvent) : void
 		{
-			if(!_hasDispatchedReady && !_sound.isBuffering)
+			if(!_isReady && !_sound.isBuffering)
 			{
 				_onReady.dispatch(this, _sound);
-				_hasDispatchedReady = true;
-
+				_isReady = true;
 				_readyTimer.stop();
 			}
 		}
@@ -222,6 +222,16 @@ package org.assetloader.loaders
 		public function get sound() : Sound
 		{
 			return _sound;
+		}
+
+		/**
+		 * Gets whether the Sound instance is ready to be streamed or not.
+		 * 
+		 * @see #onReady
+		 */
+		public function get isReady() : Boolean
+		{
+			return _isReady;
 		}
 	}
 }
