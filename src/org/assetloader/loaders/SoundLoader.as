@@ -63,8 +63,12 @@ package org.assetloader.loaders
 		{
 			_sound = _data = new Sound();
 
-			_readyTimer = new Timer(50);
-			_readyTimer.addEventListener(TimerEvent.TIMER, readyTimer_handler);
+			if(!_readyTimer) {
+				_readyTimer = new Timer(50);
+				_readyTimer.addEventListener(TimerEvent.TIMER, readyTimer_handler);
+			} else {
+				_readyTimer.reset();
+			}
 
 			return _sound;
 		}
