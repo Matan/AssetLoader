@@ -5,6 +5,8 @@ package org.assetloader.loaders
 
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.IEventDispatcher;
 	import flash.net.URLRequest;
 
 	/**
@@ -29,7 +31,49 @@ package org.assetloader.loaders
 		override protected function initSignals() : void
 		{
 			super.initSignals();
+			_onInit = new LoaderSignal();
 			_onComplete = new LoaderSignal(Sprite);
+		}
+		
+		/**
+		 * onInit
+		 */
+		protected var _onInit : LoaderSignal;
+		public function get onInit() : LoaderSignal
+		{
+			return _onInit;
+		}
+		protected function init_handler(event : Event) : void
+		{
+			_data = _displayObject = _loader.content;
+			
+			_onInit.dispatch(this, _data);
+		}
+		
+		/**
+		 * @private
+		 */
+		override protected function addListeners(dispatcher : IEventDispatcher) : void
+		{
+			super.addListeners(dispatcher);
+			
+			if(dispatcher)
+			{
+				dispatcher.addEventListener(Event.INIT, init_handler);
+			}
+		}
+
+		/**
+		 * @private
+		 */
+		override protected function removeListeners(dispatcher : IEventDispatcher) : void
+		{
+			super.removeListeners(dispatcher);
+			
+			if(dispatcher)
+			{
+				dispatcher.removeEventListener(Event.INIT, init_handler);
+			}
 		}
 
 		/**
