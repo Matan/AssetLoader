@@ -112,6 +112,7 @@ package org.assetloader.loaders
 			try
 			{
 				_netStream.play(request.url, getParam(Param.CHECK_POLICY_FILE) || true);
+				_netStream.pause();
 			}
 			catch(error : SecurityError)
 			{
@@ -293,7 +294,8 @@ package org.assetloader.loaders
 		 * 
 		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>, netStream:<strong>NetStream</strong>)</p>
 		 * <ul>
-		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>		 *	 <li><strong>netStream</strong> - The NetStream instance.</li>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
+		 *	 <li><strong>netStream</strong> - The NetStream instance.</li>
 		 * </ul>
 		 * 
 		 * @see org.assetloader.signals.LoaderSignal
