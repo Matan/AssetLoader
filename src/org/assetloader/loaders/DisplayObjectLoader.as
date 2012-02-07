@@ -48,6 +48,10 @@ package org.assetloader.loaders
 			_loader = new Loader();
 			return _loader.contentLoaderInfo;
 		}
+		public function get contentLoaderInfo():LoaderInfo
+		{
+			return _loader ? _loader.contentLoaderInfo : null;
+		}
 
 		/**
 		 * @private
