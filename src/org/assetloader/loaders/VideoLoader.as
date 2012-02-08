@@ -161,6 +161,7 @@ package org.assetloader.loaders
 			_isReady = false;
 			_netConnection = null;
 			_netStream = null;
+			_metaData = null;
 		}
 
 		/**
@@ -235,6 +236,11 @@ package org.assetloader.loaders
 		 */
 		protected function metaData_handler(data : Object) : void
 		{
+			if(_metaData)
+			{
+				return ;
+			}
+			
 			_metaData = {};
 
 			for(var key : String in data)
