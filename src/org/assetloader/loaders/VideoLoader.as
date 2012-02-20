@@ -190,7 +190,7 @@ package org.assetloader.loaders
 		 */
 		protected function netStatus_handler(event : NetStatusEvent) : void
 		{
-			var code : String = event.info.code;
+			var code : String = event.info["code"];
 
 			var errorEvent : ErrorEvent;
 
@@ -247,9 +247,6 @@ package org.assetloader.loaders
 			{
 				_metaData[key] = data[key];
 			}
-
-			_netStream.pause();
-			_netStream.seek(0);
 
 			_onMetaData.dispatch(this, _metaData);
 		}
