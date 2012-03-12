@@ -19,6 +19,11 @@ package org.assetloader.loaders
 		 */
 		protected var _swf : Sprite;
 
+		/**
+		 * @private
+		 */
+		protected var _onInit : LoaderSignal;
+
 		public function SWFLoader(request : URLRequest, id : String = null)
 		{
 			super(request, id);
@@ -34,33 +39,22 @@ package org.assetloader.loaders
 			_onInit = new LoaderSignal();
 			_onComplete = new LoaderSignal(Sprite);
 		}
-		
-		/**
-		 * onInit
-		 */
-		protected var _onInit : LoaderSignal;
-		public function get onInit() : LoaderSignal
-		{
-			return _onInit;
-		}
+
 		protected function init_handler(event : Event) : void
 		{
 			_data = _displayObject = _loader.content;
-			
+
 			_onInit.dispatch(this, _data);
 		}
-		
+
 		/**
 		 * @private
 		 */
 		override protected function addListeners(dispatcher : IEventDispatcher) : void
 		{
 			super.addListeners(dispatcher);
-			
 			if(dispatcher)
-			{
 				dispatcher.addEventListener(Event.INIT, init_handler);
-			}
 		}
 
 		/**
@@ -69,11 +63,8 @@ package org.assetloader.loaders
 		override protected function removeListeners(dispatcher : IEventDispatcher) : void
 		{
 			super.removeListeners(dispatcher);
-			
 			if(dispatcher)
-			{
 				dispatcher.removeEventListener(Event.INIT, init_handler);
-			}
 		}
 
 		/**
@@ -112,6 +103,21 @@ package org.assetloader.loaders
 		public function get swf() : Sprite
 		{
 			return _swf;
+		}
+
+		/**
+		 * Dispatched when the properties and methods of a loaded SWF file are accessible and ready for use.
+		 * 
+		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>)</p>
+		 * <ul>
+		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
+		 * </ul>
+		 * 
+		 * @see org.assetloader.signals.LoaderSignal
+		 */
+		public function get onInit() : LoaderSignal
+		{
+			return _onInit;
 		}
 	}
 }

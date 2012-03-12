@@ -190,7 +190,7 @@ package org.assetloader.loaders
 		 */
 		protected function netStatus_handler(event : NetStatusEvent) : void
 		{
-			var code : String = event.info["code"];
+			var code : String = event.info.code;
 
 			var errorEvent : ErrorEvent;
 
@@ -237,10 +237,8 @@ package org.assetloader.loaders
 		protected function metaData_handler(data : Object) : void
 		{
 			if(_metaData)
-			{
-				return ;
-			}
-			
+				return;
+
 			_metaData = {};
 
 			for(var key : String in data)

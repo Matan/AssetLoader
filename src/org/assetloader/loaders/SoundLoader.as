@@ -35,6 +35,7 @@ package org.assetloader.loaders
 		 * @private
 		 */
 		protected var _readyTimer : Timer;
+		
 		/**
 		 * @private
 		 */
@@ -63,12 +64,13 @@ package org.assetloader.loaders
 		{
 			_sound = _data = new Sound();
 
-			if(!_readyTimer) {
+			if(!_readyTimer)
+			{
 				_readyTimer = new Timer(50);
 				_readyTimer.addEventListener(TimerEvent.TIMER, readyTimer_handler);
-			} else {
-				_readyTimer.reset();
 			}
+			else
+				_readyTimer.reset();
 
 			return _sound;
 		}

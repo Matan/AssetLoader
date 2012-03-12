@@ -78,6 +78,7 @@ package org.assetloader.loaders
 		{
 			super.assertPostDestroy();
 			assertEquals(_loaderName + "#onId3#numListeners should be equal to 0", SoundLoader(_loader).onId3.numListeners, 0);
+			assertEquals(_loaderName + "#onReady#numListeners should be equal to 0", SoundLoader(_loader).onReady.numListeners, 0);
 		}
 
 		// SOUND LOADER DOES NOT DISPATCH HTTP STATUS SIGNAL

@@ -6,6 +6,7 @@ package org.assetloader.loaders
 
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
+	import flash.display.LoaderInfo;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
@@ -47,10 +48,6 @@ package org.assetloader.loaders
 		{
 			_loader = new Loader();
 			return _loader.contentLoaderInfo;
-		}
-		public function get contentLoaderInfo():LoaderInfo
-		{
-			return _loader ? _loader.contentLoaderInfo : null;
 		}
 
 		/**
@@ -125,6 +122,16 @@ package org.assetloader.loaders
 		public function get displayObject() : DisplayObject
 		{
 			return _displayObject;
+		}
+
+		/**
+		 * Gets the current content's LoaderInfo.
+		 * 
+		 * @return LoaderInfo
+		 */
+		public function get contentLoaderInfo() : LoaderInfo
+		{
+			return _loader ? _loader.contentLoaderInfo : null;
 		}
 	}
 }

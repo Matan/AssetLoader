@@ -9,7 +9,7 @@
 	<!-- identify properties file -->
 	<property file="build.properties" />
 	<!-- Set up FlexUnit Ant tasks -->
-	<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexunit/flexUnitTasks.jar" />
+	<taskdef resource="flexUnitTasks.tasks" classpath="${lib.loc}/flexunit/flexUnitTasks-4.1.0-8.jar" />
 	
 	<target name="usage">
 		<echo message="" />
@@ -93,12 +93,12 @@
 		<echo>[test] Running SWF ${build.loc}/testing/FlexTestSuite.swf</echo>
 		<flexunit swf="${bin.loc}/testing/FlexTestSuite.swf" toDir="${report.loc}" haltonfailure="true" verbose="true" localTrusted="true" />
 		<!-- Generate readable JUnit-style reports -->
-		<junitreport todir="${report.loc}">
+		<!-- <junitreport todir="${report.loc}">
 			<fileset dir="${report.loc}">
 				<include name="TEST-*.xml" />
 			</fileset>
 			<report format="frames" todir="${report.loc}/html" />
-		</junitreport>
+		</junitreport> -->
 		<echo>[test] Finished running Unit Tests</echo>
 	</target>
 	
