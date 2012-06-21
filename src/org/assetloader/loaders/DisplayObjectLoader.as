@@ -1,5 +1,6 @@
 package org.assetloader.loaders
 {
+	import flash.display.LoaderInfo;
 	import org.assetloader.base.AssetType;
 	import org.assetloader.base.Param;
 	import org.assetloader.signals.LoaderSignal;
