@@ -128,6 +128,7 @@ package org.assetloader.parsers
 			child.priority = xml.@priority || NaN;
 			child.onDemand = toBoolean(xml.@onDemand, inheritFrom.onDemand);
 			child.preventCache = toBoolean(xml.@preventCache, inheritFrom.preventCache);
+			child.userData = xml.@userData || null;
 
 			child.transparent = toBoolean(xml.@transparent, inheritFrom.transparent);
 			child.smoothing = toBoolean(xml.@smoothing, inheritFrom.smoothing);
@@ -162,6 +163,7 @@ package org.assetloader.parsers
 			params.push(new Param(Param.RETRIES, vo.retries));
 			params.push(new Param(Param.ON_DEMAND, vo.onDemand));
 			params.push(new Param(Param.PREVENT_CACHE, vo.preventCache));
+			params.push(new Param(Param.USER_DATA, vo.userData));
 
 			params.push(new Param(Param.TRANSPARENT, vo.transparent));
 			params.push(new Param(Param.SMOOTHING, vo.smoothing));
@@ -229,8 +231,10 @@ class ConfigVO
 	public var priority : int = NaN;
 	public var onDemand : Boolean = false;
 	public var preventCache : Boolean = false;
+	public var userData : String;
 
-	// ImageLoader
+	// ImageLoader
+
 	public var transparent : Boolean = true;
 	public var fillColor : uint = 4.294967295E9;
 	public var blendMode : String = null;
