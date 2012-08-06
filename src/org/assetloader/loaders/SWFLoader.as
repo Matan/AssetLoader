@@ -106,6 +106,19 @@ package org.assetloader.loaders
 		}
 
 		/**
+		 * Gets the resulting Sprite class after loading is complete.
+		 * Allows multiple instanciation of this SWF content.
+		 * 
+		 * @return Class
+		 */
+		public function get swfClass() : Class
+		{
+			var swfClassName:String = getQualifiedClassName(_swf);
+			var swfClass:Class = getDefinitionByName(swfClassName) as Class;
+			return swfClass;
+		}
+
+		/**
 		 * Dispatched when the properties and methods of a loaded SWF file are accessible and ready for use.
 		 * 
 		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>)</p>
