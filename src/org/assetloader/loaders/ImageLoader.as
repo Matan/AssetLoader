@@ -64,8 +64,10 @@ package org.assetloader.loaders
 			var errMsg : String = "";
 			try
 			{
-				_bitmapData = new BitmapData(_loader.contentLoaderInfo.width, _loader.contentLoaderInfo.height, getParam(Param.TRANSPARENT) || true, getParam(Param.FILL_COLOR) || 0x0);
-				_bitmapData.draw(data, getParam(Param.MATRIX), getParam(Param.COLOR_TRANSFROM), getParam(Param.BLEND_MODE), getParam(Param.CLIP_RECTANGLE), getParam(Param.SMOOTHING) || false);
+				var sourceBitmapData:BitmapData = Bitmap(data).bitmapData;
+				var transparent:Boolean = (getParam(Param.TRANSPARENT) == undefined) ? sourceBitmapData.transparent : getParam(Param.TRANSPARENT);
+				_bitmapData = new BitmapData(_loader.contentLoaderInfo.width, _loader.contentLoaderInfo.height, transparent, getParam(Param.FILL_COLOR) || 0x0);
+				_bitmapData.draw(sourceBitmapData, getParam(Param.MATRIX), getParam(Param.COLOR_TRANSFROM), getParam(Param.BLEND_MODE), getParam(Param.CLIP_RECTANGLE), getParam(Param.SMOOTHING) || false);
 
 				_data = _bitmap = new Bitmap(_bitmapData, getParam(Param.PIXEL_SNAPPING) || "auto", getParam(Param.SMOOTHING) || false);
 			}
