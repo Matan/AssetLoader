@@ -1,13 +1,15 @@
 package org.assetloader.loaders
 {
-	import org.assetloader.base.AssetType;
-	import org.assetloader.signals.LoaderSignal;
-
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.net.URLRequest;
+	import flash.utils.getDefinitionByName;
+	import avmplus.getQualifiedClassName;
+
+	import org.assetloader.base.AssetType;
+	import org.assetloader.signals.LoaderSignal;
 
 	/**
 	 * @author Matan Uberstein
@@ -78,7 +80,7 @@ package org.assetloader.loaders
 
 		/**
 		 * @private
-		 * 
+		 *
 		 * @inheritDoc
 		 */
 		override protected function testData(data : DisplayObject) : String
@@ -97,7 +99,7 @@ package org.assetloader.loaders
 
 		/**
 		 * Gets the resulting Sprite after loading is complete.
-		 * 
+		 *
 		 * @return Sprite
 		 */
 		public function get swf() : Sprite
@@ -108,7 +110,7 @@ package org.assetloader.loaders
 		/**
 		 * Gets the resulting Sprite class after loading is complete.
 		 * Allows multiple instanciation of this SWF content.
-		 * 
+		 *
 		 * @return Class
 		 */
 		public function get swfClass() : Class
@@ -120,12 +122,12 @@ package org.assetloader.loaders
 
 		/**
 		 * Dispatched when the properties and methods of a loaded SWF file are accessible and ready for use.
-		 * 
+		 *
 		 * <p>HANDLER ARGUMENTS: (signal:<strong>LoaderSignal</strong>)</p>
 		 * <ul>
 		 *	 <li><strong>signal</strong> - The signal that dispatched.</li>
 		 * </ul>
-		 * 
+		 *
 		 * @see org.assetloader.signals.LoaderSignal
 		 */
 		public function get onInit() : LoaderSignal
@@ -134,3 +136,5 @@ package org.assetloader.loaders
 		}
 	}
 }
+
+

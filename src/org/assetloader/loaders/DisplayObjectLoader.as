@@ -1,17 +1,17 @@
 package org.assetloader.loaders
 {
-	import flash.display.LoaderInfo;
-	import org.assetloader.base.AssetType;
-	import org.assetloader.base.Param;
-	import org.assetloader.signals.LoaderSignal;
-
 	import flash.display.DisplayObject;
-	import flash.display.Loader;
-	import flash.display.LoaderInfo;
 	import flash.events.ErrorEvent;
 	import flash.events.Event;
 	import flash.events.IEventDispatcher;
 	import flash.net.URLRequest;
+
+	import fl.display.SafeLoader;
+	import fl.display.SafeLoaderInfo;
+
+	import org.assetloader.base.AssetType;
+	import org.assetloader.base.Param;
+	import org.assetloader.signals.LoaderSignal;
 
 	/**
 	 * @author Matan Uberstein
@@ -26,7 +26,7 @@ package org.assetloader.loaders
 		/**
 		 * @private
 		 */
-		protected var _loader : Loader;
+		protected var _loader : SafeLoader;
 
 		public function DisplayObjectLoader(request : URLRequest, id : String = null)
 		{
@@ -47,7 +47,7 @@ package org.assetloader.loaders
 		 */
 		override protected function constructLoader() : IEventDispatcher
 		{
-			_loader = new Loader();
+			_loader = new SafeLoader();
 			return _loader.contentLoaderInfo;
 		}
 
@@ -107,7 +107,7 @@ package org.assetloader.loaders
 
 		/**
 		 * @private
-		 * 
+		 *
 		 * @return Error message, empty String if no error occured.
 		 */
 		protected function testData(data : DisplayObject) : String
@@ -117,7 +117,7 @@ package org.assetloader.loaders
 
 		/**
 		 * Gets the resulting DisplayObject after loading is complete.
-		 * 
+		 *
 		 * @return DisplayObject
 		 */
 		public function get displayObject() : DisplayObject
@@ -127,12 +127,14 @@ package org.assetloader.loaders
 
 		/**
 		 * Gets the current content's LoaderInfo.
-		 * 
+		 *
 		 * @return LoaderInfo
 		 */
-		public function get contentLoaderInfo() : LoaderInfo
+		public function get contentLoaderInfo() : SafeLoaderInfo
 		{
 			return _loader ? _loader.contentLoaderInfo : null;
 		}
 	}
 }
+
+
